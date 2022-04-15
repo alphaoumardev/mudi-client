@@ -27,22 +27,26 @@ import store from "./redux/store";
 import ResetPassword from "./pages/account/ResetPassword";
 import ResetPasswordConfirm from "./pages/account/ResetPasswordConfirm";
 import Activate from "./pages/account/Activate";
+import Top from "./little/Top";
+import Check from "./pages/account/Check";
 function App()
 {
   return (
   <Provider store={store}>
-        {/*<Top>*/}
+        <Top>
           <Navbar />
-
+          <Check>
           <Routes>
             <Route path="/" element={<Products/>}/>
             <Route exact path="/home"   element={<Home/>}/>
             <Route exact path="/:genre"   element={<Products/>}/>
             {/*<Route exact path="/:genre/:type"   element={<Home/>}/>*/}
-            <Route path="/activate/:uid/:token"   element={<Activate/>}/>
-            <Route path="/resetpassword"   element={<ResetPassword/>}/>
-            <Route path="/resetpassword/confirm/:uid/:token"   element={<ResetPasswordConfirm/>}/>
 
+              <Route path="/activate/:uid/:token"   element={<Activate/>}/>
+              <Route path="/resetpassword"   element={<ResetPassword/>}/>
+              <Route path="/resetpassword/confirm/:uid/:token"   element={<ResetPasswordConfirm/>}/>
+              <Route path="/cart" element={<Cart/>}/>
+              <Route path="/checkout" element={<Checkout/>}/>
 
 
             <Route path="*" element={<Page404/>} />
@@ -55,8 +59,7 @@ function App()
             <Route path="/:genre/:type" element={<Shop/>}/>
 
 
-            <Route path="/cart" element={<Cart/>}/>
-            <Route path="/checkout" element={<Checkout/>}/>
+
 
             {/*    The blog post */}
             <Route path="blog" exact element={<BlogIndex/>}/>
@@ -71,9 +74,11 @@ function App()
             <Route exact  path="/login" element={<Login/>} />
             <Route exact  path="/register" element={<Register/>} />
           </Routes>
+          </Check>
+
           <ScrollUp/>
           <Footer/>
-        {/*</Top>*/}
+        </Top>
       </Provider>
   );
 }

@@ -1,8 +1,8 @@
 {
   "name": "mudi-client",
   "version": "0.1.0",
-  "private": true,
   "proxy": "http://127.0.0.1:8000/",
+  "private": true,
   "dependencies": {
     "@babel/core": "^7.17.9",
     "@babel/preset-env": "^7.16.11",

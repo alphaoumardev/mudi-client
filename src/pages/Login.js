@@ -6,10 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { login } from '../redux/Actions/auth'
 import { connect, } from "react-redux";
 
-const Login = ({ login, isAuthenticated }) => {
-    const usernameRef = useRef()
-    const passwordRef = useRef()
-    // const auth = useSelector((state) => state.auth);
+const Login = ({ login, isAuthenticated, }) =>
+{
 
     const navigate = useNavigate()
     const [isFetching, setIsFetching] = useState(false);
@@ -24,7 +22,7 @@ const Login = ({ login, isAuthenticated }) => {
     };
     useEffect(() =>
     {
-        // console.log(isAuthenticated)
+        console.log(isAuthenticated)
         if (isAuthenticated)
         {
             return navigate('/')
@@ -68,7 +66,6 @@ const Login = ({ login, isAuthenticated }) => {
                                     onChange={e => onChange(e)}
                                     value={email}
                                     required={true}
-                                    ref={usernameRef}
                                     name="email"
                                     id="user" type="email"
                                     className="input"
@@ -81,8 +78,6 @@ const Login = ({ login, isAuthenticated }) => {
                                     value={password}
                                     minLength={6}
                                     required={true}
-                                    ref={passwordRef}
-                                    disabled={isFetching}
                                     id="pass" type="password"
                                     className="input"
                                     name="password"

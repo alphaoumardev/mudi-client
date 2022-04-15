@@ -5,7 +5,7 @@ import axios from "axios";
 import {logout} from '../redux/Actions/auth'
 import {connect} from 'react-redux'
 
-const Navbar =({logout, isAuthenticated})=>
+const Navbar =({logout, isAuthenticated, })=>
 {
     const [rediredLogin, setRediredLogin] = useState(false);
     const logout_user =()=>
@@ -13,7 +13,9 @@ const Navbar =({logout, isAuthenticated})=>
         logout();
         setRediredLogin(true)
     }
+    // let user= JSON.parse(localStorage.getItem('access'))
 
+    console.log(isAuthenticated)
     const location = useLocation();
     const [urls, setUrls] = useState([])
     const [isOpen, setIsOpen] = useState(false);

@@ -22,8 +22,8 @@ import {
 const initialState = {
     access: localStorage.getItem('access'),
     refresh: localStorage.getItem('refresh'),
-    isAuthenticated: false,
-    user: null,
+    isAuthenticated: null,
+
 }
 
 export default function (state = initialState, action)
@@ -41,11 +41,13 @@ export default function (state = initialState, action)
         case FACEBOOK_AUTH_SUCCESS:
             localStorage.setItem('access', payload.access)
             localStorage.setItem('refresh', payload.refresh)
+            sessionStorage.setItem('access', payload.access)
+            sessionStorage.setItem('refresh', payload.refresh)
             return{
                 ...state,
                 isAuthenticated: true,
                 access: payload.access,
-                refresh: payload.refresh
+                refresh: payload.refresh,
             }
         case SIGNUP_SUCCESS:
             return{
@@ -74,6 +76,8 @@ export default function (state = initialState, action)
         case GOOGLE_AUTH_FAIL:
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
+            sessionStorage.removeItem('access')
+            sessionStorage.removeItem('refresh')
             return{
                 ...state,
                 user: null,
