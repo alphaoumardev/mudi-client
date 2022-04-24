@@ -2,9 +2,14 @@ import '../css/login.css'
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {signup} from "../redux/Actions/auth";
-import {connect} from "react-redux";
-const Register =({signup, isAuthenticated})=>
+import {useDispatch, useSelector} from "react-redux";
+const Register =()=>
 {
+    const {isAuthenticated} = useSelector((state) =>state.auth)
+    const {isLoading} = useSelector((state)=> state.auth)
+    let {error} = useSelector((state) =>state.auth)
+    const dispatch = useDispatch()
+
     const navigate = useNavigate()
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
@@ -21,19 +26,16 @@ const Register =({signup, isAuthenticated})=>
         e.preventDefault()
         if(password === re_password)
         {
-            signup(first_name, last_name, email, password, re_password)
+            dispatch(signup(first_name, last_name, email, password, re_password))
             setAccountCreated(true)
         }
     }
     useEffect(() =>
     {
-        console.log(isAuthenticated)
         if(isAuthenticated)
         {
-            // console.log(isAuthenticated)
             return navigate('/')
         }
-        console.log(accountCreated)
         if(accountCreated)
         {
             return navigate('/login')
@@ -59,10 +61,10 @@ const Register =({signup, isAuthenticated})=>
     return(
         <div className="container">
             <div className="row w-100 d-flex justify-content-center">
-                <div className="col-xl-4 lea ">
+                <div className="col-xl-3 lea ">
                     <img src="https://res.cloudinary.com/diallo/image/upload/v1649320496/s_cyptzh.png" alt="akn do" className=""/>
                 </div>
-                <div className="col-xl-4 login-wrap">
+                <div className="col-xl-3 login-wrap">
                     <div className="register-form">
                         <div className="sign ">
                             <h2  className="d-flex  mb-2 text-center">Sign In</h2>
@@ -76,6 +78,7 @@ const Register =({signup, isAuthenticated})=>
                                     id="first_name"
                                     name="first_name"
                                     className="input"
+                                    required={true}
                                     placeholder="First Name"/>
                             </div>
                             <div className="group">
@@ -87,6 +90,7 @@ const Register =({signup, isAuthenticated})=>
                                     name="last_name"
                                     onChange={e=>onChange(e)}
                                     className="input"
+                                    required={true}
                                     placeholder="Last Name"/>
                             </div>
                             <div className="group">
@@ -97,6 +101,7 @@ const Register =({signup, isAuthenticated})=>
                                     name="password"
                                     value={password}
                                     className="input"
+                                    required={true}
                                     onChange={e=>onChange(e)}
                                     placeholder="Password"/>
                             </div>
@@ -109,6 +114,7 @@ const Register =({signup, isAuthenticated})=>
                                     value={re_password}
                                     onChange={e=>onChange(e)}
                                     className="input"
+                                    required={true}
                                     placeholder="confirm"/>
                             </div>
                             <div className="group">
@@ -119,6 +125,7 @@ const Register =({signup, isAuthenticated})=>
                                     name="email"
                                     value={email}
                                     className="input"
+                                    required={true}
                                     onChange={e=>onChange(e)}
                                     placeholder="Email address"/>
                             </div>
@@ -127,8 +134,8 @@ const Register =({signup, isAuthenticated})=>
                             </div>
                         </form>
                             <div className="group">
-                                <button className='btn btn-danger mt-3 w-50' onClick={continueWithGoogle}>Google</button>
-                                <button className='btn btn-primary mt-3 w-50' onClick={continueWithFacebook}>Facebook</button>
+                                <button className='btn btn-danger mt-2 w-50' onClick={continueWithGoogle}>Google</button>
+                                <button className='btn btn-primary mt-2 w-50' onClick={continueWithFacebook}>Facebook</button>
                             </div>
                             <div className="hr"> </div>
                             <div className="foot-lnk">
@@ -141,5 +148,4 @@ const Register =({signup, isAuthenticated})=>
         </div>
     )
 }
-const mapStateToProps = state => ({isAuthenticated: state.auth.isAuthenticated})
-export default connect(mapStateToProps, {signup}) (Register)
+export default Register

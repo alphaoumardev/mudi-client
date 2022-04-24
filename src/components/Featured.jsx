@@ -46,7 +46,7 @@ const Featured = () =>
 
   function NextArrow(ne)
   {
-    const { className,onClick } = ne;
+    const { className, onClick } = ne;
     return (<div className="swiper-button-next" onClick={onClick}>
       <i className="bi bi-chevron-right"> </i>
     </div> );
@@ -139,79 +139,7 @@ const Featured = () =>
       </div>
     </div>
   </div>
-
-  {/* Modal */}
-  <div className="modal fade" id="product-modal-compare">
-    <div className="modal-dialog modal-dialog-centered compare-modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <button type="button" className="btn-close" data-bs-dismiss="modal" />
-        </div>
-        <div className="modal-body">
-          <p> <i className="ion-checkmark" /> Product added to compare.</p>
-        </div>
-      </div>
-    </div>
   </div>
-  {/* Modal */}
-  <div className="modal fade" id="product-modal-wishlist">
-    <div className="modal-dialog modal-dialog-centered wishlist-modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <button type="button" className="btn-close" data-bs-dismiss="modal" />
-        </div>
-        <div className="modal-body">
-          <p> You must be logged in to manage your wishlist.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div className="modal fade" id="addto-cart-modal">
-    <div className="modal-dialog modal-dialog-centered">
-      <div className="modal-content">
-        <div className="modal-header bg-dark border-bottom-0 justify-content-center">
-          <span className="ion-android-done me-5" />
-          <h4 className="modal-title text-center">Product successfully added to your shopping cart</h4>
-          <button type="button" className="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close">×</button>
-        </div>
-        <div className="modal-body p-5">
-          <div className="row align-items-center align-items-lg-start">
-            <div className="col-lg-5">
-              <div className="row align-items-center align-items-lg-start">
-                <div className="col-md-6">
-                  <img className="product-image" src="../assets/images/products/product1.jpg" alt="images_not_found" />
-                </div>
-                <div className="col-md-6">
-                  <h6 className="product-name">Snacking Essentials Walnuts</h6>
-                  <ul className="quntity-list">
-                    <li>€23.06</li>
-                    <li>Color: White</li>
-                    <li>Quantity:1</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-7">
-              <div className="cart-content">
-                <p className="title">There are 3 items in your cart.</p>
-                <p><span>Total products:</span>€23.06</p>
-                <p><span>Total shipping:</span>Free</p>
-                <p><span>Taxes:</span> €0.00</p>
-                <p><span>Total:</span> €23.06 (tax excl.)</p>
-                <div className="cart-content-btn">
-                  <button className="btn btn-sm btn-dark me-1 mt-3 mt-sm-0" data-bs-dismiss="modal">Continue
-                    shopping</button>
-                  <button className="btn btn-sm btn-dark mt-3 mt-sm-0">Proceed to
-                    checkout</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    </div>
 
 </div>
 

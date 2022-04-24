@@ -1,21 +1,27 @@
-import {useState, useEffect} from "react";
-import {TextField} from "@mui/material";
+import {Fragment, useState, useEffect} from "react";
+import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
 import {Link, useLocation, useParams} from "react-router-dom";
 import axios from "axios";
-import {logout} from '../redux/Actions/auth'
-import {connect} from 'react-redux'
+import {load_user, logout} from '../redux/Actions/auth'
+import {useDispatch, useSelector} from 'react-redux'
+import Spinner from "../little/Spinner";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
-const Navbar =({logout, isAuthenticated, })=>
+const Navbar =()=>
 {
-    const [rediredLogin, setRediredLogin] = useState(false);
+    const {user, isLoading, isAuthenticated} = useSelector((state) =>state.auth)
+    const dispatch = useDispatch()
+
     const logout_user =()=>
     {
-        logout();
-        setRediredLogin(true)
+        dispatch(logout());
     }
-    // let user= JSON.parse(localStorage.getItem('access'))
+    useEffect(() =>
+    {
+        dispatch(load_user())
+    }, [dispatch,]);
 
-    console.log(isAuthenticated)
     const location = useLocation();
     const [urls, setUrls] = useState([])
     const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +52,7 @@ const Navbar =({logout, isAuthenticated, })=>
                 {
                     // console.log(res.data)
                     setUrls(res.data)
-                }, error =>{console.log()})
+                }, error =>{console.log(error)})
         }
         const getSubcatery = async (genre)=>
         {
@@ -64,10 +70,9 @@ const Navbar =({logout, isAuthenticated, })=>
         getSubcatery(genre).then(()=>{})
         getProductsBySubcategory(genre, type).then(()=>{})
     },[genre, type ])
+
     return(
-        <div >
-            {/* header section start */}
-            {/*< genre={genre} type={type}/>*/}
+        <div>
             <header className="header pt-10 pb-10  is-sticky header-static  " >
                 <div className="container-fluid" >
                     <div className="header-nav position-relative">
@@ -77,24 +82,10 @@ const Navbar =({logout, isAuthenticated, })=>
                                     <Link to="/"><img src="https://res.cloudinary.com/diallo/image/upload/v1649320496/s_cyptzh.png" alt="" /></Link>
                                 </div>
                             </div>
-                            <div className="col-xl-5 col-lg-6 hidden-md position-static">
+                            <div className="col-xl-5 col-lg-6 hidden-md position-static ">
                                 <div className="header-nav">
                                     <nav className="d-flex justify-content-around">
                                         <ul>
-                                            {/*{urls?.map((g, pk)=>*/}
-                                            {/*    <li key={pk}>*/}
-                                            {/*        <Link to={`/men`}><span >{g?.genre_name}<i className="bi bi-chevron-down" /></span></Link>*/}
-                                            {/*        <div className="submenu">*/}
-                                            {/*            <div >*/}
-                                            {/*                {subcates?.map((item, index)=>*/}
-                                            {/*                    <ul key={index}>*/}
-                                            {/*                        <li><Link to={`${g?.genre_name}/${item?.type?.type_name}`} >{item?.type?.type_name}</Link></li>*/}
-                                            {/*                    </ul>*/}
-                                            {/*                )}*/}
-                                            {/*            </div>*/}
-                                            {/*        </div>*/}
-                                            {/*    </li>*/}
-                                            {/*)}*/}
                                             <li>
                                                 <Link to={`/men`}><span >Men<i className="bi bi-chevron-down" /></span></Link>
                                                 <div className="submenu">
@@ -175,22 +166,26 @@ const Navbar =({logout, isAuthenticated, })=>
                                     </nav>
                                 </div>
                             </div>
-                            <div className="col-xl-4 col-lg-4 col-6 col-md-6 col-sm-6 col-9">
+                            <div className="col-xl-4 col-lg-4 col-6 col-md-6 col-sm-6 col-9 d-flex justify-content-end">
                                 <div className="header-right">
-                                    <ul className="text-right">
-                                        <li>
+                                    <ul className="text-right ">
+                                        <li className="menu-rights">
                                             <span>
                                                 <i onClick={toggleSearchButton} className="bi bi-search" title="Looking for something?" />
                                                 {searchButton && <TextField id="standard-size-small" defaultValue="" placeholder="Search" size="small" variant="standard" style={{paddingLeft:10}}/>}
                                             </span>
-                                            {/*<Link to="/"><i className="bi bi-translate"/> </Link>*/}
                                             {!isAuthenticated && <Link to="login" ><i className="bi bi-person-fill"/><b>Login/Register</b></Link>}
-
-
                                         </li>
-                                        <li><Link to="wishlist" data-toggle="tooltip" data-placement="bottom"  data-original-title="view wishlist"><i className="bi bi-heart"><span>0</span></i></Link></li>
-                                        <li><Link to="cart">
-                                            <i className="bi bi-cart3"><span>5</span></i>
+                                        <li className="menu-rights">
+                                            <Link to="wishlist" data-toggle="tooltip" data-placement="bottom"  data-original-title="view wishlist">
+                                                <FavoriteIcon color="warning"/>
+                                                <Badge badgeContent={6} color="secondary"/>
+                                            </Link>
+                                        </li>
+                                        <li className="menu-rights">
+                                            <Link to="cart">
+                                                <ShoppingBagOutlinedIcon color="action" />
+                                            <Badge badgeContent={4} color="primary"/>
                                             </Link>
                                             <div className="minicart">
                                                 <div className="minicart-body">
@@ -247,17 +242,19 @@ const Navbar =({logout, isAuthenticated, })=>
                                                 </div>
                                             </div>
                                         </li>
-                                        <li><i className="bi bi-text-right" />
+                                        <li className="menu-rights">
+                                            <IconButton  sx={{ p: 0 }}>
+                                                <Avatar alt="T" src='https://res.cloudinary.com/diallo/image/upload/v1647154155/profile_d0j0wg.png' />
+                                            </IconButton>
                                             <ul className="submenu bold-content text-right">
-                                                <li><Link to="login">MyAccount</Link></li>
+                                                <li><Link to="myaccount">MyAccount</Link></li>
                                                 <li><Link to="checkout">Checkout</Link></li>
                                                 <li><Link to="shop">Shop</Link></li>
                                                 <li><Link to="wishlist">Wishlist</Link></li>
-                                                <li><Link to="question">Frequently</Link></li>
+                                                <li><Link to="question">FAQs</Link></li>
+
                                                 {isAuthenticated ?<li><Link to={'login'} onClick={logout_user}><b>Logout</b></Link></li>:
                                                     <li><Link to="login" ><b>Login/Register</b></Link></li>}
-
-
                                             </ul>
                                         </li>
                                     </ul>
@@ -265,45 +262,9 @@ const Navbar =({logout, isAuthenticated, })=>
                             </div>
                         </div>
                     </div>
-                    {/*Mobbile*/}
-                    {/*<div className="mobile-menu visible-sm">*/}
-                    {/*    <div id="mobile-menu">*/}
-                    {/*        <ul>*/}
-                    {/*            <li><Link className="pl-3" to="">Home</Link>*/}
-                    {/*                <ul className="pl-4">*/}
-                    {/*                    <li><Link to="index">Products</Link></li>*/}
-                    {/*                    <li><Link to="index2">Fashion</Link></li>*/}
-                    {/*                </ul>*/}
-                    {/*            </li>*/}
-                    {/*            <li><Link className="pl-3" to="">Shop</Link>*/}
-                    {/*                <ul>*/}
-                    {/*                    <li><Link to="shop">Shop Layout</Link></li>*/}
-                    {/*                    <li><Link to="shop4">Masonry – Grid</Link></li>*/}
-                    {/*                </ul>*/}
-                    {/*            </li>*/}
-                    {/*            <li><Link to="">Blog</Link>*/}
-                    {/*                <ul>*/}
-                    {/*                    <li><Link to="blog">Grid layout</Link></li>*/}
-                    {/*                    <li><Link to="blog2">Large image</Link></li>*/}
-
-                    {/*                </ul>*/}
-                    {/*            </li>*/}
-                    {/*            <li><Link to="">Portfolio</Link>*/}
-                    {/*                <ul>*/}
-                    {/*                    <li><Link to="portfolio">Single project</Link></li>*/}
-                    {/*                    <li><Link to="portfolio3">Three Columns</Link></li>*/}
-                    {/*                </ul>*/}
-                    {/*            </li>*/}
-                    {/*            <li><Link to="contact">Contact</Link></li>*/}
-                    {/*        </ul>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/* /. mobile nav */}
                 </div>
             </header>
-            {/* header section end */}
         </div>
     )
 }
-const mapStateToProps = state =>({isAuthenticated: state.auth.isAuthenticated})
-export default connect(mapStateToProps, {logout}) (Navbar)
+export default Navbar

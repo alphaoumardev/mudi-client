@@ -13,6 +13,7 @@ const SingleProduct = () =>
   const [variant, setVariant] = useState()
   const [images, setImages] = useState()
   let {id} = useParams()
+  // const {user, isLoading, isAuthenticated, }
   useEffect(()=>
   {
     const getOne = async ()=>
@@ -24,7 +25,6 @@ const SingleProduct = () =>
     {
       const res = await axios.get(`/byvariant/`+id)
       setVariant(res.data)
-      // console.log(res.data)
     }
     const getImages = async ()=>
     {
@@ -88,11 +88,11 @@ const SingleProduct = () =>
                           <th>color</th>
                           <td>
                             <ul>
-                              {variant?.map((item, index)=>(
+                              {images?.map((item, index)=>(
                                   <div key={index} className="color-input">
-                                    <label htmlFor="yellow" style={{backgroundColor: item?.color?.color_name}} />
+                                    <label htmlFor="yellow" style={{backgroundColor: item?.color_name?.color_name}} />
                                     <input type="radio" className="d-none" id="yellow" />
-                                    <span>{item?.color?.color_name}</span>
+                                    <span>{item?.color_name?.color_name}</span>
                                   </div>
                               ))}
                             </ul>

@@ -2,38 +2,48 @@ import '../css/login.css'
 import { Link, useNavigate } from "react-router-dom";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { useEffect, useRef, useState } from "react";
-import { login } from '../redux/Actions/auth'
-import { connect, } from "react-redux";
+import {Fragment, useEffect, useState} from "react";
+import {login} from '../redux/Actions/auth'
+import {useDispatch, useSelector} from "react-redux";
+import Spinner from "../little/Spinner";
 
-const Login = ({ login, isAuthenticated, }) =>
+const Login = () =>
 {
+    const [credentialError, setCredentialError] = useState('');
+    let {user, error, isLoading} = useSelector((state) =>state.auth)
+
+    const dispatch = useDispatch()
 
     const navigate = useNavigate()
-    const [isFetching, setIsFetching] = useState(false);
-    // const {dispatch, isFetching} = useContext(Context)
     const [formData, setFormData] = useState({ email: "", password: "" });
     const { email, password } = formData
     const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value })
     const onSubmit = (e) =>
     {
         e.preventDefault()
-        login(email, password)
+        dispatch(login(email, password))
     };
+
     useEffect(() =>
     {
-        console.log(isAuthenticated)
-        if (isAuthenticated)
+        if(error !== null)
+        {
+            setCredentialError("The email or password is incorrect")
+        }
+        if (localStorage.getItem('access'))
         {
             return navigate('/')
         }
-    }, );
+    }, [user]);
+        if (isLoading) { return <Fragment><Spinner/></Fragment> }
+
     const continueWithGoogle = async () => {
         try {
             const res = await axios.get(`/auth/o/google-oauth2/?redirect_uri=/google`)
 
             window.location.replace(res.data.authorization_url);
-        } catch (err) {
+        } catch (err)
+        {
 
         }
     };
@@ -51,15 +61,17 @@ const Login = ({ login, isAuthenticated, }) =>
 
  return(
         <div className="container">
-            <div className="row w-100 login-form">
-                <div className="col-xl-4 lea ">
+            <div className="row  login-form">
+                <div className="col-xl-3 lea ">
                     <img src="https://res.cloudinary.com/diallo/image/upload/v1649320496/s_cyptzh.png" alt="akn do" className=""/>
                 </div>
-                <div className="col-xl-4 login-wrap ">
+                <div className="col-xl-3 login-wrap ">
                     <div className="login-form">
                         <div className="sign-in-htm">
-                            <h2  className="d-flex  mb-3 text-center">Sign In</h2>
-                        <form onSubmit={onSubmit}>
+                            <h2  className="mb-3">Sign In</h2>
+                            {error && <b  className="d-flex text-danger mb-3 text-center">{credentialError}</b>}
+
+                            <form onSubmit={onSubmit}>
                             <div className="group">
                                 <label htmlFor="user" className="label" >Email</label>
                                 <input
@@ -114,7 +126,6 @@ const Login = ({ login, isAuthenticated, }) =>
         </div>
     )
 }
-const mapStateToProps = state => ({isAuthenticated: state.auth.isAuthenticated})
-export default connect(mapStateToProps, {login}) (Login)
+export default Login
 
 

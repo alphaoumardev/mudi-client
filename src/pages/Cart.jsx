@@ -1,15 +1,31 @@
 import Crumb from "../little/Crumb";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {addToCart} from "../redux/Actions/cartAction";
 
 const Cart = ()=>
 {
-    return(
+  const dispatch = useDispatch()
+  const {cartItems} = useSelector((state) =>state.cart)
+  const {id} = useParams()
+  useEffect(() =>
+  {
+    if(id)
+    {
+      dispatch(addToCart(id, 2))
+    }
+  }, [dispatch, id]);
+
+  console.log(cartItems)
+  return(
         <div>
   {/* shop body section start */}
   <section className="cart-body mb-90 gray-border-top ">
     <div className="has-breadcrumb-content">
       <div className="container container-1430">
         <Crumb/>
+        <h2 className="cart-title text-center text-uppercase">Cart</h2>
 
         <div className="cart-body-content">
           <div className="row">
@@ -35,10 +51,8 @@ const Cart = ()=>
                               <button className="close-btn"><i className="bi bi-x" /></button>
                             </div>
                           </td>
-                          <td>
-                            <div className="table-data">
-                              <img src="../assets/img/product/1.jpg" width={80} alt="" />
-                            </div>
+                          <td className="product-thumbnail">
+                              <img src="../assets/img/product/1.jpg"  alt="" />
                           </td>
                           <td>
                             <div className="table-data">
@@ -52,7 +66,7 @@ const Cart = ()=>
                           </td>
                           <td>
                             <div className="table-data">
-                              <input type="number" defaultValue={1} style={{marginRight: 20, width: 119}} />
+                              <input type="number" defaultValue={1} min={1} style={{marginRight: 20, width: 119}} />
                             </div>
                           </td>
                           <td>
@@ -67,10 +81,8 @@ const Cart = ()=>
                               <button className="close-btn"><i className="bi bi-x" /></button>
                             </div>
                           </td>
-                          <td>
-                            <div className="table-data">
-                              <img src="../assets/img/product/2.jpg" width={80} alt="" />
-                            </div>
+                          <td className="product-thumbnail">
+                              <img src="../assets/img/product/2.jpg"  alt="" />
                           </td>
                           <td>
                             <div className="table-data">
@@ -84,7 +96,7 @@ const Cart = ()=>
                           </td>
                           <td>
                             <div className="table-data">
-                              <input type="number" defaultValue={1} style={{marginRight: 20, width: 119}} />
+                              <input type="number" defaultValue={1} min={1} style={{marginRight: 20, width: 119}} />
                             </div>
                           </td>
                           <td>
@@ -97,8 +109,8 @@ const Cart = ()=>
                     </table>
                   </div>
                   <div className="cupon">
-                    <input type="text" placeholder="Cupon code" className="text-left pl-3" style={{marginRight: 20, width: 119}} />
-                    <button className="generic-btn border-0 red-hover-btn text-uppercase">Apply Cupon</button>
+                    <input type="text" placeholder="Cupon code" className="text-left pl-3 w-50" style={{marginRight: 20, width: 119}} />
+                    <button className="generic-btn border-0  red-hover-btn text-uppercase">Apply Cupon</button>
                     <button className="generic-btn border-0 red-hover-btn text-uppercase float-right">Update Cart</button>
                   </div></form>
               </div>
@@ -149,7 +161,7 @@ const Cart = ()=>
                     </tr>
                   </tbody>
                 </table>
-                <Link to="checkout" className="mt-40 generic-btn red-hover-btn w-100 d-block" style={{height: 50}}>Procced to checkout</Link>
+                <Link to="/checkout" className="mt-40 generic-btn red-hover-btn w-100 d-block" style={{height: 50}}>Procced to checkout</Link>
               </div>
               {/* /. cart widget */}
             </div>
@@ -158,123 +170,6 @@ const Cart = ()=>
       </div>
     </div>
   </section>
-  {/* shop body section end */}
-  {/* product popup start */}
-  <section id="product-popup">
-    <div className="product-popup-overlay" />
-    <div className="product-popup-container">
-      <div className="product-inner w-100">
-        <div className="product-inner-content">
-          <div className="quick-close-action"><i className="bi bi-x" /></div>
-          <div className="row">
-            <div className="col-xl-5 col-lg-5 col-md-5 col-sm-6">
-              <div className="tab-content" id="pills-tabContent">
-                <div className="tab-pane fade show active" id="product-popup-1">
-                  <div className="product-popup-img">
-                    <img src="../assets/img/product/10.jpg" className="w-100" alt="" />
-                  </div>
-                </div>
-                <div className="tab-pane fade" id="product-popup-2">
-                  <div className="product-popup-img">
-                    <img src="../assets/img/product/11.jpg" className="w-100" alt="" />
-                  </div>
-                </div>
-                <div className="tab-pane fade" id="product-popup-3">
-                  <div className="product-popup-img">
-                    <img src="../assets/img/product/12.jpg" className="w-100" alt="" />
-                  </div>
-                </div>
-              </div>
-              <ul className="nav nav-pills justify-content-center mt-10" id="pills-tab" role="tablist">
-                <li className="nav-item">
-                  <Link className="active" data-toggle="pill" to="#product-popup-1">
-                    <img src="../assets/img/product/10.jpg" className="w-100" alt="" />
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className data-toggle="pill" to="#product-popup-2">
-                    <img src="../assets/img/product/11.jpg" className="w-100" alt="" />
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className data-toggle="pill" to="#product-popup-3">
-                    <img src="../assets/img/product/12.jpg" className="w-100" alt="" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="col-xl-7 col-lg-7 col-md-7 col-sm-6">
-              <div className="product-content">
-                <div className="product-title">
-                  <h2>Nari Narwhal Usb...</h2>
-                </div>
-                <div className="price">$<span>44.00</span>–<span>$250.00</span></div>
-                <Link to="javascript:void(0)" className="all-feature">See all feature</Link>
-                <div className="quick-quantity mt-30">
-                  <form action="#" method="POST">
-                    <input type="number" defaultValue={1} />
-                    <button type="submit" className="generic-btn red-hover-btn text-capitalize">add to
-                      cart
-                    </button></form></div>
-                <div className="product-desc pb-20 mt-25 gray-border-top">
-                  <p className="mb-0">Typi non habent claritatem insitam, est usus legentis in iis qui
-                    facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius
-                    quod ii legunt saepius. Claritas est etiam processus A Capitalize on low hanging
-                    fruit to identify a ballpark value added activity to beta test. Override the
-                    digital...ditional clickthroughs from DevOps. Nanotechnology immersion along the
-                    information highway will close the […]</p>
-                </div>
-                <div className="product-list mt-25">
-                  <ul>
-                    <li>– Light green crewnec...t.</li>
-                    <li>– Hand pockets.</li>
-                    <li>– Relaxed fit.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {/* product popup end */}
-  {/* startup popup start */}
-  <section id="startup-popup">
-    <div className="product-popup-overlay has-startup" style={{opacity: 1, visibility: 'visible'}} />
-    <div className="startup-popup-body">
-      <div className="startup-body-content h-100">
-        <div className="row justify-content-end h-100">
-          <div className="col-6 h-100">
-            <div className="startup-popup-inner h-100">
-              <div className="close-search-popup">
-                <i className="bi bi-x" />
-              </div>
-              <div className="startup-popup-main-content">
-                <h2>Get Our Email Letter</h2>
-                <p className="mb-0">Subscribe to the Mazia store mailing list to receive updates on new
-                  arrivals, special offers
-                  and other discount information.</p>
-                <div className="startup-subscribe-form">
-                  <form action="#" method="POST">
-                    <input type="text" placeholder="Subscribe to our newsletter" className="mb-30" />
-                    <button className="generic-btn red-hover-btn text-uppercase">Subscribe now</button>
-                  </form>
-                </div>
-              </div>
-              <div className="startup-popup-sub-content">
-                <div className="popup-warning">
-                  <input type="checkbox" id="startup-popup-hidden" />
-                  <label htmlFor="startup-popup-hidden">Do not show the popup again</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {/* startup popup end */}
     </div>
     )
 }

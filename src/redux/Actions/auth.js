@@ -1,24 +1,41 @@
 import {
+    LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    USER_LOADED_SUCCESS,
-    USER_LOADED_FAIL,
+
+    REGISTER_REQUEST,
+    REGISTER_FAIL,
+    REGISTER_SUCCESS,
+
+    REFRESH_TOKEN,
+    REFRESH_FAIL,
+
+    LOAD_PROFILE_SUCCESS,
+    LOAD_PROFILE_FAIL,
     AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL,
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
-    SIGNUP_SUCCESS,
-    SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAIL,
     FACEBOOK_AUTH_SUCCESS,
     FACEBOOK_AUTH_FAIL,
-    LOGOUT} from './Types'
+
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAIL,
+    ORDER_MINE_RESET
+} from './Types'
 import axios from "axios";
+
+export const postActionPayloadError = (type, error) => ({
+        type: type,
+        payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+});
 
 export const checkAuthenticated = () => async dispatch =>
 {
@@ -56,7 +73,8 @@ export const checkAuthenticated = () => async dispatch =>
 
 export const load_user = () => async dispatch =>
 {
-    if(localStorage.getItem('access')) {
+    if(localStorage.getItem('access'))
+    {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -67,31 +85,37 @@ export const load_user = () => async dispatch =>
         try
         {
             const res = await axios.get('/auth/users/me/', config)
-            dispatch({type: USER_LOADED_SUCCESS, payload: res.data,})
+            dispatch({type: LOAD_PROFILE_SUCCESS, payload: res.data,})
         }
         catch (error)
         {
-            dispatch({type: USER_LOADED_FAIL, payload: error})
+            dispatch({type: LOAD_PROFILE_FAIL, payload: error})
         }
     }else
     {
-        dispatch({type: USER_LOADED_FAIL,})
+        dispatch({type: LOAD_PROFILE_SUCCESS,})
     }
 }
 
 export const login = (email, password) => async dispatch =>
 {
+
     const config ={ headers:{'Content-Type': 'application/json'} }
     const body = JSON.stringify({email, password})
     try
     {
+        dispatch({ type: LOGIN_REQUEST });
+
         const res = await axios.post('/auth/jwt/create', body, config)
+
         dispatch({type:LOGIN_SUCCESS, payload: res.data,})
         dispatch(load_user())
+        localStorage.setItem('user', JSON.stringify(res.data))
+
     }
     catch (error)
     {
-        dispatch({type: LOGIN_FAIL, payload:error})
+        dispatch(postActionPayloadError(LOGIN_FAIL, error))
     }
 }
 
@@ -101,14 +125,44 @@ export const signup = (first_name, last_name, email, password, re_password)=> as
     const body = JSON.stringify({first_name, last_name, email, password, re_password})
     try
     {
+        dispatch({type:REGISTER_REQUEST})
+
         const res = await axios.post('/auth/users/', body, config)
-        console.log(res.data)
-        dispatch({type:SIGNUP_SUCCESS, payload: res.data,})
+        dispatch({type:REGISTER_SUCCESS, payload: res.data,})
     }
     catch (error)
     {
-        console.log(error)
-        dispatch({type: SIGNUP_FAIL,})
+        dispatch(postActionPayloadError(REGISTER_FAIL, error))
+    }
+}
+
+export const logout = () => dispatch =>
+{
+    try
+    {
+        localStorage.removeItem('user')
+        dispatch({type:LOGOUT_REQUEST})
+        dispatch({type:LOGOUT_SUCCESS})
+        dispatch({type:ORDER_MINE_RESET })
+    }
+    catch (error)
+    {
+        dispatch(postActionPayloadError(LOGOUT_FAIL, error))
+    }
+}
+
+export const refreshToken = (refresh)=> async dispatch =>
+{
+    const config ={ headers: {'Content-Type': 'application/json'}}
+    const body = JSON.stringify({refresh})
+    try
+    {
+        await axios.post('/auth/jwt/refresh/', body, config)
+        dispatch({type:REFRESH_TOKEN,})
+    }
+    catch (error)
+    {
+        dispatch(postActionPayloadError(REFRESH_FAIL, error))
     }
 }
 
@@ -123,7 +177,7 @@ export const verify = (uid, token)=> async dispatch =>
     }
     catch (error)
     {
-        dispatch({type: ACTIVATION_FAIL, payload:error})
+        dispatch(postActionPayloadError(ACTIVATION_FAIL, error))
     }
 }
 
@@ -178,6 +232,7 @@ export const googleAuthenticate = (state, code) => async dispatch =>
         dispatch({type: GOOGLE_AUTH_FAIL,})
     }
 }
+
 export const facebookAuthenticate = (state, code) => async dispatch =>
 {
     if(state && code && !localStorage.getItem('access'))
@@ -199,7 +254,4 @@ export const facebookAuthenticate = (state, code) => async dispatch =>
         dispatch({type: FACEBOOK_AUTH_FAIL,})
     }
 }
-export const logout = () => dispatch =>
-{
-    dispatch({type:LOGOUT})
-}
+

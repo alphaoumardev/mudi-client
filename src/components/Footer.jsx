@@ -64,63 +64,56 @@ const Footer = ()=>
                 {/* footer top */}
                 <div className="footer-bottom pt-70" style={{backgroundColor: '#292929'}}>
                     <div className="container-1180">
-                        <div className="footer-bottom-wrapper">
-                            <div className="footer-bottom-primary pb-60">
-                                <div className="row">
-                                    <div className="col-xl-5 col-lg-5  col-md-9">
-                                        <div className="footer-item has-desc">
-                                            <section className="footer-logo mb-25">
-                                                <img src="../assets/img/logo/logo2.png" width={120} height={31} alt="" />
-                                            </section>
-                                            <div className="footer-desc">
-                                                <p className="mb-10">Mazia store is a premium theme with advanced admin module. It’s
-                                                    extremely customizable, easy to use and fully responsive and retina ready.
-                                                </p>
-                                            </div>
-                                            <div className="footer-img mt-65">
-                                                <img src="../assets/img/logo/paypal.png" alt="" />
-                                            </div>
+                        <div className="footer-bottom-primary pb-60">
+                            <div className="row">
+                                <div className="col-xl-4 col-lg-5  col-md-9">
+                                    <div className="footer-item has-desc">
+                                        <div className="footer-desc mb-3">
+                                            <img src="https://res.cloudinary.com/diallo/image/upload/v1650528960/art_bpjevo.png" alt=""  style={{width:200, height:200, objectFit:"contain"}}/>
+                                            <p className="">Mazia store is a premium theme with advanced admin module. It’s
+                                                extremely customizable, easy to use and fully responsive and retina ready.
+                                            </p>
                                         </div>
                                     </div>
-                                    <div className="col-xl-7 col-lg-7 col-md-12">
-                                        <div className="row">
-                                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
-                                                <div className="footer-menu">
-                                                    <ul>
-                                                        <li><Link to="#" className="title">MY ACCOUNT</Link></li>
-                                                        <li><Link to="login">My account</Link></li>
-                                                        <li><Link to="checkout">Checkout</Link></li>
-                                                        <li><Link to="shop">Shop</Link></li>
-                                                        <li><Link to="wishlist">Wishlist</Link></li>
-                                                        <li><Link to="question">Frequently</Link></li>
-                                                    </ul>
-                                                </div>
+                                </div>
+                                <div className="col-xl-8 col-lg-7 col-md-12">
+                                    <div className="row">
+                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                                            <div className="footer-menu">
+                                                <ul>
+                                                    <li><Link to="#" className="title">MY ACCOUNT</Link></li>
+                                                    <li><Link to="login">My account</Link></li>
+                                                    <li><Link to="checkout">Checkout</Link></li>
+                                                    <li><Link to="shop">Shop</Link></li>
+                                                    <li><Link to="wishlist">Wishlist</Link></li>
+                                                    <li><Link to="question">Frequently</Link></li>
+                                                </ul>
                                             </div>
-                                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
-                                                <div className="footer-menu">
-                                                    <ul>
-                                                        <li><Link to="#" className="title">Quick Links</Link></li>
-                                                        <li><Link to="shop">Special Offers</Link></li>
-                                                        <li><Link to="shop">Gift Cards</Link></li>
-                                                        <li><Link to="shop">F21 Red</Link></li>
-                                                        <li><Link to="about">Privacy Policy</Link></li>
-                                                        <li><Link to="about">Teams of Use</Link></li>
-                                                        <li><Link to="portfolio">Portfolio</Link></li>
-                                                    </ul>
-                                                </div>
+                                        </div>
+                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                                            <div className="footer-menu">
+                                                <ul>
+                                                    <li><Link to="#" className="title">Quick Links</Link></li>
+                                                    <li><Link to="shop">Special Offers</Link></li>
+                                                    <li><Link to="shop">Gift Cards</Link></li>
+                                                    <li><Link to="shop">F21 Red</Link></li>
+                                                    <li><Link to="about">Privacy Policy</Link></li>
+                                                    <li><Link to="about">Teams of Use</Link></li>
+                                                    <li><Link to="portfolio">Portfolio</Link></li>
+                                                </ul>
                                             </div>
-                                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 hidden-sm">
-                                                <div className="footer-menu">
-                                                    <ul>
-                                                        <li><Link to="#" className="title">Company Info</Link></li>
-                                                        <li><Link to="about">About us</Link></li>
-                                                        <li><Link to="blog">Careers</Link></li>
-                                                        <li><Link to="portfolio">Business With Us</Link></li>
-                                                        <li><Link to="shop">Find a Store</Link></li>
-                                                        <li><Link to="question">Teams of Use</Link></li>
-                                                        <li><Link to="portfolio">Press &amp; Talent</Link></li>
-                                                    </ul>
-                                                </div>
+                                        </div>
+                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 hidden-sm">
+                                            <div className="footer-menu">
+                                                <ul>
+                                                    <li><Link to="#" className="title">Company Info</Link></li>
+                                                    <li><Link to="about">About us</Link></li>
+                                                    <li><Link to="blog">Careers</Link></li>
+                                                    <li><Link to="portfolio">Business With Us</Link></li>
+                                                    <li><Link to="shop">Find a Store</Link></li>
+                                                    <li><Link to="question">Teams of Use</Link></li>
+                                                    <li><Link to="portfolio">Press &amp; Talent</Link></li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>

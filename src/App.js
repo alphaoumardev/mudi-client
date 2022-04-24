@@ -22,31 +22,42 @@ import PostDetail from "./blog/PostDetail";
 import Contact from "./blog/Contact";
 import AllProCrumb from "./pages/AllProCrumb";
 import Page404 from "./pages/Page404";
-import {Provider} from "react-redux";
-import store from "./redux/store";
 import ResetPassword from "./pages/account/ResetPassword";
 import ResetPasswordConfirm from "./pages/account/ResetPasswordConfirm";
 import Activate from "./pages/account/Activate";
 import Top from "./little/Top";
-import Check from "./pages/account/Check";
+import Wishlist from "./pages/Wishlist";
+import MyAccount from "./pages/MyAccount";
+import Spinner from "./little/Spinner";
+import {useSelector} from "react-redux";
+import {Fragment} from "react";
+
 function App()
 {
+  let {user, error, isLoading} = useSelector((state) =>state.auth)
   return (
-  <Provider store={store}>
         <Top>
+          {isLoading &&  <Fragment><Spinner/></Fragment> }
+
           <Navbar />
-          <Check>
           <Routes>
             <Route path="/" element={<Products/>}/>
             <Route exact path="/home"   element={<Home/>}/>
             <Route exact path="/:genre"   element={<Products/>}/>
             {/*<Route exact path="/:genre/:type"   element={<Home/>}/>*/}
-
-              <Route path="/activate/:uid/:token"   element={<Activate/>}/>
+            {user &&
+                <>
+              <Route path="/activate/:uid/:token" element={<Activate/>}/>
               <Route path="/resetpassword"   element={<ResetPassword/>}/>
               <Route path="/resetpassword/confirm/:uid/:token"   element={<ResetPasswordConfirm/>}/>
               <Route path="/cart" element={<Cart/>}/>
+                <Route path="/cart/:id" element={<Cart/>}/>
+
               <Route path="/checkout" element={<Checkout/>}/>
+              <Route path="/wishlist" element={<Wishlist/>}/>
+              <Route path="/myaccount" element={<MyAccount/>}/>
+                </>
+              }
 
 
             <Route path="*" element={<Page404/>} />
@@ -57,9 +68,6 @@ function App()
             <Route path="/:genre/:type/single/:id" element={<SingleProduct/>}/>
             <Route path="/allproducts" element={<AllProCrumb/>}/>
             <Route path="/:genre/:type" element={<Shop/>}/>
-
-
-
 
             {/*    The blog post */}
             <Route path="blog" exact element={<BlogIndex/>}/>
@@ -74,12 +82,10 @@ function App()
             <Route exact  path="/login" element={<Login/>} />
             <Route exact  path="/register" element={<Register/>} />
           </Routes>
-          </Check>
 
           <ScrollUp/>
           <Footer/>
         </Top>
-      </Provider>
   );
 }
 
