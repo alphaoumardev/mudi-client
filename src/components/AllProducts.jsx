@@ -38,7 +38,6 @@ const AllProducts = ()=>
 
   useEffect(()=>
   {
-
     const getOne = async ()=>
     {
       const res = await axios.get(`/one/`+id)

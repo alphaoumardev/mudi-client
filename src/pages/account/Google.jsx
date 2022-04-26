@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { googleAuthenticate } from '../../redux/Actions/auth';
+import { googleAuthenticate } from '../../redux/Actions/authActions';
 import queryString from 'query-string';
 
 const Google = ({ googleAuthenticate }) =>

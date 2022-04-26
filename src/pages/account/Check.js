@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { checkAuthenticated, load_user } from '../../redux/Actions/auth';
+import { checkAuthenticated, load_user } from '../../redux/Actions/authActions';
 
 const Check = ({ checkAuthenticated, load_user, children }) =>
 {

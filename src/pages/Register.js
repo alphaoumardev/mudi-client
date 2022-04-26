@@ -1,13 +1,13 @@
 import '../css/login.css'
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {signup} from "../redux/Actions/auth";
+import {signup} from "../redux/Actions/authActions";
 import {useDispatch, useSelector} from "react-redux";
 const Register =()=>
 {
-    const {isAuthenticated} = useSelector((state) =>state.auth)
-    const {isLoading} = useSelector((state)=> state.auth)
-    let {error} = useSelector((state) =>state.auth)
+    const {isAuthenticated} = useSelector((state) =>state.authReducer)
+    const {isLoading} = useSelector((state)=> state.authReducer)
+    let {error} = useSelector((state) =>state.authReducer)
     const dispatch = useDispatch()
 
     const navigate = useNavigate()

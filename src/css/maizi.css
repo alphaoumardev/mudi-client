@@ -2759,7 +2759,7 @@ ul.color-list li:hover {
 
 .single-product-category ul li a.title,
 .share-product ul li a.title {
-    color: #666;
+    color: #855d5d;
 }
 
 .single-product-action ul li a i {
@@ -2770,12 +2770,12 @@ ul.color-list li:hover {
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    background: #f1f1f1;
+    background: #e2e0e0;
     display: inline-block;
     text-align: center;
     line-height: 40px;
     font-size: 14px;
-    color: #999;
+    color: #4393d1;
 }
 
 
@@ -2966,6 +2966,11 @@ input[type='checkbox']
 .color-input span {
 }
 .size{width: 100px; border:none; border-bottom: black 3px solid}
+.rating
+{
+    accent-color: red;
+}
+Rating{}
 .single-product-component .size label {
     min-width: 32px;
     min-height: 32px;

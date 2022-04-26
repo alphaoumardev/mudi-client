@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { verify } from '../../redux/Actions/auth';
+import { verify } from '../../redux/Actions/authActions';
 
 const Activate = ({ verify,}) =>
 {

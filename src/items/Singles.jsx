@@ -1,40 +1,63 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import '../css/Navs.css'
-import {Link} from "react-router-dom";
-import StarRating from "react-star-rate";
+import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {createOrder} from "../redux/Actions/orderAction";
+import {addToCart} from "../redux/Actions/cartAction";
+
+import { styled } from '@mui/material/styles';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {Rating} from '@mui/material/';
+
+const StyledRating = styled(Rating)({
+    '& .MuiRating-iconFilled': {color: '#f44d57',},
+    '& .MuiRating-iconHover': {color: '#bf020c',}});
 
 
+const labels = {
+    1: 'Useless',
+    2: 'Poor',
+    3: 'Not Bad',
+    4: 'Good',
+    5: 'Excellent',
+};
+const txt ={
+    1: 'text-danger',
+    2: 'text-warning',
+    3: 'text-primary',
+    4: 'text-info',
+    5: 'text-success',
+};
 const Singles = ({images, one, variant})=>
 {
     const [currentImage, setCurrentImage] = useState(one?.image)
-    const [selectedColor, setSelectedColor] = useState();
+    const [selectedColor, setSelectedColor] = useState(0);
     const [size, setSize] = useState('')
     const [color, setColor] = useState('')
 
+    const [rating, setRating] = useState(3);
+    const [hoverRating, setHoverRating] = useState(-1);
+
+    let {id} = useParams()
     const dispatch = useDispatch()
-    const {cartItems} = useSelector((state) =>state.cart)
+    const {cartItems} = useSelector((state) =>state.cartReducer)
 
     useEffect(()=>
     {
         if(cartItems)
         {
-            // e.preventDefault()
             dispatch(createOrder(cartItems))
         }
     },[dispatch, cartItems])
-    const handleChange = (index)=>
-    {
-        setSelectedColor(index)
-        // setColor(index =>index?.target?.name)
-        console.log(size,color)
 
-    }
     const addItemToCart = (e)=>
     {
         e.preventDefault()
+        dispatch(addToCart(id, color, size))
+        // console.log(color, size, cartItems)
     }
+        console.log(rating)
     return(
     <div>
         <div className="">
@@ -51,6 +74,7 @@ const Singles = ({images, one, variant})=>
                         </div>
                     </div>
                     <div className="pro-right">
+
                         <h2>{one?.name}
                             <div className="btn-groups">
                                 {/*<button type="submit" className="add-cart-btn"><i className="fas fa-shopping-cart" />add to cart</button>*/}
@@ -59,7 +83,26 @@ const Singles = ({images, one, variant})=>
                         </h2>
                         {/*<span className="product-name"></span>*/}
                         <div className="single-product-price">${one?.price}</div>
-                        <StarRating count={5} symbol="★" color={'#ffd700'} size="small"/>
+                        {/*<HoverRating/>*/}
+
+                        <div className="d-flex align-items-center text-capitalize ">
+                            <span>(26) </span>
+                            <StyledRating
+                                name="customized-color"
+                                value={rating}
+                                size={'large'}
+                                sx={{fontSize:16, paddingRight:2, }}
+                                onChange={(event, newValue) => {setRating(newValue);}}
+                                onChangeActive={(event, newHover) => {setHoverRating(newHover);}}
+                                precision={1}
+                                icon={<FavoriteIcon fontSize="small" />}
+                                emptyIcon={<FavoriteBorderIcon fontSize="small" />}
+                            />
+                            {rating && (
+                                <span className={txt[hoverRating!== -1 ? hoverRating : rating]}>{labels[hoverRating !== -1 ? hoverRating : rating]}</span>
+                            )}
+                        </div>
+
                         <p className="product-description">{one?.description}</p>
                         <div className="single-product-action mt-35">
                             <ul>
@@ -79,14 +122,16 @@ const Singles = ({images, one, variant})=>
                         <div className="share-product mt-20">
                             <ul>
                                 <li><Link to=" " className="title">Share this product</Link></li>
-                                <li><Link to=" " data-toggle="tooltip" data-placement="top" title="facebook"><i className="bi bi-facebook" /></Link></li>
+                                <li><Link to=" " data-toggle="tooltip" data-placement="top" title="facebook"><i className="bi bi-facebook text-primary" /></Link></li>
                                 <li><Link to=" " data-toggle="tooltip" data-placement="top" title="twitter"><i className="bi bi-twitter" /></Link></li>
-                                <li><Link to=" " data-toggle="tooltip" data-placement="top" title="pinterest"><i className="bi bi-pinterest" /></Link></li>
+                                <li><Link to=" " data-toggle="tooltip" data-placement="top" title="pinterest"><i className="bi bi-pinterest text-danger" /></Link></li>
                                 <li><Link to=" " data-toggle="tooltip" data-placement="top" title="Linkdin"><i className="bi bi-linkedin" /></Link></li>
+                                <li><Link to=" " data-toggle="tooltip" data-placement="top" title="Instagram"><i className="bi bi-instagram text-danger" /></Link></li>
+
                             </ul>
                         </div>
                         <form onSubmit={addItemToCart} >
-                            <div className="single-product-component mt-15">
+                            <div className="single-product-component mt-15 ">
                                     <h6>Available Sizes</h6>
                                 <select onChange={(e=>setSize(e.target.value))} required={true}  data-testid="size" className="size form-select  text-uppercase" >
                                     <option  value="default">Size</option>
@@ -96,40 +141,39 @@ const Singles = ({images, one, variant})=>
                                         </option>
                                     )}
                                 </select>
-                                <h6>Color</h6>
-                                {/*<input type="checkbox"  style={{accentColor: one?.color_name}} className="yellow color-input color_style" onClick={(event => setCurrentImage(event.target.src))}/>*/}
+                                <h6>Colors</h6>
+                                {/*<input type="radio"  style={{accentColor: one?.color_name}} className="yellow color-input color_style" onClick={(event => setCurrentImage(event.target.src))}/>*/}
 
                                 {images?.map((item, index)=>
                                     <fieldset key={index} className="color-input color_style" style={{backgroundColor: item?.color_name?.color_name}}>
                                     {item?.color_name?.color_name &&
                                         <>
-
                                             <input
-                                                name={item?.color_name?.color_name}
+                                                className='yellow'
                                                 type="radio"
-                                                onClick={(event => setCurrentImage(event.target.src))}
                                                 key={index}
                                                 id={index}
-                                                src={item?.image_url}
-                                                className='yellow'
                                                 value={index}
-                                                // onInput={() =>setSelectedColor(index)}
+                                                src={item?.image_url}
+                                                name={item?.color_name?.color_name}
+                                                onClick={(event => setCurrentImage(event.target.src))}
                                                 checked={selectedColor===index}
-                                                onChange={handleChange}
-                                                // onChange={(e) =>setColor(e.target.name)}
-
                                                 style={{accentColor: item?.color_name?.color_name}}
+                                                onChange={(e)=>
+                                                {
+                                                    setSelectedColor(index)
+                                                    setColor(e.target.name)
+                                                }}
                                             />
-
                                         </>
                                     }
                                     </fieldset>
                                 )}
                             </div>
 
-                            <div className="btn-groups">
+                            <div className="btn-groups  ">
                                 <button type="submit" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>
-                                <button type="submit" className="buy-now-btn" disabled={one?.stock === 0}>buy now</button>
+                                <button type="submit" className="buy-now-btn " disabled={one?.stock === 0}>buy now</button>
                             </div>
                         </form>
                     </div>

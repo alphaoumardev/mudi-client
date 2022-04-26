@@ -2,7 +2,7 @@ import {Fragment, useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
 import {Link, useLocation, useParams} from "react-router-dom";
 import axios from "axios";
-import {load_user, logout} from '../redux/Actions/auth'
+import {load_user, logout} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from 'react-redux'
 import Spinner from "../little/Spinner";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -10,7 +10,7 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
 const Navbar =()=>
 {
-    const {user, isLoading, isAuthenticated} = useSelector((state) =>state.auth)
+    const {user, isLoading, isAuthenticated} = useSelector((state) =>state.authReducer)
     const dispatch = useDispatch()
 
     const logout_user =()=>

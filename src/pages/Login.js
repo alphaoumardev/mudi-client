@@ -3,14 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {Fragment, useEffect, useState} from "react";
-import {login} from '../redux/Actions/auth'
+import {login} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from "react-redux";
 import Spinner from "../little/Spinner";
 
 const Login = () =>
 {
     const [credentialError, setCredentialError] = useState('');
-    let {user, error, isLoading} = useSelector((state) =>state.auth)
+    let {user, error, isLoading} = useSelector((state) =>state.authReducer)
 
     const dispatch = useDispatch()
 

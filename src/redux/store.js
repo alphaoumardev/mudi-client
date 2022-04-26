@@ -35,8 +35,8 @@ if (accessToken)
 }
 
 const initialState = {
-    auth: authenticationState,
-    cart: {
+    authReducer: authenticationState,
+    cartReducer: {
         cartItems: cartItemsStorage,
         shippingAddress: shippingAddressStorage,
     }
@@ -45,6 +45,5 @@ const middleware = [thunk];
 
 const store = createStore(rootReducer, initialState,
     composeWithDevTools(applyMiddleware(...middleware)))
-
 
 export default store;

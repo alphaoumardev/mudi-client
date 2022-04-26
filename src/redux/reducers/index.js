@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import auth from './auth';
+import authReducer from './authReducer';
 import {cartReducer} from "./cartReducer";
 import {
     orderCreateReducer,
@@ -11,13 +11,13 @@ import {
 
 export default combineReducers(
     {
-        auth: auth,
-        cart: cartReducer,
+        authReducer: authReducer,
+        cartReducer: cartReducer ,
 
-        orderCreate: orderCreateReducer,
-        orderDetails: orderDetailsReducer,
-        orderDeliver: orderDeliverReducer,
-        orderPay: orderPayReducer,
-        orderMine: orderMineReducer,
-        orderList: orderListReducer,
+        orderCreateReducer: orderCreateReducer,
+        orderDetailsReducer: orderDetailsReducer,
+        orderDeliverReducer: orderDeliverReducer,
+        orderPayReducer: orderPayReducer,
+        orderMineReducer: orderMineReducer,
+        orderListReducer: orderListReducer,
     });

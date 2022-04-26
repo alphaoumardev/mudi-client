@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { facebookAuthenticate } from '../../redux/actions/auth';
+import { facebookAuthenticate } from '../../redux/Actions/authActions';
 import queryString from 'query-string';
 
 const Facebook = ({ facebookAuthenticate }) =>

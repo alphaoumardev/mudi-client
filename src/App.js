@@ -31,10 +31,11 @@ import MyAccount from "./pages/MyAccount";
 import Spinner from "./little/Spinner";
 import {useSelector} from "react-redux";
 import {Fragment} from "react";
+import HoverRating from "./little/HoverRating";
 
 function App()
 {
-  let {user, error, isLoading} = useSelector((state) =>state.auth)
+  let {user, error, isLoading} = useSelector((state) =>state.authReducer)
   return (
         <Top>
           {isLoading &&  <Fragment><Spinner/></Fragment> }
@@ -44,7 +45,9 @@ function App()
             <Route path="/" element={<Products/>}/>
             <Route exact path="/home"   element={<Home/>}/>
             <Route exact path="/:genre"   element={<Products/>}/>
+            <Route exact path="/hover"   element={<HoverRating/>}/>
             {/*<Route exact path="/:genre/:type"   element={<Home/>}/>*/}
+
             {user &&
                 <>
               <Route path="/activate/:uid/:token" element={<Activate/>}/>

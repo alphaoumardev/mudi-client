@@ -1,12 +1,39 @@
 import React, {useState} from "react";
-// import '../css/Navs.css'
-import {Link,} from "react-router-dom";
-import StarRating from "react-star-rate";
+import '../css/Navs.css'
+import {Link} from "react-router-dom";
+
+import { styled } from '@mui/material/styles';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {Rating} from '@mui/material/';
+
+const StyledRating = styled(Rating)({
+    '& .MuiRating-iconFilled': {color: '#f44d57',},
+    '& .MuiRating-iconHover': {color: '#bf020c',}});
+
+
+const labels = {
+    1: 'Useless',
+    2: 'Poor',
+    3: 'Not Bad',
+    4: 'Good',
+    5: 'Excellent',
+};
+const txt ={
+    1: 'text-danger',
+    2: 'text-warning',
+    3: 'text-primary',
+    4: 'text-info',
+    5: 'text-success',
+};
+
 const Modal = ({images, one, variant})=>
 {
     const [currentImage, setCurrentImage] = useState(one?.image)
     const [selectedColor, setSelectedColor] = useState(0);
-
+    const [color, setColor] = useState('');
+    const [rating, setRating] = useState(3);
+    const [hoverRating, setHoverRating] = useState(-1);
     return(
         <div>
             <div className="">
@@ -32,7 +59,25 @@ const Modal = ({images, one, variant})=>
                             </h2>
                             {/*<span className="product-name"></span>*/}
                             <div className="single-product-price">${one?.price}</div>
-                            <StarRating count={5} symbol="★" color={'#ffd700'} size="small"/>
+
+                            <div className="d-flex align-items-center text-capitalize ">
+                                <span>(26) </span>
+                                <StyledRating
+                                    name="customized-color"
+                                    value={rating}
+                                    size={'large'}
+                                    sx={{fontSize:16, paddingRight:2, }}
+                                    onChange={(event, newRating) => {setRating(newRating);}}
+                                    onChangeActive={(event, newRating) => {setHoverRating(newRating);}}
+                                    precision={1}
+                                    icon={<FavoriteIcon fontSize="small" />}
+                                    emptyIcon={<FavoriteBorderIcon fontSize="small" />}
+                                />
+                                {rating && (
+                                    <span className={txt[hoverRating!== -1 ? hoverRating : rating]}>{labels[hoverRating !== -1 ? hoverRating : rating]}</span>
+                                )}
+                            </div>
+
                             <div className="single-product-action mt-35">
                                 <ul>
                                     <li><Link to="/wishlist"><i className="bi bi-heart" /> add to wishlist</Link></li>
@@ -50,15 +95,15 @@ const Modal = ({images, one, variant})=>
                             </div>
                             <div className="share-product mt-20">
                                 <ul>
-                                    <li><Link to="/" className="title">Share this product</Link></li>
-                                    <li><Link to="/" data-toggle="tooltip" data-placement="top" title="facebook"><i className="bi bi-facebook" /></Link></li>
-                                    <li><Link to="/" data-toggle="tooltip" data-placement="top" title="twitter"><i className="bi bi-twitter" /></Link></li>
-                                    <li><Link to="/" data-toggle="tooltip" data-placement="top" title="pinterest"><i className="bi bi-pinterest" /></Link></li>
-                                    <li><Link to="/" data-toggle="tooltip" data-placement="top" title="Linkdin"><i className="bi bi-linkedin" /></Link></li>
+                                    <li><Link to=" " className="title">Share this product</Link></li>
+                                    <li><Link to=" " data-toggle="tooltip" data-placement="top" title="facebook"><i className="bi bi-facebook text-primary" /></Link></li>
+                                    <li><Link to=" " data-toggle="tooltip" data-placement="top" title="Instagram"><i className="bi bi-instagram text-danger" /></Link></li>
+                                    <li><Link to=" " data-toggle="tooltip" data-placement="top" title="twitter"><i className="bi bi-twitter" /></Link></li>
+                                    <li><Link to=" " data-toggle="tooltip" data-placement="top" title="pinterest"><i className="bi bi-pinterest text-danger" /></Link></li>
                                 </ul>
                             </div>
                             <form action="" >
-                                <div className="single-product-component mt-15">
+                                <div className="single-product-component ">
                                     <h6>Available Sizes</h6>
                                     <select defaultValue='default'   data-testid="size" className="size form-select  text-uppercase" >
                                         <option value="default" >Size</option>
@@ -74,17 +119,21 @@ const Modal = ({images, one, variant})=>
                                             {item?.color_name?.color_name &&
                                                 <>
                                                     <input
-                                                        name={item?.color_name?.color_name}
+                                                        className='yellow'
                                                         type="radio"
-                                                        onClick={(event => setCurrentImage(event.target.src))}
-                                                        src={item?.image_url}
                                                         key={index}
                                                         id={index}
-                                                        className='yellow'
                                                         value={index}
+                                                        src={item?.image_url}
+                                                        name={item?.color_name?.color_name}
+                                                        onClick={(event => setCurrentImage(event.target.src))}
                                                         checked={selectedColor===index}
-                                                        onChange={(()=>setSelectedColor(index))}
                                                         style={{accentColor: item?.color_name?.color_name}}
+                                                        onChange={(e)=>
+                                                        {
+                                                            setSelectedColor(index)
+                                                            setColor(e.target.name)
+                                                        }}
                                                     />
                                                 </>
                                             }

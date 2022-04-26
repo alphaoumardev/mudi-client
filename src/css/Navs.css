@@ -98,8 +98,10 @@ img{
     opacity: 0.9;
     margin-top: 22px;
 }
-.btn-groups{
-    margin-right:20px;
+.btn-groups
+{
+    display: flex;
+    margin: 35px 12px 0 0;
     float: right;
 }
 .btn-groups button{
@@ -107,7 +109,7 @@ img{
     font-size: 16px;
     font-family: inherit;
     text-transform: uppercase;
-    padding: 15px 16px;
+    padding: 12px ;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -127,8 +129,8 @@ img{
 
 }
 .buy-now-btn{
-    background-color: #000;
-    border: 2px solid #000;
+    background-color: red;
+    border: 2px solid red;
     border-radius: 7px;
 
 }

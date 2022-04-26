@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { reset_password } from '../../redux/Actions/auth';
+import { reset_password } from '../../redux/Actions/authActions';
 
 const ResetPassword = ({ reset_password }) =>
 {

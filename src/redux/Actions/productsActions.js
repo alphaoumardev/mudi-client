@@ -1,11 +1,11 @@
-import * as A from '../Actions/Types'
+import * as P from '../Actions/Types'
 import axios from "axios";
 
 export const addToCart = (id, color, size) => async (dispatch, getState) =>
 {
     const {data} = await axios.get(`/one/`+id)
     dispatch({
-        type: A.CART_ADD_ITEM,
+        type: P.CART_ADD_ITEM,
         payload: {
             data,
             color,
@@ -18,7 +18,7 @@ export const addToCart = (id, color, size) => async (dispatch, getState) =>
 export const removeItemFromCart = (id) => (dispatch, getState)=>
 {
     dispatch({
-        type:A.CART_REMOVE_ITEM,
+        type:P.CART_REMOVE_ITEM,
         payload:id,
     })
     localStorage.removeItem('cartItems', )
@@ -27,7 +27,7 @@ export const removeItemFromCart = (id) => (dispatch, getState)=>
 export const saveShippingAddress = (data) => (dispatch) =>
 {
     dispatch({
-        type:A.CART_SAVE_SHIPPING_ADDRESS,
+        type:P.CART_SAVE_SHIPPING_ADDRESS,
         payload: data,
     })
     localStorage.setItem('shippingAddress', JSON.stringify(data))
@@ -36,7 +36,7 @@ export const saveShippingAddress = (data) => (dispatch) =>
 export const savePaymentMethod = (data)=> (dispatch)=>
 {
     dispatch({
-        type:A.CART_PAYMENT,
+        type:P.CART_PAYMENT,
         payload: data,
     })
     localStorage.setItem('payment', JSON.stringify(data))
