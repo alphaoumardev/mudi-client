@@ -57,7 +57,7 @@ const Singles = ({images, one, variant})=>
         dispatch(addToCart(id, color, size))
         // console.log(color, size, cartItems)
     }
-        console.log(rating)
+        // console.log(rating)
     return(
     <div>
         <div className="">
@@ -110,7 +110,7 @@ const Singles = ({images, one, variant})=>
                                 <li><Link to="/single"><i className="bi bi-cpu-fill" /> add to compare</Link></li>
                             </ul>
                         </div>
-                        <span>Sku: <strong>{one?.sku.slice(1,12)}</strong></span>
+                        <span>Sku: <strong>{one?.sku}</strong></span>
                         <div className="single-product-category">
                             <ul>
                                 <li className="mb-0"><Link to="/" className="title">Categories: </Link></li>

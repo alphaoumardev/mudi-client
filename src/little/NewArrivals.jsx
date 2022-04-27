@@ -3,56 +3,41 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {Link} from "react-router-dom";
-import axios from "axios";
 import Modal from "../items/Modal";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    getImages, getNewProducts,
+    getOneProduct,
+    getProductsByVariant,
+} from "../redux/Actions/productsActions";
 const NewArrivals = ()=>
 {
-    const [newproduct, setNewproduct] = useState([])
     //For the product modal
     const [id, setId] = useState(7)
-    const [one, setOne] = useState();
-    const [variant, setVariant] = useState()
-    const [images, setImages] = useState()
+
+    const dispatch = useDispatch()
+    const {one} = useSelector(state => state.getOneProductReducer)
+    const {images,} = useSelector(state => state.getImagesReducer)
+    const {variant} = useSelector(state => state.getproductByVariantReducer)
+    const {newproducts} = useSelector(state => state.getNewProductsReducer)
     useEffect(()=>
     {
-        const getOne = async ()=>
-        {
-            const res = await axios.get(`/one/`+id)
-            setOne(res.data)
-        }
-        const getVariant = async ()=>
-        {
-            const res = await axios.get(`/byvariant/`+id)
-            setVariant(res.data)
-            // console.log(res.data)
-        }
-        const getImages = async ()=>
-        {
-            await axios.get(`/images/`+id).then((res)=>{setImages(res.data);})
-        }
-        const getNewProducts = async ()=>
-        {
-            const res = await axios.get("/newproducts")
-            const data = res.data
-            setNewproduct(data)
-        }
-        getImages(id).then(() =>{} )
-        getOne(id).then(()=>{})
-        getVariant(id).then(()=>{})
-        getNewProducts().then(()=>{})
-
-    },[id])
+        dispatch(getOneProduct(id))
+        dispatch(getImages(id))
+        dispatch(getProductsByVariant(id))
+        dispatch(getNewProducts())
+    },[dispatch, id])
 
     function NextArrow(props)
     {
-        const { className, onClick } = props;
+        const {onClick } = props;
         return (<div className="swiper-button-next" onClick={onClick}>
             <i className="bi bi-caret-right-fill"> </i>
         </div> );
     }
     function PrevArrow(props)
     {
-        const {className, onClick } = props;
+        const {onClick } = props;
         return (<div className="swiper-button-prev" onClick={onClick}>
             <i className="bi bi-caret-left-fill"> </i>
         </div> );
@@ -67,9 +52,9 @@ const NewArrivals = ()=>
             autoplaySpeed: 5000,
             easing:'linear',
             focusOnSelect:true,
-            cssEase: "linear",
-            centerMode: true,
-            centerPadding: "60px",
+            // cssEase: "linear",
+            // centerMode: true,
+            // centerPadding: "60px",
             rows: 2,
             nextArrow: <NextArrow/>,
             prevArrow: <PrevArrow/>,
@@ -102,7 +87,7 @@ const NewArrivals = ()=>
 
             <div className="row pr">
                 <Slider {...settings}>
-                    {newproduct?.map((items, index)=>
+                    {newproducts?.map((items, index)=>
                         <div key={index} className="col-12">
                             <div className="product-box">
                                 <div className="product-box-wrapper">

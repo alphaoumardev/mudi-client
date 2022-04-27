@@ -2,50 +2,27 @@ import Crumb from "../little/Crumb";
 import {useEffect, useState} from "react";
 import {Link, useLocation, useParams} from "react-router-dom";
 import StarRating from "react-star-rate";
-import axios from "axios";
 import Modal from "../items/Modal";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import {useDispatch, useSelector} from "react-redux";
+import {
+  getAllProductAction,
+  getColors,
+  getImages, getNewProducts,
+  getOneProduct,
+  getOnsales,
+  getProductsByVariant, getSizes, getTags
+} from "../redux/Actions/productsActions";
 const Shop = ()=>
 {
   //For the product modal
-  const [one, setOne] = useState();
-  const [variant, setVariant] = useState()
-  const [images, setImages] = useState()
   const [id, setId] = useState(3)
   //others
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [article, setArticle] = useState([])
-  const [onsale, setOnsale] = useState([])
-  const [colors, setColors] = useState([])
-  const [sizes, setSizes] = useState([])
-  const [tags, setTags] = useState([])
   const [loadmore, setLoadmore] = useState(12)
   const [more, setMore] = useState(5);
-
-  useEffect(()=>
-  {
-    const getOne = async ()=>
-    {
-      const res = await axios.get(`/one/`+id)
-      setOne(res.data)
-    }
-    const getVariant = async ()=>
-    {
-      const res = await axios.get(`/byvariant/`+id)
-      setVariant(res.data)
-      // console.log(res.data)
-    }
-    const getImages = async ()=>
-    {
-      await axios.get(`/images/`+id).then((res)=>{setImages(res.data);})
-    }
-    getImages(id).then(()=>{})
-    getOne(id).then(()=>{})
-    getVariant(id).then(()=>{})
-
-  },[id])
 
   const togglePopup = () =>{setIsOpen(!isOpen)}
   const close = ()=>{setIsOpen(false)}
@@ -58,53 +35,30 @@ const Shop = ()=>
   let genre = location.pathname.split('/')[1]
   // let {genre} = useParams()
   let {type} = useParams()
+
+  const dispatch = useDispatch()
+  const {products,} = useSelector(state => state.getAllProductsReducer)
+  const {tags} = useSelector(state => state.getTagsReducer)
+  const {sizes} = useSelector(state => state.getSizesReducer)
+  const {colors} = useSelector(state => state.getColorsReducer)
+  const {one} = useSelector(state => state.getOneProductReducer)
+  const {images,} = useSelector(state => state.getImagesReducer)
+  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
+  const {variant} = useSelector(state => state.getproductByVariantReducer)
+
   useEffect(()=>
   {
-
-    const getArticles = async ()=>
-    {
-      if(type)
-      {
-        const response = await fetch(`/catename/${genre}/${type}`)
-        const data = await response.json()
-        setArticle(data)
-        // console.log(data)
-      }
-      else
-      {
-        const response = await fetch("/all/")
-        const data = await response.json()
-        setArticle(data)
-        // console.log(data)
-      }
-    }
-    const getColors = async ()=>
-    {
-      const res = await axios.get("/colors")
-      setColors(res.data)
-    }
-    const getSizes = async ()=>
-    {
-      const res = await axios.get("/sizes")
-      setSizes(res.data)
-    }
-    const getTags = async ()=>
-    {
-      const res = await axios.get("/tags")
-      setTags(res.data)
-    }
-    const getOnsale = async ()=>
-    {
-      const res = await axios.get("/newproducts")
-      const data = res.data
-      setOnsale(data)
-    }
-    getArticles(genre, type).then(()=>{})
-    getColors().then(()=>{})
-    getSizes().then(()=>{})
-    getTags().then(()=>{})
-    getOnsale().then(()=>{})
-  },[genre, type])
+    dispatch(getOneProduct(id))
+    dispatch(getImages(id))
+    dispatch(getProductsByVariant(id))
+    dispatch(getOnsales())
+    dispatch(getAllProductAction(genre, type,))
+    dispatch(getColors())
+    dispatch(getSizes())
+    dispatch(getTags())
+    dispatch(getNewProducts())
+    // console.log(sizes)
+  },[dispatch, genre, type, id])
 
   const [value, setValue] = useState([100, 500]);
   const handleLoadMore = ()=>
@@ -381,7 +335,7 @@ const Shop = ()=>
                 <div className="tab-pane fade show active" id="shop-tab-2">
                   <div className="product-wrapper mt-55">
                     <div className="row">
-                      {article?.slice(0, loadmore)?.map((item, index)=>
+                      {products?.slice(0, loadmore)?.map((item, index)=>
                           <div key={index} className="col-xl-4 col-md-4 col-6">
                             <div className="product-box mb-40">
                               <div className="product-box-wrapper">
@@ -419,7 +373,7 @@ const Shop = ()=>
                 <div className="tab-pane fade" id="shop-tab-3">
                   <div className="product-wrapper mt-55">
                     <div className="row">
-                      {article?.slice(0, loadmore)?.map((item, index)=>
+                      {products?.slice(0, loadmore)?.map((item, index)=>
                           <div key={index} className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12">
                             <div className="product-box mb-40">
                               <div className="product-box-wrapper">
@@ -456,7 +410,7 @@ const Shop = ()=>
                 </div>
                 <div className="tab-pane fade" id="shop-tab-4">
                   <div className="product-wrapper mt-55">
-                    {article?.slice(0, loadmore)?.map((item, index)=>
+                    {products?.slice(0, loadmore)?.map((item, index)=>
                         <div key={index} className="product-box mb-40">
                           <div className="product-box-wrapper">
                             <div className="list-product mb-50">

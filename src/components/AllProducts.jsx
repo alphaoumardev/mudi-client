@@ -7,24 +7,27 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import {useDispatch, useSelector} from "react-redux";
+import {
+  getColors,
+  getImages, getNewProducts,
+  getOneProduct,
+  getOnsales, getProductByPageAction,
+  getProductsBySubcatesAction,
+  getProductsByVariant, getSizes, getTags
+} from "../redux/Actions/productsActions";
+import {
+  getColorsReducer,
+  getNewProductsReducer, getProductsByPagegReducer,
+  getSizesReducer,
+  getTagsReducer
+} from "../redux/reducers/productsReducer";
 const AllProducts = ()=>
 {
-  const [isOpen, setIsOpen] = useState(false);
-  const [pro, setArticle] = useState([])
-
-  //For the product modal
+  // const {id} = useParams()
   const [id, setId] = useState(5)
-  const [one, setOne] = useState();
-  const [variant, setVariant] = useState()
-  const [images, setImages] = useState()
-  const [onsale, setOnsale] = useState([])
-  const [colors, setColors] = useState([])
-  const [sizes, setSizes] = useState([])
-  const [tags, setTags] = useState([])
-
   const [page, setPage] = useState(1)
-  const [numberOfPages, setNumberOfPages] = useState(10)
-  let article= Array.from(pro)
+  const [isOpen, setIsOpen] = useState(false);
 
   const togglePopup = () =>{setIsOpen(!isOpen)}
   const close = ()=>{setIsOpen(false)}
@@ -32,75 +35,34 @@ const AllProducts = ()=>
   {
     setTimeout(close, 15000)
   }
-  let genre = location.pathname.split('/')[1]
-  // let {genre} = useParams()
+  // let genre = location.pathname.split('/')[1]
+  let {genre} = useParams()
   let {type} = useParams()
+
+  const dispatch = useDispatch()
+  const {article, num_pages} = useSelector(state => state.getProductsByPagegReducer)
+  const {tags} = useSelector(state => state.getTagsReducer)
+  const {sizes} = useSelector(state => state.getSizesReducer)
+  const {colors} = useSelector(state => state.getColorsReducer)
+  const {one} = useSelector(state => state.getOneProductReducer)
+  const {images,} = useSelector(state => state.getImagesReducer)
+  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
+  const {variant} = useSelector(state => state.getproductByVariantReducer)
 
   useEffect(()=>
   {
-    const getOne = async ()=>
-    {
-      const res = await axios.get(`/one/`+id)
-      setOne(res.data)
-    }
-    const getVariant = async ()=>
-    {
-      const res = await axios.get(`/byvariant/`+id)
-      setVariant(res.data)
-      // console.log(res.data)
-    }
-    const getImages = async ()=>
-    {
-      await axios.get(`/images/`+id).then((res)=>{setImages(res.data);})
-    }
-    const getArticles = async ()=>
-    {
-      if(type)
-      {
-        const response = await fetch(`/catename/${genre}/${type}`)
-        const data = await response.json()
-        setArticle(data)
-        // console.log(data)
-      }
-      else
-      {
-        const res = await axios.get(`/products/?page=${page}`)
-        setArticle(res.data?.results)
-        setNumberOfPages(res?.data?.total_pages)
-      }
-    }
-    const getColors = async ()=>
-    {
-      const res = await axios.get("/colors")
-      setColors(res.data)
-    }
-    const getSizes = async ()=>
-    {
-      const res = await axios.get("/sizes")
-      setSizes(res.data)
-    }
-    const getTags = async ()=>
-    {
-      const res = await axios.get("/tags")
-      setTags(res.data)
-    }
-    const getOnsale = async ()=>
-    {
-      const res = await axios.get("/newproducts")
-      const data = res.data
-      setOnsale(data)
-    }
+    dispatch(getOneProduct(id))
+    dispatch(getImages(id))
+    dispatch(getProductsByVariant(id))
+    dispatch(getOnsales())
+    dispatch(getProductByPageAction(genre, type, page))
+    dispatch(getColors())
+    dispatch(getSizes())
+    dispatch(getTags())
+    dispatch(getNewProducts())
+  },[dispatch, genre, type,page, id])
 
-    getImages(id).then(() => {})
-    getOne(id).then(()=>{})
-    getVariant(id).then(()=>{})
 
-    getArticles(genre, type).then(()=>{})
-    getColors().then(()=>{})
-    getSizes().then(()=>{})
-    getTags().then(()=>{})
-    getOnsale().then(()=>{})
-  },[genre, type, page, id])
 
   const [value, setValue] = useState([100, 500]);
   const handleChange = (event, newValue) =>{setValue(newValue)}
@@ -357,7 +319,7 @@ const AllProducts = ()=>
             {/* pagination */}
             <div className="col-12 mb-5 mt-60 d-flex justify-content-center">
             <Stack spacing={2}>
-              <Pagination color="primary" variant="text" count={numberOfPages} page={page}
+              <Pagination color="primary" variant="text" count={num_pages} page={page}
                           onChange={(e,value)=>setPage(value)}/>
             </Stack>
             </div>

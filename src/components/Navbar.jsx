@@ -1,17 +1,23 @@
-import {Fragment, useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
 import {Link, useLocation, useParams} from "react-router-dom";
-import axios from "axios";
 import {load_user, logout} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from 'react-redux'
-import Spinner from "../little/Spinner";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+import {getProductsBySubcatesAction} from "../redux/Actions/productsActions";
 
 const Navbar =()=>
 {
-    const {user, isLoading, isAuthenticated} = useSelector((state) =>state.authReducer)
+    const {isAuthenticated} = useSelector((state) =>state.authReducer)
     const dispatch = useDispatch()
+    const location = useLocation();
+
+    let genre = location.pathname.split('/')[1]
+    // let type = location.pathname.split('/')[2]
+    // let {genre} = useParams()
+    let {type} = useParams()
+    const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
 
     const logout_user =()=>
     {
@@ -19,20 +25,14 @@ const Navbar =()=>
     }
     useEffect(() =>
     {
+        dispatch(getProductsBySubcatesAction(genre, type))
         dispatch(load_user())
-    }, [dispatch,]);
+    }, [dispatch, genre, type]);
 
-    const location = useLocation();
-    const [urls, setUrls] = useState([])
     const [isOpen, setIsOpen] = useState(false);
     const [isOp, setIsOp] = useState(false);
     const [searchButton, setSearchButton] = useState(false);
-    const [subcates, setSubcates] = useState([])
     const toggleSearchButton = () =>{setSearchButton(!searchButton)}
-    let genre = location.pathname.split('/')[1]
-    // let type = location.pathname.split('/')[2]
-    // let {genre} = useParams()
-    let {type} = useParams()
 
     const close = () =>
     {
@@ -42,34 +42,6 @@ const Navbar =()=>
     const closing = ()=>{setSearchButton(false)}
     if(!isOpen || !isOp || !searchButton){setTimeout(close, 5000)}
     if(!searchButton){setInterval(closing, 20000)}
-
-    useEffect(()=>
-    {
-        const getUrls = async ()=>
-        {
-            await axios.get('/catename/')
-                .then((res)=>
-                {
-                    // console.log(res.data)
-                    setUrls(res.data)
-                }, error =>{console.log(error)})
-        }
-        const getSubcatery = async (genre)=>
-        {
-            const res = await axios.get(`/catename/${genre}`)
-            setSubcates(res.data)
-            // console.log(res.data)
-        }
-        const getProductsBySubcategory = async (genre, type) =>
-        {
-            const res = await axios.get(`/catename/${genre}/${type}`)
-            setSubcates(res.data)
-            // console.log(res.data)
-        }
-        getUrls().then(()=>{})
-        getSubcatery(genre).then(()=>{})
-        getProductsBySubcategory(genre, type).then(()=>{})
-    },[genre, type ])
 
     return(
         <div>
@@ -103,7 +75,7 @@ const Navbar =()=>
                                             <li><Link to={`/women`}><span>Women<i className="bi bi-chevron-down" /></span></Link>
                                                 <div className="submenu">
                                                     <div>
-                                                        {subcates.map((item, index)=>
+                                                        {subcates?.map((item, index)=>
                                                             <ul key={index}>
                                                                 <li><Link to={`${genre}/${item?.type?.type_name}`} >{item?.type?.type_name}</Link></li>
                                                             </ul>
@@ -114,7 +86,7 @@ const Navbar =()=>
                                             <li><Link to={`/home kits`}><span>Home Kits<i className="bi bi-chevron-down" /></span></Link>
                                                 <div className="submenu">
                                                     <div>
-                                                        {subcates.map((item, index)=>
+                                                        {subcates?.map((item, index)=>
                                                             <ul key={index}>
                                                             <li><Link to={`${genre}/${item?.type?.type_name}`}>{item?.type?.type_name}</Link></li>
                                                             </ul>
@@ -125,7 +97,7 @@ const Navbar =()=>
                                             <li><Link to={`/gifts`}><span>Gifts<i className="bi bi-chevron-down" /></span></Link>
                                                 <div className="submenu">
                                                     <div>
-                                                        {subcates.map((item, index)=>
+                                                        {subcates?.map((item, index)=>
                                                             <ul key={index}>
                                                                 <li><Link to={`${genre}/${item?.type?.type_name}`}>{item?.type?.type_name}</Link></li>
                                                             </ul>
@@ -136,7 +108,7 @@ const Navbar =()=>
                                             <li ><Link to={`/kids`}><span>Kids<i className="bi bi-chevron-down" /></span></Link>
                                                 <div className="submenu">
                                                     <div>
-                                                        {subcates.map((item, index)=>
+                                                        {subcates?.map((item, index)=>
                                                             <ul key={index}>
                                                                 <li><Link to={`${genre}/${item?.type?.type_name}`}>{item?.type?.type_name}</Link></li>
                                                             </ul>

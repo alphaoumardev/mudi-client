@@ -4,20 +4,50 @@ import {cartReducer} from "./cartReducer";
 import {
     orderCreateReducer,
     orderDeliverReducer,
-    orderDetailsReducer, orderListReducer,
+    orderDetailsReducer,
+    orderListReducer,
     orderMineReducer,
     orderPayReducer
 } from "./orderReducer";
+import {
+    getAllProductsReducer,
+    getColorsReducer,
+    getImagesReducer,
+    getNewProductsReducer,
+    getOneProductReducer,
+    getOnsaleProductsReducer,
+    getProductBySubcategoriesReducer,
+    getproductByVariantReducer,
+    getProductsByCatNameReducer,
+    getProductsByPagegReducer,
+    getSizesReducer,
+    getSlidersReducer,
+    getTagsReducer
+} from "./productsReducer";
 
 export default combineReducers(
     {
-        authReducer: authReducer,
-        cartReducer: cartReducer ,
+        authReducer,
+        cartReducer ,
 
-        orderCreateReducer: orderCreateReducer,
-        orderDetailsReducer: orderDetailsReducer,
-        orderDeliverReducer: orderDeliverReducer,
-        orderPayReducer: orderPayReducer,
-        orderMineReducer: orderMineReducer,
-        orderListReducer: orderListReducer,
+        getAllProductsReducer,
+        getProductsByPagegReducer,
+        getOneProductReducer,
+        getProductBySubcategoriesReducer,
+        getproductByVariantReducer,
+        getImagesReducer,
+        getProductsByCatNameReducer,
+        getColorsReducer,
+        getSizesReducer,
+        getTagsReducer,
+        getNewProductsReducer,
+        getOnsaleProductsReducer,
+        getSlidersReducer,
+
+        orderCreateReducer,
+        orderDetailsReducer,
+        orderDeliverReducer,
+        orderPayReducer,
+        orderMineReducer,
+        orderListReducer,
     });

@@ -31,9 +31,9 @@ const Modal = ({images, one, variant})=>
 {
     const [currentImage, setCurrentImage] = useState(one?.image)
     const [selectedColor, setSelectedColor] = useState(0);
+    const [hoverRating, setHoverRating] = useState(-1);
     const [color, setColor] = useState('');
     const [rating, setRating] = useState(3);
-    const [hoverRating, setHoverRating] = useState(-1);
     return(
         <div>
             <div className="">
@@ -84,7 +84,7 @@ const Modal = ({images, one, variant})=>
                                     <li><Link to="single"><i className="bi bi-cpu-fill" /> add to compare</Link></li>
                                 </ul>
                             </div>
-                            <span>Sku: <strong>{one?.sku.slice(1,12)}</strong></span>
+                            <span>Sku: <strong>{one?.sku?.slice(1,12)}</strong></span>
                             <div className="single-product-category">
                                 <ul>
                                     <li className="mb-0"><Link to="/" className="title">Categories: </Link></li>

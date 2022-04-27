@@ -18,7 +18,7 @@ const Banners = ()=>
                                 <div className="banner-content banner-position-top-left">
                                     <span className="banner-sub-title text-dark">Suit </span>
                                     <h3 className="banner-title text-danger" >For Sale</h3>
-                                    <Link to="/shop" className="btn btn-outline-dark">Shop Now</Link>
+                                    <Link to="/men/clothing" className="btn btn-outline-dark">Shop Now</Link>
                                 </div>
                                 {/* <!-- banner-content end -->*/}
                             </div>
@@ -34,7 +34,7 @@ const Banners = ()=>
                                 <div className="banner-content banner-position-bottom-left">
                                     <span className="banner-sub-title text-danger">Jeans </span>
                                     <h3 className="banner-title text-light-50">Uniform</h3>
-                                    <Link to="/shop" className="btn btn-outline-dark">Shop Now</Link>
+                                    <Link to="/women/clothing" className="btn btn-outline-dark">Shop Now</Link>
                                 </div>
                                 {/*// <!-- banner-content end -->*/}
                             </div>

@@ -35,7 +35,7 @@ const Wishlist = ()=>
                                                 </td>
                                                 <td className="product-name text-left wide-column">
                                                     <h3>
-                                                        <a href="product-details.html">Pinstripe slim-fit suit blazer</a>
+                                                        <a href="product-details">Pinstripe slim-fit suit blazer</a>
                                                     </h3>
                                                 </td>
                                                 <td className="product-stock">
@@ -47,7 +47,7 @@ const Wishlist = ()=>
                                                     </span>
                                                 </td>
                                                 <td className="product-action-btn">
-                                                    <a href="cart.html" className="btn btn-dark">Add to cart</a>
+                                                    <a href="cart" className="btn btn-dark">Add to cart</a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -60,7 +60,7 @@ const Wishlist = ()=>
                                                 </td>
                                                 <td className="product-name text-left wide-column">
                                                     <h3>
-                                                        <a href="product-details.html">Warm Shaker Solid Wood  End Table</a>
+                                                        <a href="product-details">Warm Shaker Solid Wood  End Table</a>
                                                     </h3>
                                                 </td>
                                                 <td className="product-stock">
@@ -72,7 +72,7 @@ const Wishlist = ()=>
                                                     </span>
                                                 </td>
                                                 <td className="product-action-btn">
-                                                    <a href="cart.html" className="btn btn-dark">Add to cart</a>
+                                                    <a href="cart" className="btn btn-dark">Add to cart</a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -84,7 +84,7 @@ const Wishlist = ()=>
                                                 </td>
                                                 <td className="product-name text-left wide-column">
                                                     <h3>
-                                                        <a href="product-details.html">Atlin Designs Mid Century</a>
+                                                        <a href="product-details">Atlin Designs Mid Century</a>
                                                     </h3>
                                                 </td>
                                                 <td className="product-stock">
@@ -96,7 +96,7 @@ const Wishlist = ()=>
                                                     </span>
                                                 </td>
                                                 <td className="product-action-btn">
-                                                    <a href="cart.html" className="btn btn-dark">Add to cart</a>
+                                                    <a href="cart" className="btn btn-dark">Add to cart</a>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -108,7 +108,7 @@ const Wishlist = ()=>
                                                 </td>
                                                 <td className="product-name text-left wide-column">
                                                     <h3>
-                                                        <a href="product-details.html">Contemporary 5-Light</a>
+                                                        <a href="product-details">Contemporary 5-Light</a>
                                                     </h3>
                                                 </td>
                                                 <td className="product-stock">
@@ -120,7 +120,7 @@ const Wishlist = ()=>
                                         </span>
                                             </td>
                                                 <td className="product-action-btn">
-                                                    <a href="cart.html" className="btn btn-dark">Add to cart</a>
+                                                    <a href="cart" className="btn btn-dark">Add to cart</a>
                                                 </td>
                                             </tr>
                                             </tbody>

@@ -2,47 +2,29 @@ import React, {useEffect, useState} from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import axios from "axios";
 import Modal from "../items/Modal";
+import {useDispatch, useSelector} from "react-redux";
+import {getImages, getOneProduct, getOnsales, getProductsByVariant} from "../redux/Actions/productsActions";
 
 const Featured = () =>
 {
-  const [onsale, setOnsale] = useState([])
   //For the product modal
-  const [id, setId] = useState(6)
-  const [one, setOne] = useState();
-  const [variant, setVariant] = useState()
-  const [images, setImages] = useState()
+  const [id, setId] = useState(2)
+  // let {id} = useParams()
+  const dispatch = useDispatch()
+  const {one} = useSelector(state => state.getOneProductReducer)
+  const {images,} = useSelector(state => state.getImagesReducer)
+  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
+  const {variant} = useSelector(state => state.getproductByVariantReducer)
   useEffect(()=>
   {
-    const getOne = async ()=>
-    {
-      const res = await axios.get(`/one/`+id)
-      setOne(res.data)
-    }
-    const getVariant = async ()=>
-    {
-      const res = await axios.get(`/byvariant/`+id)
-      setVariant(res.data)
-      // console.log(res.data)
-    }
-    const getImages = async ()=>
-    {
-      await axios.get(`/images/`+id).then((res)=>{setImages(res.data);})
-    }
-    const getOnsales = async () =>
-    {
-      const res = await axios.get("/onsale")
-      const data = res.data
-      setOnsale(data)
-    }
-    getImages(id).then(() =>{} )
-    getOne(id).then(()=>{})
-    getVariant(id).then(()=>{})
-    getOnsales().then(()=>{})
-
-  },[id])
+    dispatch(getOneProduct(id))
+    dispatch(getImages(id))
+    dispatch(getProductsByVariant(id))
+    dispatch(getOnsales())
+  },[dispatch,  id])
 
   function NextArrow(ne)
   {

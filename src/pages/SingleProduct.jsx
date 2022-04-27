@@ -2,39 +2,25 @@ import Featured from "../components/Featured";
 import {Link, useParams} from "react-router-dom";
 import StarRating from "react-star-rate";
 
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useEffect,} from "react";
 import Singles from "../items/Singles";
 import RelatedProduct from "../little/RelatedProduct";
 import BannerTab2 from "../little/BannerTab2";
+import {useDispatch, useSelector} from "react-redux";
+import {getImages, getOneProduct, getProductsByVariant} from "../redux/Actions/productsActions";
 const SingleProduct = () =>
 {
-  const [one, setArticle] = useState();
-  const [variant, setVariant] = useState()
-  const [images, setImages] = useState()
   let {id} = useParams()
-  // const {user, isLoading, isAuthenticated, }
+  const dispatch = useDispatch()
+  const {one} = useSelector(state => state.getOneProductReducer)
+  const {images,} = useSelector(state => state.getImagesReducer)
+  const {variant} = useSelector(state => state.getproductByVariantReducer)
   useEffect(()=>
   {
-    const getOne = async ()=>
-    {
-      const res = await axios.get(`/one/`+id)
-          setArticle(res.data)
-    }
-    const getVariant = async ()=>
-    {
-      const res = await axios.get(`/byvariant/`+id)
-      setVariant(res.data)
-    }
-    const getImages = async ()=>
-    {
-      await axios.get(`/images/`+id).then((res)=>{setImages(res.data);})
-    }
-    getImages(id).then(()=>{})
-    getOne(id).then(()=>{})
-    getVariant(id).then(()=>{})
-
-  },[id])
+    dispatch(getOneProduct(id))
+    dispatch(getImages(id))
+    dispatch(getProductsByVariant(id))
+  },[dispatch,  id])
     return(
    <div>
     <section className="single-product mb-90">

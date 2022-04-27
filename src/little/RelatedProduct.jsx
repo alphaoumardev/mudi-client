@@ -3,45 +3,29 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {Link} from "react-router-dom";
-import axios from "axios";
 import Modal from "../items/Modal";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    getImages,
+    getOneProduct,
+    getOnsales,
+    getProductsByVariant
+} from "../redux/Actions/productsActions";
 const RelatedProduct = ()=>
 {
     const [id, setId] = useState(4)
-    const [one, setOne] = useState();
-    const [variant, setVariant] = useState()
-    const [images, setImages] = useState()
-    const [onsale, setOnsale] = useState()
-
+    const dispatch = useDispatch()
+    const {one} = useSelector(state => state.getOneProductReducer)
+    const {images,} = useSelector(state => state.getImagesReducer)
+    const {variant} = useSelector(state => state.getproductByVariantReducer)
+    const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
     useEffect(()=>
     {
-        const getOne = async ()=>
-        {
-            const res = await axios.get(`/one/`+id)
-            setOne(res.data)
-        }
-        const getVariant = async ()=>
-        {
-            const res = await axios.get(`/byvariant/`+id)
-            setVariant(res.data)
-            // console.log(res.data)
-        }
-        const getImages = async ()=>
-        {
-            await axios.get(`/images/`+id).then((res)=>{setImages(res.data);})
-        }
-        const getOnsale = async ()=>
-        {
-            const res = await axios.get("/onsale")
-            const data = res.data
-            setOnsale(data)
-        }
-        getImages(id).then(() =>{} )
-        getOne(id).then(()=>{})
-        getVariant(id).then(()=>{})
-        getOnsale().then(()=>{})
-
-    },[id])
+        dispatch(getOneProduct(id))
+        dispatch(getImages(id))
+        dispatch(getProductsByVariant(id))
+        dispatch(getOnsales())
+    },[dispatch, id])
 
     function NextArrow(props)
     {
@@ -98,12 +82,12 @@ const RelatedProduct = ()=>
                                         <div className="categories">
                                             <a href="/shop" className="product-category"><span>Woman</span></a>
                                         </div>
-                                        <a href="wishlist.html" className="wishlist float-right"><span><i className="fal fa-heart" /></span></a>
+                                        <a href="/wishlist" className="wishlist float-right"><span><i className="fal fa-heart" /></span></a>
                                     </div>
                                     <a href={`/single/${item?.id}`} className="product-title">Light green crewneck sweatshir</a>
                                     <div className="price-switcher">
-                                        <span className="price switcher-item">$58.00</span>
-                                        <a href="cart.html" className="add-cart text-capitalize switcher-item">+add to cart</a>
+                                        <span className="price switcher-item">${item?.price}</span>
+                                        <a href="/cart" className="add-cart text-capitalize switcher-item">+add to cart</a>
                                     </div>
                                 </div>
                             </div>

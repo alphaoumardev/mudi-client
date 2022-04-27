@@ -7,6 +7,7 @@ import Category from "../components/Category";
 import BannerTab2 from "../little/BannerTab2";
 import BannerDecore from "../little/BannerDecore";
 import LargeBanner from "../components/LargeBanner";
+import Banners from "../components/Banners";
 
 const Products = () =>
 {
@@ -23,8 +24,9 @@ const Products = () =>
     </section>
   </div> {/*Title*/}
   <Featured/>
-  <BannerDecore/>
-  <NewArrivals/>
+  {/*<BannerDecore/>*/}
+    <Banners/>
+    <NewArrivals/>
   <div className="col-12">
     <section className="section-title text-center pt-4">
       <h3 className="title">More Products</h3>
