@@ -28,6 +28,7 @@ import {
 export default combineReducers(
     {
         authReducer,
+
         cartReducer ,
 
         getAllProductsReducer,
@@ -44,10 +45,10 @@ export default combineReducers(
         getOnsaleProductsReducer,
         getSlidersReducer,
 
-        orderCreateReducer,
-        orderDetailsReducer,
-        orderDeliverReducer,
-        orderPayReducer,
-        orderMineReducer,
-        orderListReducer,
+        // orderCreateReducer,
+        // orderDetailsReducer,
+        // orderDeliverReducer,
+        // orderPayReducer,
+        // orderMineReducer,
+        // orderListReducer,
     });

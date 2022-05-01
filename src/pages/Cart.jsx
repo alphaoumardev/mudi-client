@@ -1,23 +1,19 @@
 import Crumb from "../little/Crumb";
 import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {addToCart} from "../redux/Actions/cartAction";
+import {useEffect, useState} from "react";
+import {getCartItems, removeItemFromCart, updateCartItem} from "../redux/Actions/cartAction";
 
 const Cart = ()=>
 {
   const dispatch = useDispatch()
-  const {cartItems} = useSelector((state) =>state.cart)
+  const {cartItem} = useSelector((state) =>state.cartReducer)
   const {id} = useParams()
   useEffect(() =>
   {
-    if(id)
-    {
-      dispatch(addToCart(id, 2))
-    }
+    dispatch(getCartItems())
   }, [dispatch, id]);
-
-  console.log(cartItems)
+  let ca = Array.from(cartItem)
   return(
         <div>
   {/* shop body section start */}
@@ -45,66 +41,48 @@ const Cart = ()=>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>
-                            <div className="table-data">
-                              <button className="close-btn"><i className="bi bi-x" /></button>
-                            </div>
-                          </td>
-                          <td className="product-thumbnail">
-                              <img src="../assets/img/product/1.jpg"  alt="" />
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <h6><Link to="single" className="title">Blandit vel eros condimentum ulla</Link></h6>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <span className="price">$90.00</span>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <input type="number" defaultValue={1} min={1} style={{marginRight: 20, width: 119}} />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <span className="total">$90.00</span>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div className="table-data">
-                              <button className="close-btn"><i className="bi bi-x" /></button>
-                            </div>
-                          </td>
-                          <td className="product-thumbnail">
-                              <img src="../assets/img/product/2.jpg"  alt="" />
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <h6><Link to="single" className="title">Blossom Porcelain Side Plates</Link></h6>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <span className="price">$90.00</span>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <input type="number" defaultValue={1} min={1} style={{marginRight: 20, width: 119}} />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="table-data">
-                              <span className="total">$90.00</span>
-                            </div>
-                          </td>
-                        </tr>
+                      {ca?.map((items, index)=>
+                          <tr key={index}>
+                            <td>
+                              <div className="table-data">
+                                <button className="close-btn" onClick={()=> dispatch(removeItemFromCart(items.id))} >
+                                  <i className="bi bi-x"/>
+                                </button>
+                              </div>
+                            </td>
+                            <td className="product-thumbnail">
+                              <img src={items?.product?.image}  alt="" />
+                            </td>
+                            <td>
+                              <div className="table-data">
+                                <h6><Link to={`/single/${items.product.id}`} className="title">{items.product.name}</Link></h6>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="table-data">
+                                <span className="price">${items.product.price}</span>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="table-data">
+                                <input type="number" defaultValue={items.quantity} min={1} style={{marginRight: 20, width: 119}}
+                                  onChange={(e)=>
+                                  {
+                                    dispatch(updateCartItem(items.id, e.target.value, items.product.id ))
+                                  }}
+                                />
+                                {/*<p  style={{marginRight: 20, width: 119}} >{items.quantity}</p>*/}
+
+                              </div>
+                            </td>
+                            <td>
+                              <div className="table-data">
+                                <span className="total">${items.total}</span>
+                              </div>
+                            </td>
+                          </tr>
+
+                      )}
                       </tbody>
                     </table>
                   </div>

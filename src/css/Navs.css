@@ -56,7 +56,7 @@ img{
     justify-content: center;
 }
 .actives{
-    border-color: rgb(156, 149, 150) !important;
+    border-color: rgb(191, 2, 12) !important;
 }
 .hover-container div img:hover{
     border-color: rgb(193, 185, 187);
@@ -123,21 +123,20 @@ img{
     margin-right: 8px;
     border-radius: 7px;
 }
-.add-cart-btn:hover{
-    background-color: #fff;
-    color: black;
-
-}
+/*.add-cart-btn:hover{*/
+/*    background-color: #fff;*/
+/*    color: black;*/
+/*}*/
 .buy-now-btn{
     background-color: red;
     border: 2px solid red;
     border-radius: 7px;
 
 }
-.buy-now-btn:hover{
-    background-color: #fff;
-    color: #000;
-}
+/*.buy-now-btn:hover{*/
+/*    background-color: #fff;*/
+/*    color: #000;*/
+/*}*/
 
 @media screen and (max-width: 992px){
     .pro{

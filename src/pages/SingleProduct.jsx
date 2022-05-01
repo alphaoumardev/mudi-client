@@ -8,6 +8,7 @@ import RelatedProduct from "../little/RelatedProduct";
 import BannerTab2 from "../little/BannerTab2";
 import {useDispatch, useSelector} from "react-redux";
 import {getImages, getOneProduct, getProductsByVariant} from "../redux/Actions/productsActions";
+
 const SingleProduct = () =>
 {
   let {id} = useParams()

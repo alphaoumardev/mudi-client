@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import '../css/Navs.css'
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {createOrder} from "../redux/Actions/orderAction";
 import {addToCart} from "../redux/Actions/cartAction";
@@ -13,7 +13,6 @@ import {Rating} from '@mui/material/';
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {color: '#f44d57',},
     '& .MuiRating-iconHover': {color: '#bf020c',}});
-
 
 const labels = {
     1: 'Useless',
@@ -33,43 +32,46 @@ const Singles = ({images, one, variant})=>
 {
     const [currentImage, setCurrentImage] = useState(one?.image)
     const [selectedColor, setSelectedColor] = useState(0);
+
     const [size, setSize] = useState('')
     const [color, setColor] = useState('')
+    const [quantity, setQuantity] = useState(1)
 
     const [rating, setRating] = useState(3);
     const [hoverRating, setHoverRating] = useState(-1);
 
+    const navigate = useNavigate()
     let {id} = useParams()
     const dispatch = useDispatch()
-    const {cartItems} = useSelector((state) =>state.cartReducer)
-
-    useEffect(()=>
-    {
-        if(cartItems)
-        {
-            dispatch(createOrder(cartItems))
-        }
-    },[dispatch, cartItems])
-
+    const {user} = useSelector((state) =>state.authReducer)
     const addItemToCart = (e)=>
     {
         e.preventDefault()
-        dispatch(addToCart(id, color, size))
-        // console.log(color, size, cartItems)
+        dispatch(addToCart(id, color, size, quantity, user))
+        navigate('/cart')
     }
-        // console.log(rating)
     return(
     <div>
         <div className="">
             <div className="pro">
                     <div className="pro-left">
                         <div className="cover-img">
-                            {currentImage?<img  src={currentImage} alt=""/>:<img src={one?.image} alt="watch"/>}
+                            {currentImage?<img
+                                src={currentImage} alt=""/>:<img src={one?.image} alt="watch"/>}
                         </div>
                         <div className="hover-container">
                             <div>
                                 <img className="hover" src={one?.image} onClick={(event => setCurrentImage(event.target.src))} alt="watch"/>
-                                {images?.map((item, index) => <img className="hover"  onClick={(event => setCurrentImage(event.target.src))} key={index} src={item?.image_url} alt=""/>)}
+                                {images?.map((item, index) =>
+                                    <img className="hover"
+                                         // style={{border: `1px solid ${bgColor}`}}
+                                       key={index} src={item?.image_url} alt=""
+                                       onClick={(event)=>
+                                        {
+                                           setCurrentImage(event.target.src)
+                                           setSelectedColor(index)
+                                        } }
+                                />)}
                             </div>
                         </div>
                     </div>
@@ -102,7 +104,6 @@ const Singles = ({images, one, variant})=>
                                 <span className={txt[hoverRating!== -1 ? hoverRating : rating]}>{labels[hoverRating !== -1 ? hoverRating : rating]}</span>
                             )}
                         </div>
-
                         <p className="product-description">{one?.description}</p>
                         <div className="single-product-action mt-35">
                             <ul>
@@ -132,15 +133,18 @@ const Singles = ({images, one, variant})=>
                         </div>
                         <form onSubmit={addItemToCart} >
                             <div className="single-product-component mt-15 ">
-                                    <h6>Available Sizes</h6>
-                                <select onChange={(e=>setSize(e.target.value))} required={true}  data-testid="size" className="size form-select  text-uppercase" >
-                                    <option  value="default">Size</option>
-                                    {variant?.map((item, index) =>
-                                        <option   className='' key={index} value={item?.size?.size_name}>
-                                            {item?.size?.size_name}
-                                        </option>
-                                    )}
-                                </select>
+                                <h6>Available Sizes</h6>
+                                <div className="d-flex ">
+                                    <select onChange={(e=>setSize(e.target.value))} required={true}  data-testid="size" className="size   text-uppercase " >
+                                        <option  value="default">Size</option>
+                                        {variant?.map((item, index) =>
+                                            <option   className='' key={index} value={item?.size?.size_name}>
+                                                {item?.size?.size_name}
+                                            </option>
+                                        )}
+                                    </select>
+                                    <input className="rounded-3 d-flex justify-content-center" type="number" defaultValue={1} min={1} style={{marginLeft: 20, width: 50}} onChange={(e)=>setQuantity(e.target.value)}/>
+                                </div>
                                 <h6>Colors</h6>
                                 {/*<input type="radio"  style={{accentColor: one?.color_name}} className="yellow color-input color_style" onClick={(event => setCurrentImage(event.target.src))}/>*/}
 
@@ -171,7 +175,7 @@ const Singles = ({images, one, variant})=>
                                 )}
                             </div>
 
-                            <div className="btn-groups  ">
+                            <div className="btn-groups">
                                 <button type="submit" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>
                                 <button type="submit" className="buy-now-btn " disabled={one?.stock === 0}>buy now</button>
                             </div>

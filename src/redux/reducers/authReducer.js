@@ -108,6 +108,8 @@ export default function authReducer(state = {}, action)
             sessionStorage.removeItem('access')
             sessionStorage.removeItem('refresh')
             localStorage.removeItem('cartItems', )
+            // localStorage.clear()
+            // sessionStorage.clear()
 
             return{
                 ...state,

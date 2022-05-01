@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
-import {Link, useLocation, useParams} from "react-router-dom";
-import {load_user, logout} from '../redux/Actions/authActions'
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {checkAuthenticated, load_user, logout} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from 'react-redux'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
@@ -9,9 +9,10 @@ import {getProductsBySubcatesAction} from "../redux/Actions/productsActions";
 
 const Navbar =()=>
 {
-    const {isAuthenticated} = useSelector((state) =>state.authReducer)
+    const {isAuthenticated, user } = useSelector((state) =>state.authReducer)
     const dispatch = useDispatch()
     const location = useLocation();
+    const navigate = useNavigate()
 
     let genre = location.pathname.split('/')[1]
     // let type = location.pathname.split('/')[2]
@@ -19,12 +20,18 @@ const Navbar =()=>
     let {type} = useParams()
     const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
 
+    // const {exp} = jwt_decode(token)
+    // const expirationTime = (exp * 1000) - 60000
+
+    // const user = JSON.parse(localStorage.getItem("user"));
+
     const logout_user =()=>
     {
         dispatch(logout());
     }
     useEffect(() =>
     {
+        // dispatch(checkAuthenticated())
         dispatch(getProductsBySubcatesAction(genre, type))
         dispatch(load_user())
     }, [dispatch, genre, type]);
@@ -148,6 +155,8 @@ const Navbar =()=>
                                             </span>
                                             {!isAuthenticated && <Link to="login" ><i className="bi bi-person-fill"/><b>Login/Register</b></Link>}
                                         </li>
+                                        <li> {isAuthenticated && <p className="text-danger"><b> <i></i>{user?.first_name}</b></p>}</li>
+
                                         <li className="menu-rights">
                                             <Link to="wishlist" data-toggle="tooltip" data-placement="bottom"  data-original-title="view wishlist">
                                                 <FavoriteIcon color="warning"/>

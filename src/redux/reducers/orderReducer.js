@@ -13,6 +13,16 @@ export const orderCreateReducer = (state={}, action)=>
                 success: true,
                 order: action.payload
             }
+        // case T.CART_SAVE_SHIPPING_ADDRESS:
+        //     return{
+        //         ...state,
+        //         shippingAddress: action.payload
+        //     }
+        // case T.CART_PAYMENT:
+        //     return{
+        //         ...state,
+        //         payment:action.payload
+        //     }
         case O.ORDER_CREATE_FAIL:
             return{
                 loading: false,

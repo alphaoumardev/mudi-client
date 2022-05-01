@@ -7,7 +7,7 @@ import Modal from "../items/Modal";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getImages, getNewProducts,
-    getOneProduct,
+    getOneProduct, getOnsales,
     getProductsByVariant,
 } from "../redux/Actions/productsActions";
 const NewArrivals = ()=>
@@ -19,27 +19,29 @@ const NewArrivals = ()=>
     const {one} = useSelector(state => state.getOneProductReducer)
     const {images,} = useSelector(state => state.getImagesReducer)
     const {variant} = useSelector(state => state.getproductByVariantReducer)
-    const {newproducts} = useSelector(state => state.getNewProductsReducer)
+    const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
+
     useEffect(()=>
     {
         dispatch(getOneProduct(id))
         dispatch(getImages(id))
         dispatch(getProductsByVariant(id))
-        dispatch(getNewProducts())
+        dispatch(getOnsales())
     },[dispatch, id])
 
     function NextArrow(props)
     {
-        const {onClick } = props;
+        const { className,onClick } = props;
         return (<div className="swiper-button-next" onClick={onClick}>
-            <i className="bi bi-caret-right-fill"> </i>
+            <i className="bi bi-caret-right-fill"></i>
         </div> );
     }
+
     function PrevArrow(props)
     {
-        const {onClick } = props;
+        const {className, onClick } = props;
         return (<div className="swiper-button-prev" onClick={onClick}>
-            <i className="bi bi-caret-left-fill"> </i>
+            <i className="bi bi-caret-left-fill"></i>
         </div> );
     }
     const settings =
@@ -49,15 +51,15 @@ const NewArrivals = ()=>
             slidesToShow: 4,
             swipeToSlide: true,
             autoplay: true,
-            autoplaySpeed: 5000,
+            autoplaySpeed: 3000,
             easing:'linear',
             focusOnSelect:true,
-            // cssEase: "linear",
-            // centerMode: true,
-            // centerPadding: "60px",
+            cssEase: "linear",
+            centerMode: true,
+            centerPadding: "60px",
             rows: 2,
             nextArrow: <NextArrow/>,
-            prevArrow: <PrevArrow/>,
+            prevArrow: <PrevArrow/>
         };
 
     return(
@@ -87,7 +89,7 @@ const NewArrivals = ()=>
 
             <div className="row pr">
                 <Slider {...settings}>
-                    {newproducts?.map((items, index)=>
+                    {onsale?.map((items, index)=>
                         <div key={index} className="col-12">
                             <div className="product-box">
                                 <div className="product-box-wrapper">

@@ -8,8 +8,8 @@ const accessToken = localStorage.getItem('access') ? localStorage.getItem('acces
 const refreshToken = localStorage.getItem('refresh') ? localStorage.getItem('refresh') : null;
 
 const userStorage = localStorage.getItem('user')? JSON.parse(localStorage.getItem('user')):null
-const cartItemsStorage = localStorage.getItem('cartItems')? JSON.parse(localStorage.getItem('cartItems')):[]
-const shippingAddressStorage = localStorage.getItem('shippingAddress')? JSON.parse(localStorage.getItem('shippingAddress')): {}
+const cartItemStorage = localStorage.getItem('cartItem')? JSON.parse(localStorage.getItem('cartItem')):[]
+// const shippingAddressStorage = localStorage.getItem('shippingAddress')? JSON.parse(localStorage.getItem('shippingAddress')): {}
 
 let authenticationState = {
     error:null,
@@ -36,10 +36,7 @@ if (accessToken)
 
 const initialState = {
     authReducer: authenticationState,
-    cartReducer: {
-        cartItems: cartItemsStorage,
-        shippingAddress: shippingAddressStorage,
-    }
+    cartReducer: {cartItem: cartItemStorage,}
 };
 const middleware = [thunk];
 

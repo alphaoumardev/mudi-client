@@ -36,7 +36,10 @@ export  const LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
 export  const LOGOUT_FAIL = "LOGOUT_FAIL"
 
 //The cart
+export  const CART_ADD_REQUEST = "CART_ADD_REQUEST"
 export  const CART_ADD_ITEM = "CART_ADD_ITEM"
+export  const CART_GET_ITEMS = "CART_GET_ITEMS"
+export  const CART_UPDATE_ITEM = "CART_UPDATE_ITEM"
 export  const CART_REMOVE_ITEM = "CART_REMOVE_ITEM"
 export  const CART_CLEAR_ITEMS = "CART_CLEAR_ITEMS"
 export  const CART_PAYMENT = "CART_PAYMENT"
