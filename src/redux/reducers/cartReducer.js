@@ -1,6 +1,7 @@
-import * as T from '../Actions/Types'
+import * as T from '../Types'
 
-export const cartReducer = (state = {cartItem:[],}, action)=>
+export const cartReducer = (state =
+                                {cartItem:[], order_total:0, cart_count: 0}, action)=>
 {
     switch (action.type)
     {
@@ -25,7 +26,9 @@ export const cartReducer = (state = {cartItem:[],}, action)=>
         case T.CART_GET_ITEMS:
             return{
                 ...state,
-                cartItem: action.payload
+                cartItem: action.payload,
+                order_total: action.order_total,
+                cart_count: action.cart_count,
             }
 
         case T.CART_UPDATE_ITEM:

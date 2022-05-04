@@ -1,25 +1,30 @@
 import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
-import {checkAuthenticated, load_user, logout} from '../redux/Actions/authActions'
+import {load_user, logout} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from 'react-redux'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import {getProductsBySubcatesAction} from "../redux/Actions/productsActions";
+import {getCartItems, removeItemFromCart} from "../redux/Actions/cartAction";
+import {getWishlistItems} from "../redux/Actions/wishlistAction";
 
 const Navbar =()=>
 {
     const {isAuthenticated, user } = useSelector((state) =>state.authReducer)
+    const {cartItem, order_total, cart_count} = useSelector((state) =>state.cartReducer)
+    const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
+    const {wishlist_count} = useSelector(state => state.wishlistReducer)
+
+
     const dispatch = useDispatch()
     const location = useLocation();
-    const navigate = useNavigate()
 
+    const cart = Array.from(cartItem)
     let genre = location.pathname.split('/')[1]
     // let type = location.pathname.split('/')[2]
     // let {genre} = useParams()
     let {type} = useParams()
-    const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
-
     // const {exp} = jwt_decode(token)
     // const expirationTime = (exp * 1000) - 60000
 
@@ -32,6 +37,8 @@ const Navbar =()=>
     useEffect(() =>
     {
         // dispatch(checkAuthenticated())
+        dispatch(getWishlistItems())
+        dispatch(getCartItems())
         dispatch(getProductsBySubcatesAction(genre, type))
         dispatch(load_user())
     }, [dispatch, genre, type]);
@@ -65,6 +72,9 @@ const Navbar =()=>
                                 <div className="header-nav">
                                     <nav className="d-flex justify-content-around">
                                         <ul>
+                                            <li>
+                                                <Link to={`/shop`}><span >All</span></Link>
+                                            </li>
                                             <li>
                                                 <Link to={`/men`}><span >Men<i className="bi bi-chevron-down" /></span></Link>
                                                 <div className="submenu">
@@ -160,61 +170,41 @@ const Navbar =()=>
                                         <li className="menu-rights">
                                             <Link to="wishlist" data-toggle="tooltip" data-placement="bottom"  data-original-title="view wishlist">
                                                 <FavoriteIcon color="warning"/>
-                                                <Badge badgeContent={6} color="secondary"/>
+                                                <Badge badgeContent={wishlist_count} color="secondary"/>
                                             </Link>
                                         </li>
                                         <li className="menu-rights">
                                             <Link to="cart">
                                                 <ShoppingBagOutlinedIcon color="action" />
-                                            <Badge badgeContent={4} color="primary"/>
+                                            <Badge badgeContent={cart_count} color="primary"/>
                                             </Link>
                                             <div className="minicart">
                                                 <div className="minicart-body">
                                                     <div className="minicart-content">
                                                         <ul className="text-left">
-                                                            <li>
-                                                                <div className="minicart-img">
-                                                                    <Link to="single-product-4" className="p-0"><img src="../assets/img/product/1.jpg" className="w-100" alt="" /></Link>
-                                                                </div>
-                                                                <div className="minicart-desc">
-                                                                    <Link to="single-product-4" className="p-0">Capitalize on low hanging fruit t</Link>
-                                                                    <strong>1 × $250.00</strong>
-                                                                </div>
-                                                                <div className="remove">
-                                                                    <i className="bi bi-x" />
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div className="minicart-img">
-                                                                    <Link to="single-product-4" className="p-0"><img src="../assets/img/product/2.jpg" className="w-100" alt="" /></Link>
-                                                                </div>
-                                                                <div className="minicart-desc">
-                                                                    <Link to="single-product-4" className="p-0">Leather Courriere duffle ba</Link>
-                                                                    <strong>1 × $150.00</strong>
-                                                                </div>
-                                                                <div className="remove">
-                                                                    <i className="bi bi-x" />
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div className="minicart-img">
-                                                                    <Link to="single-product-4" className="p-0"><img src="../assets/img/product/3.jpg" className="w-100" alt="" /></Link>
-                                                                </div>
-                                                                <div className="minicart-desc">
-                                                                    <Link to="single-product-4" className="p-0">Party Supplies Around Cupcake</Link>
-                                                                    <strong>1 × $150.00</strong>
-                                                                </div>
-                                                                <div className="remove">
-                                                                    <i className="bi bi-x" />
-                                                                </div>
-                                                            </li>
+                                                            {cart.slice(0, 4).map((item, index)=>
+                                                                <li key={index}>
+                                                                    <div className="minicart-img">
+                                                                        <Link to={`/single/${item.product.id}`} className="p-0"><img src={item?.product.image} className="w-75 h-75" alt="" /></Link>
+                                                                    </div>
+                                                                    <div className="minicart-desc">
+                                                                        <Link to={`/single/${item.product.id}`} className="p-0">{item?.product.name}</Link>
+                                                                        <strong className="float-end">{item.quantity} × $ {item?.product.price}</strong>
+                                                                    </div>
+                                                                    <div className="remove">
+                                                                        <button className="close-btn" onClick={()=> dispatch(removeItemFromCart(item.id))} >
+                                                                            <i className="bi bi-x"/>
+                                                                        </button>
+                                                                    </div>
+                                                                </li>
+                                                            )}
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div className="minicart-checkout">
                                                     <div className="minicart-checkout-heading mt-8 mb-25 overflow-hidden">
                                                         <strong className="float-left">Subtotal:</strong>
-                                                        <span className="price float-right">503.00</span>
+                                                        <span className="float-end text-danger fs-5 ">${order_total}</span>
                                                     </div>
                                                     <div className="minicart-checkout-links">
                                                         <Link to="cart" className="generic-btn black-hover-btn text-uppercase w-100 mb-20">View cart</Link>

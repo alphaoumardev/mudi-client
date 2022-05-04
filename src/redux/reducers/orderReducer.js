@@ -1,4 +1,4 @@
-import * as O from '../Actions/Types'
+import * as O from '../Types'
 
 export const orderCreateReducer = (state={}, action)=>
 {

@@ -1,33 +1,65 @@
 import Crumb from "../little/Crumb";
-import {Link, useParams} from "react-router-dom";
+import {Link,} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect, useState,} from "react";
 import {getCartItems, removeItemFromCart, updateCartItem} from "../redux/Actions/cartAction";
+
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import {getWishlistItems, removeItemFromWishlist} from "../redux/Actions/wishlistAction";
 
 const Cart = ()=>
 {
   const dispatch = useDispatch()
-  const {cartItem} = useSelector((state) =>state.cartReducer)
-  const {id} = useParams()
+  const {cartItem, order_total} = useSelector((state) =>state.cartReducer)
   useEffect(() =>
   {
     dispatch(getCartItems())
-  }, [dispatch, id]);
+  }, [dispatch,]);
   let ca = Array.from(cartItem)
+
+  const [open, setOpen] = useState(false);
+  const [itemId, setItemId] = useState(null);
   return(
-        <div>
+  <div>
+          <div>
+            <Dialog
+                open={open}
+                // TransitionComponent={Transition}
+                keepMounted
+                onClose={()=>setOpen(false)}
+                aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle>{"Are you sure to remove this item?"}</DialogTitle>
+              <DialogActions>
+                <Button onClick={()=>setOpen(false)} className="text-success">Cancel</Button>
+                <Button onClick={()=>
+                        {
+                          dispatch(removeItemFromCart(itemId))
+                          setOpen(false)
+                          dispatch(getWishlistItems())
+                          window.location.reload()
+                        }} className="text-danger">Remove</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
   {/* shop body section start */}
   <section className="cart-body mb-90 gray-border-top ">
     <div className="has-breadcrumb-content">
       <div className="container container-1430">
         <Crumb/>
-        <h2 className="cart-title text-center text-uppercase">Cart</h2>
-
         <div className="cart-body-content">
           <div className="row">
             <div className="col-xl-8">
+              <h2 className="cart-title text-center text-uppercase">Cart</h2>
+
+              {ca.length>0 ?
               <div className="product-content">
-                <form action="#">
+
+                <form >
                   <div className="table-responsive">
                     <table className="table table-2">
                       <thead>
@@ -35,48 +67,59 @@ const Cart = ()=>
                           <th className="remove-porduct" />
                           <th className="product-image" />
                           <th className=""><b>Product</b></th>
+                          <th>Color</th>
+                          <th>Size</th>
                           <th>Price</th>
                           <th className="quantity">Quantity</th>
                           <th className="total">Total</th>
                         </tr>
                       </thead>
                       <tbody>
+
                       {ca?.map((items, index)=>
-                          <tr key={index}>
+                          <tr key={index} onChange={()=>dispatch(getCartItems())}>
                             <td>
-                              <div className="table-data">
-                                <button className="close-btn" onClick={()=> dispatch(removeItemFromCart(items.id))} >
-                                  <i className="bi bi-x"/>
-                                </button>
+                              <div className="">
+                                  <DeleteOutlineIcon className="text-danger removeItem" titleAccess="Remove"
+                                      onClick={()=>{setOpen(true); setItemId(items.id) }} />
                               </div>
                             </td>
                             <td className="product-thumbnail">
-                              <img src={items?.product?.image}  alt="" />
+                              <Link to={`/single/${items.product.id}`}><img src={items?.product?.image}  alt="" /></Link>
                             </td>
                             <td>
-                              <div className="table-data">
+                              <div className="">
                                 <h6><Link to={`/single/${items.product.id}`} className="title">{items.product.name}</Link></h6>
                               </div>
                             </td>
                             <td>
-                              <div className="table-data">
+                              <div>
+                                <span className="cart-color" style={{backgroundColor: items?.color}}/>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="">
+                                <span className="">{items.size}</span>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="">
                                 <span className="price">${items.product.price}</span>
                               </div>
                             </td>
                             <td>
-                              <div className="table-data">
+                              <div className="">
                                 <input type="number" defaultValue={items.quantity} min={1} style={{marginRight: 20, width: 119}}
                                   onChange={(e)=>
                                   {
                                     dispatch(updateCartItem(items.id, e.target.value, items.product.id ))
                                   }}
                                 />
-                                {/*<p  style={{marginRight: 20, width: 119}} >{items.quantity}</p>*/}
 
                               </div>
                             </td>
                             <td>
-                              <div className="table-data">
+                              <div className="">
                                 <span className="total">${items.total}</span>
                               </div>
                             </td>
@@ -90,8 +133,13 @@ const Cart = ()=>
                     <input type="text" placeholder="Cupon code" className="text-left pl-3 w-50" style={{marginRight: 20, width: 119}} />
                     <button className="generic-btn border-0  red-hover-btn text-uppercase">Apply Cupon</button>
                     <button className="generic-btn border-0 red-hover-btn text-uppercase float-right">Update Cart</button>
-                  </div></form>
+                  </div>
+                </form>
+              </div>:
+              <div className="d-flex text-center justify-content-center align-items-center mt-3">
+                <img src="https://res.cloudinary.com/diallo/image/upload/v1651554703/konguo_itlqhu.png" alt="" className="empty "/>
               </div>
+                }
             </div>
             <div className="col-xl-4">
               <div className="cart-widget">
@@ -100,7 +148,7 @@ const Cart = ()=>
                   <tbody>
                     <tr>
                       <th>Subtotal</th>
-                      <td>$134.00</td>
+                      <th className="text-danger text-end ">${order_total}</th>
                     </tr>
                     <tr>
                       <th>Shipping</th>
@@ -135,7 +183,7 @@ const Cart = ()=>
                     </tr>
                     <tr>
                       <th>Total</th>
-                      <td><strong>$134.00</strong></td>
+                      <th className="text-end"><strong >${order_total}</strong></th>
                     </tr>
                   </tbody>
                 </table>

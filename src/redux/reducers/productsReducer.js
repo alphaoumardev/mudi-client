@@ -1,4 +1,4 @@
-import * as P from '../Actions/Types'
+import * as P from '../Types'
 
 export const getAllProductsReducer = (state = {products: [], isLoading:false,}, action)=>
 {

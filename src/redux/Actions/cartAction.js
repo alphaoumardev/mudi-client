@@ -1,4 +1,4 @@
-import * as A from '../Actions/Types'
+import * as A from '../Types'
 import axios from "axios";
 
 const config = {
@@ -16,8 +16,6 @@ export const addToCart = (id, color, size, quantity, username) => async (dispatc
     // dispatch({type: A.GET_ONE_PRODUCT_SUCCESS})
     const product = id
     const user = username.id
-    // let total  = product.price * quantity
-    // console.log(total)
     dispatch({type: A.CART_ADD_REQUEST})
     const body = JSON.stringify({product, color, size, quantity, user})
 
@@ -38,8 +36,11 @@ export const getCartItems = () => async (dispatch) =>
     {
         dispatch({
             type: A.CART_GET_ITEMS,
-            payload: res.data,
+            payload: res.data.result,
+            order_total: res.data.order_total,
+            cart_count: res.data.cart_count,
         })
+        // console.log(res.data)
         localStorage.getItem('cartItem', JSON.stringify(res.data))
     })
 }

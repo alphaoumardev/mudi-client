@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import {cartReducer} from "./cartReducer";
+import {wishlistReducer} from './wishlistReducer'
 import {
     orderCreateReducer,
     orderDeliverReducer,
@@ -30,6 +31,7 @@ export default combineReducers(
         authReducer,
 
         cartReducer ,
+        wishlistReducer,
 
         getAllProductsReducer,
         getProductsByPagegReducer,

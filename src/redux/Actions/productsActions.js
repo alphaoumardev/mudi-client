@@ -1,4 +1,4 @@
-import * as P from '../Actions/Types'
+import * as P from '../Types'
 import axios from "axios";
 
 

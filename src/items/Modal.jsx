@@ -1,16 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import '../css/Navs.css'
-import {Link} from "react-router-dom";
+import {Link, useNavigate,} from "react-router-dom";
 
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {Rating} from '@mui/material/';
+import {useDispatch, useSelector} from "react-redux";
+import {addToCart, getCartItems} from "../redux/Actions/cartAction";
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {color: '#f44d57',},
     '& .MuiRating-iconHover': {color: '#bf020c',}});
-
 
 const labels = {
     1: 'Useless',
@@ -31,9 +32,25 @@ const Modal = ({images, one, variant})=>
 {
     const [currentImage, setCurrentImage] = useState(one?.image)
     const [selectedColor, setSelectedColor] = useState(0);
-    const [hoverRating, setHoverRating] = useState(-1);
-    const [color, setColor] = useState('');
+
+    const [size, setSize] = useState('')
+    const [color, setColor] = useState('')
+    const [quantity, setQuantity] = useState(1)
+
     const [rating, setRating] = useState(3);
+    const [hoverRating, setHoverRating] = useState(-1);
+
+    const dispatch = useDispatch()
+    const {user} = useSelector((state) =>state.authReducer)
+    const addItemToCart = (e)=>
+    {
+        e.preventDefault()
+        dispatch(addToCart(one?.id, color, size, quantity, user))
+    }
+    useEffect(() =>
+    {
+        dispatch(getCartItems())
+    }, [dispatch,]);
     return(
         <div>
             <div className="">
@@ -46,7 +63,16 @@ const Modal = ({images, one, variant})=>
                             <div className="hover-container">
                                 <div>
                                     <img className="hover" src={one?.image} onClick={(event => setCurrentImage(event.target.src))} alt="watch"/>
-                                    {images?.map((item, index) => <img className="hover"  onClick={(event => setCurrentImage(event.target.src))} key={index} src={item?.image_url} alt=""/>)}
+                                    {images?.map((item, index) =>
+                                        <img className="hover"
+                                            // style={{border: `1px solid ${bgColor}`}}
+                                             key={index} src={item?.image_url} alt=""
+                                             onClick={(event)=>
+                                             {
+                                                 setCurrentImage(event.target.src)
+                                                 setSelectedColor(index)
+                                             } }
+                                        />)}
                                 </div>
                             </div>
                         </div>
@@ -97,25 +123,30 @@ const Modal = ({images, one, variant})=>
                                 <ul>
                                     <li><Link to=" " className="title">Share this product</Link></li>
                                     <li><Link to=" " data-toggle="tooltip" data-placement="top" title="facebook"><i className="bi bi-facebook text-primary" /></Link></li>
-                                    <li><Link to=" " data-toggle="tooltip" data-placement="top" title="Instagram"><i className="bi bi-instagram text-danger" /></Link></li>
                                     <li><Link to=" " data-toggle="tooltip" data-placement="top" title="twitter"><i className="bi bi-twitter" /></Link></li>
                                     <li><Link to=" " data-toggle="tooltip" data-placement="top" title="pinterest"><i className="bi bi-pinterest text-danger" /></Link></li>
+                                    <li><Link to=" " data-toggle="tooltip" data-placement="top" title="Instagram"><i className="bi bi-instagram text-danger" /></Link></li>
                                 </ul>
                             </div>
-                            <form action="" >
-                                <div className="single-product-component ">
+                            <form onSubmit={addItemToCart} >
+                                <div className="single-product-component mt-15 ">
                                     <h6>Available Sizes</h6>
-                                    <select defaultValue='default'   data-testid="size" className="size form-select  text-uppercase" >
-                                        <option value="default" >Size</option>
-                                        {variant?.map((item, index) =>
-                                            <option  className='' key={index} value={index}>
-                                                {item?.size?.size_name}
-                                            </option>
-                                        )}
-                                    </select>
-                                    <h6>Color</h6>
+                                    <div className="d-flex ">
+                                        <select onChange={(e=>setSize(e.target.value))} required={true}  data-testid="size" className="size   text-uppercase " >
+                                            <option  value="default">Size</option>
+                                            {variant?.map((item, index) =>
+                                                <option   className='' key={index} value={item?.size?.size_name}>
+                                                    {item?.size?.size_name}
+                                                </option>
+                                            )}
+                                        </select>
+                                        <input className="rounded-3 d-flex justify-content-center size" type="number" defaultValue={1} min={1} style={{marginLeft: 20, width: 50}} onChange={(e)=>setQuantity(e.target.value)}/>
+                                    </div>
+                                    <h6>Colors</h6>
+                                    {/*<input type="radio"  style={{accentColor: one?.color_name}} className="yellow color-input color_style" onClick={(event => setCurrentImage(event.target.src))}/>*/}
+
                                     {images?.map((item, index)=>
-                                        <fieldset key={index} className="color-input color_style" style={{backgroundColor: item?.color_name?.color_name}} >
+                                        <fieldset key={index} className="color-input color_style" style={{backgroundColor: item?.color_name?.color_name}}>
                                             {item?.color_name?.color_name &&
                                                 <>
                                                     <input
@@ -140,9 +171,10 @@ const Modal = ({images, one, variant})=>
                                         </fieldset>
                                     )}
                                 </div>
+
                                 <div className="btn-groups">
-                                    <button type="submit" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>
-                                    <button type="submit" className="buy-now-btn" disabled={one?.stock === 0}>buy now</button>
+                                    <button onClick={()=>window.location.replace('/cart')} type="submit" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>
+                                    <button type="submit" className="buy-now-btn " disabled={one?.stock === 0}>buy now</button>
                                 </div>
                             </form>
 

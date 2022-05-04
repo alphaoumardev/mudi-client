@@ -1139,9 +1139,10 @@ img {
 .product-title {
     display: block;
     color: #222;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.5;
     margin-bottom: 10px;
+    /*float: left;*/
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1499px) {
@@ -1156,7 +1157,7 @@ img {
 
 .product-price {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 1;
     -webkit-transition: 0.3s ease-out 0s;
     -o-transition: 0.3s ease-out 0s;

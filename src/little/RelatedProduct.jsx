@@ -84,7 +84,7 @@ const RelatedProduct = ()=>
                                         </div>
                                         <a href="/wishlist" className="wishlist float-right"><span><i className="fal fa-heart" /></span></a>
                                     </div>
-                                    <a href={`/single/${item?.id}`} className="product-title">Light green crewneck sweatshir</a>
+                                    <a href={`/single/${item?.id}`} className="product-title text-start">{item?.name}</a>
                                     <div className="price-switcher">
                                         <span className="price switcher-item">${item?.price}</span>
                                         <a href="/cart" className="add-cart text-capitalize switcher-item">+add to cart</a>

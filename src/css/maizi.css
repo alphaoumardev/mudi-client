@@ -172,7 +172,11 @@ button.close-btn {
     border: 0;
     background: transparent;
 }
+button .action-btn:hover
+{
+    background-color: red;
 
+}
 .img {
     max-width: 99%;
     transition: all 0.3s ease-out 0s;
@@ -2401,7 +2405,22 @@ ul.color-list li {
     cursor: pointer;
     border: 1px solid #a4a1a1;
 }
-
+.cart-color
+{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    display: inline-block;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: 1px solid #a4a1a1;
+}
+.removeItem
+{
+    margin-left: 10px;
+    cursor: pointer;
+}
 ul.color-list li:not(:last-child) {
     margin-right: 15px;
 }
@@ -3744,8 +3763,36 @@ p.simple-text {
 
 td.product-thumbnail img {
     width: 70px;
+    height: 70px;
+    object-fit: contain;
+    float: left;
+    margin-left: -30px;
 }
+/*Link:hover{color:red !important;}*/
 /*Wishlist*/
+.empty
+{
+    /*margin-left: 40%;*/
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.wish-item
+{
+    height: 90px;
+}
+
+.wishlist
+{
+    cursor: pointer;
+}
+.wishlist-delete
+{
+    float: left;
+    margin-left: 20px;
+}
 .table thead th, .table th {
     padding: 13px 0;
     letter-spacing: 1px;

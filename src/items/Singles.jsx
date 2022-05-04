@@ -30,6 +30,7 @@ const txt ={
 };
 const Singles = ({images, one, variant})=>
 {
+    let {id} = useParams()
     const [currentImage, setCurrentImage] = useState(one?.image)
     const [selectedColor, setSelectedColor] = useState(0);
 
@@ -41,7 +42,6 @@ const Singles = ({images, one, variant})=>
     const [hoverRating, setHoverRating] = useState(-1);
 
     const navigate = useNavigate()
-    let {id} = useParams()
     const dispatch = useDispatch()
     const {user} = useSelector((state) =>state.authReducer)
     const addItemToCart = (e)=>
@@ -94,8 +94,8 @@ const Singles = ({images, one, variant})=>
                                 value={rating}
                                 size={'large'}
                                 sx={{fontSize:16, paddingRight:2, }}
-                                onChange={(event, newValue) => {setRating(newValue);}}
-                                onChangeActive={(event, newHover) => {setHoverRating(newHover);}}
+                                onChange={(event, newRating) => {setRating(newRating);}}
+                                onChangeActive={(event, newRating) => {setHoverRating(newRating);}}
                                 precision={1}
                                 icon={<FavoriteIcon fontSize="small" />}
                                 emptyIcon={<FavoriteBorderIcon fontSize="small" />}
@@ -111,7 +111,7 @@ const Singles = ({images, one, variant})=>
                                 <li><Link to="/single"><i className="bi bi-cpu-fill" /> add to compare</Link></li>
                             </ul>
                         </div>
-                        <span>Sku: <strong>{one?.sku}</strong></span>
+                        <span>Sku: <strong>{one?.sku?.slice(0,12)}</strong></span>
                         <div className="single-product-category">
                             <ul>
                                 <li className="mb-0"><Link to="/" className="title">Categories: </Link></li>
@@ -128,7 +128,6 @@ const Singles = ({images, one, variant})=>
                                 <li><Link to=" " data-toggle="tooltip" data-placement="top" title="pinterest"><i className="bi bi-pinterest text-danger" /></Link></li>
                                 <li><Link to=" " data-toggle="tooltip" data-placement="top" title="Linkdin"><i className="bi bi-linkedin" /></Link></li>
                                 <li><Link to=" " data-toggle="tooltip" data-placement="top" title="Instagram"><i className="bi bi-instagram text-danger" /></Link></li>
-
                             </ul>
                         </div>
                         <form onSubmit={addItemToCart} >
@@ -143,7 +142,7 @@ const Singles = ({images, one, variant})=>
                                             </option>
                                         )}
                                     </select>
-                                    <input className="rounded-3 d-flex justify-content-center" type="number" defaultValue={1} min={1} style={{marginLeft: 20, width: 50}} onChange={(e)=>setQuantity(e.target.value)}/>
+                                    <input className="rounded-3 d-flex justify-content-center size" type="number" defaultValue={1} min={1} style={{marginLeft: 20, width: 50}} onChange={(e)=>setQuantity(e.target.value)}/>
                                 </div>
                                 <h6>Colors</h6>
                                 {/*<input type="radio"  style={{accentColor: one?.color_name}} className="yellow color-input color_style" onClick={(event => setCurrentImage(event.target.src))}/>*/}
@@ -176,8 +175,10 @@ const Singles = ({images, one, variant})=>
                             </div>
 
                             <div className="btn-groups">
-                                <button type="submit" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>
-                                <button type="submit" className="buy-now-btn " disabled={one?.stock === 0}>buy now</button>
+                                <button type="submit" className="add-cart-btn"
+                                        disabled={id === null || size ==='' || color === '' || quantity>one.stock || user === null}
+                                        >add to cart</button>
+                                <button type="submit" className="buy-now-btn " disabled={true}>buy now</button>
                             </div>
                         </form>
                     </div>

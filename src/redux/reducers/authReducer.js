@@ -27,7 +27,7 @@ import {
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL, REFRESH_FAIL,
-} from '../Actions/Types'
+} from '../Types'
 
 export default function authReducer(state = {}, action)
 {
@@ -108,6 +108,10 @@ export default function authReducer(state = {}, action)
             sessionStorage.removeItem('access')
             sessionStorage.removeItem('refresh')
             localStorage.removeItem('cartItems', )
+            localStorage.removeItem('wishlistItem',)
+            localStorage.removeItem('cartItem',)
+
+
             // localStorage.clear()
             // sessionStorage.clear()
 

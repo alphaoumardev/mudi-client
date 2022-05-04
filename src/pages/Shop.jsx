@@ -14,10 +14,13 @@ import {
   getOnsales,
   getProductsByVariant, getSizes, getTags
 } from "../redux/Actions/productsActions";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {addToWishlist, removeItemFromWishlist} from "../redux/Actions/wishlistAction";
 const Shop = ()=>
 {
   //For the product modal
-  const [id, setId] = useState(3)
+  const [id, setId] = useState(1)
   //others
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -37,6 +40,7 @@ const Shop = ()=>
   let {type} = useParams()
 
   const dispatch = useDispatch()
+  const {user} = useSelector(state => state.authReducer)
   const {products,} = useSelector(state => state.getAllProductsReducer)
   const {tags} = useSelector(state => state.getTagsReducer)
   const {sizes} = useSelector(state => state.getSizesReducer)
@@ -73,7 +77,8 @@ const Shop = ()=>
   {
     setValue(newValue);
   };
-    return(
+  const [liked, setLiked] = useState(0);
+  return(
   <div>
   <Crumb/>
   <div className="shop-body mb-90 ml-3">
@@ -84,6 +89,7 @@ const Shop = ()=>
             {/* widget */}
             <div className="widget">
               <h4 className="mb-30">Product Categories</h4>
+              <Link to="/shop">All <span>(0)</span></Link>
               <div className="accordion" id="accordionExample">
                 <div className="list">
                   <Link to=" ">Accessories <span>(0)</span></Link>
@@ -355,12 +361,26 @@ const Shop = ()=>
                                     <div className="categories">
                                       <Link to="/shop" className="product-category text-capitalize"><span>{item?.category?.type?.type_name}</span></Link>
                                     </div>
-                                    <Link to="wishlist" className="wishlist float-right"><span><i className="bi bi-heart" /></span></Link>
+                                    <span  className="wishlist float-right">
+                                      {item.id === liked && <span>
+                                        <FavoriteIcon sx={{color:"red"}}
+                                                      onClick={()=>
+                                                      {
+                                                        setLiked(0);
+                                                        dispatch(removeItemFromWishlist(item?.id))
+                                                      }}/></span>}
+                                      {item.id !== liked &&<span>
+                                        <FavoriteBorderIcon color="inherit"
+                                                             onClick={()=>
+                                                             {
+                                                               setLiked(item.id);
+                                                               dispatch(addToWishlist(item?.id, user))}}/></span>}
+                                    </span>
                                   </div>
-                                  <Link to={`/single/${item.id}`} className="product-title">{item?.name}</Link>
+                                  <Link to={`/single/${item?.id}`} className="product-title">{item?.name}</Link>
                                   <div className="price-switcher">
                                     <span className="price switcher-item">${item?.price}</span>
-                                    <Link to="cart" className="add-cart text-capitalize switcher-item">+add to cart</Link>
+                                    <Link to={`/single/${item?.id}`} onClick={()=>setId(item?.id)} className="add-cart text-capitalize switcher-item">+add to cart</Link>
                                   </div>
                                 </div>
                               </div>

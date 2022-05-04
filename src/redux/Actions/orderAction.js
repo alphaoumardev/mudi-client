@@ -1,4 +1,4 @@
-import * as O from '../Actions/Types'
+import * as O from '../Types'
 import axios from "axios";
 
 const config = {

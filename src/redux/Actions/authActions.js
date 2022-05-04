@@ -28,8 +28,8 @@ import {
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
-    ORDER_MINE_RESET
-} from './Types'
+    ORDER_MINE_RESET, CART_CLEAR_ITEMS
+} from '../Types'
 import axios from "axios";
 
 export const postActionPayloadError = (type, error) => ({
@@ -143,7 +143,9 @@ export const logout = () => dispatch =>
         localStorage.removeItem('user')
         dispatch({type:LOGOUT_REQUEST})
         dispatch({type:LOGOUT_SUCCESS})
-        dispatch({type:ORDER_MINE_RESET })
+        dispatch({type:ORDER_MINE_RESET})
+        dispatch({type:CART_CLEAR_ITEMS})
+        dispatch({type:WISHLIST_CLEAR_ITEMS})
     }
     catch (error)
     {
