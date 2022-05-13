@@ -1,5 +1,5 @@
 import Crumb from "../little/Crumb";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
 import {getWishlistItems, removeItemFromWishlist} from "../redux/Actions/wishlistAction";
 import {getImages, getProductsByVariant} from "../redux/Actions/productsActions";
@@ -8,11 +8,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import {addToCart, getCartItems, removeItemFromCart} from "../redux/Actions/cartAction";
+import {addToCart,} from "../redux/Actions/cartAction";
 import {Link} from "react-router-dom";
-import {CardGiftcardOutlined} from "@mui/icons-material";
 
-const Wishlist = ()=>
+const Wishlist = ({user, wishlistItem, variant, images})=>
 {
     const [id, setId] = useState(1);
     const [size, setSize] = useState('')
@@ -22,10 +21,6 @@ const Wishlist = ()=>
     const [deleteItemId, setDeleteItemId] = useState(null);
 
     const dispatch = useDispatch()
-    const {user} = useSelector(state => state.authReducer)
-    const {wishlistItem} = useSelector(state => state.wishlistReducer)
-    const {variant} = useSelector(state => state.getproductByVariantReducer)
-    const {images,} = useSelector(state => state.getImagesReducer)
     const wish = Array.from(wishlistItem)
     useEffect(() =>
     {
@@ -137,11 +132,11 @@ const Wishlist = ()=>
 
                                                     <Button href="/cart"  className="bg-black rounded-3 text-light"
                                                             disabled={id !== item.product.id || size==='' || color === '' || quantity>item.product.stock || user === null }
-                                                          onClick={()=>{
+                                                            onClick={()=>{
                                                               dispatch(addToCart(id, color, size, quantity, user))
                                                               dispatch(removeItemFromWishlist(deleteItemId))
                                                               window.location.reload()
-                                                          }}>Add to cart</Button>
+                                                            }}>Add to cart</Button>
                                                 </td>
                                             </tr>
                                         )}

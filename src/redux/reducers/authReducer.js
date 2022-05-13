@@ -26,7 +26,7 @@ import {
 
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
-    LOGOUT_FAIL, REFRESH_FAIL,
+    LOGOUT_FAIL, REFRESH_FAIL, CART_CLEAR_ITEMS, WISHLIST_CLEAR_ITEMS
 } from '../Types'
 
 export default function authReducer(state = {}, action)
@@ -103,17 +103,19 @@ export default function authReducer(state = {}, action)
         case LOGOUT_SUCCESS:
         case FACEBOOK_AUTH_FAIL:
         case GOOGLE_AUTH_FAIL:
-            localStorage.removeItem('access')
-            localStorage.removeItem('refresh')
-            sessionStorage.removeItem('access')
-            sessionStorage.removeItem('refresh')
-            localStorage.removeItem('cartItems', )
-            localStorage.removeItem('wishlistItem',)
-            localStorage.removeItem('cartItem',)
+        case CART_CLEAR_ITEMS:
+        case WISHLIST_CLEAR_ITEMS:
+            // localStorage.removeItem('access')
+            // localStorage.removeItem('refresh')
+            // sessionStorage.removeItem('access')
+            // sessionStorage.removeItem('refresh')
+            // localStorage.removeItem('cartItems', )
+            // localStorage.removeItem('wishlistItem',)
+            // localStorage.removeItem('cartItem',)
 
 
-            // localStorage.clear()
-            // sessionStorage.clear()
+            localStorage.clear()
+            sessionStorage.clear()
 
             return{
                 ...state,

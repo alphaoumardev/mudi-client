@@ -4,16 +4,14 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {Fragment, useEffect, useState} from "react";
 import {login} from '../redux/Actions/authActions'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import Spinner from "../little/Spinner";
 
-const Login = () =>
+const Login = ({user, error, isLoading}) =>
 {
+    const access = localStorage.getItem('access')
     const [credentialError, setCredentialError] = useState('');
-    let {user, error, isLoading} = useSelector((state) =>state.authReducer)
-
     const dispatch = useDispatch()
-
     const navigate = useNavigate()
     const [formData, setFormData] = useState({ email: "", password: "" });
     const { email, password } = formData
@@ -30,7 +28,7 @@ const Login = () =>
         {
             setCredentialError("The email or password is incorrect")
         }
-        if (localStorage.getItem('access'))
+        if (access)
         {
             return navigate('/')
         }

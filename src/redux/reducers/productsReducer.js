@@ -1,6 +1,6 @@
 import * as P from '../Types'
 
-export const getAllProductsReducer = (state = {products: [], isLoading:false,}, action)=>
+export const getAllProductsReducer = (state = {products: [],  isLoading:false,}, action)=>
 {
     switch (action.type)
     {

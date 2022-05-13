@@ -21,9 +21,10 @@ export const addToWishlist = (id, username) => async (dispatch) =>
             type: A.WISHLIST_ADD_ITEM,
             payload: res.data
         })
-        console.log(res.data)
-        localStorage.setItem('wishlistItem', JSON.stringify(res.data))
+        console.log(res.data.product)
+        localStorage.setItem('wish', JSON.stringify(res.data.product))
     })
+
 }
 
 export const getWishlistItems = () => async (dispatch) =>
@@ -35,8 +36,7 @@ export const getWishlistItems = () => async (dispatch) =>
             payload: res.data.result,
             wishlist_count: res.data.wishlist_count,
         })
-        // console.log(res.data)
-        localStorage.getItem('wishlistItem', JSON.stringify(res.data))
+        localStorage.setItem('wishlistItem', JSON.stringify(res.data))
     })
 }
 export const removeItemFromWishlist = (id) => async (dispatch) =>
@@ -62,7 +62,7 @@ export const updateWishlistItem = (id, product) => async (dispatch) =>
             type: A.WISHLIST_UPDATE_ITEM,
             payload: res.data,
         })
-        localStorage.getItem('wishlistItem', JSON.stringify(res.data))
+        // localStorage.getItem('wishlistItem', JSON.stringify(res.data))
         dispatch(getWishlistItems())
     })
 }

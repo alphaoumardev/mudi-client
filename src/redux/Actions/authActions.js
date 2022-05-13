@@ -28,7 +28,7 @@ import {
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
-    ORDER_MINE_RESET, CART_CLEAR_ITEMS
+    ORDER_MINE_RESET, CART_CLEAR_ITEMS, ORDER_MY_FAIL
 } from '../Types'
 import axios from "axios";
 
@@ -143,7 +143,7 @@ export const logout = () => dispatch =>
         localStorage.removeItem('user')
         dispatch({type:LOGOUT_REQUEST})
         dispatch({type:LOGOUT_SUCCESS})
-        dispatch({type:ORDER_MINE_RESET})
+        dispatch({type:ORDER_MY_FAIL})
         dispatch({type:CART_CLEAR_ITEMS})
         dispatch({type:WISHLIST_CLEAR_ITEMS})
     }

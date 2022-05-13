@@ -2,12 +2,9 @@ import '../css/login.css'
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {signup} from "../redux/Actions/authActions";
-import {useDispatch, useSelector} from "react-redux";
-const Register =()=>
+import {useDispatch,} from "react-redux";
+const Register =({isAuthenticated})=>
 {
-    const {isAuthenticated} = useSelector((state) =>state.authReducer)
-    const {isLoading} = useSelector((state)=> state.authReducer)
-    let {error} = useSelector((state) =>state.authReducer)
     const dispatch = useDispatch()
 
     const navigate = useNavigate()

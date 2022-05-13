@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import '../css/Navs.css'
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {createOrder} from "../redux/Actions/orderAction";
 import {addToCart} from "../redux/Actions/cartAction";
 
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {Rating} from '@mui/material/';
+import {addToWishlist} from "../redux/Actions/wishlistAction";
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {color: '#f44d57',},
@@ -64,7 +64,6 @@ const Singles = ({images, one, variant})=>
                                 <img className="hover" src={one?.image} onClick={(event => setCurrentImage(event.target.src))} alt="watch"/>
                                 {images?.map((item, index) =>
                                     <img className="hover"
-                                         // style={{border: `1px solid ${bgColor}`}}
                                        key={index} src={item?.image_url} alt=""
                                        onClick={(event)=>
                                         {
@@ -83,10 +82,7 @@ const Singles = ({images, one, variant})=>
                                 {/*<button type="submit" className="buy-now-btn"><i className="fas fa-wallet" />buy now</button>*/}
                             </div>
                         </h2>
-                        {/*<span className="product-name"></span>*/}
                         <div className="single-product-price">${one?.price}</div>
-                        {/*<HoverRating/>*/}
-
                         <div className="d-flex align-items-center text-capitalize ">
                             <span>(26) </span>
                             <StyledRating
@@ -107,7 +103,7 @@ const Singles = ({images, one, variant})=>
                         <p className="product-description">{one?.description}</p>
                         <div className="single-product-action mt-35">
                             <ul>
-                                <li><Link to="/wishlist"><i className="bi bi-heart" /> add to wishlist</Link></li>
+                                <li><Link to="/wishlist" onClick={()=>dispatch(addToWishlist(one?.id, user))}><i className="bi bi-heart" /> add to wishlist</Link></li>
                                 <li><Link to="/single"><i className="bi bi-cpu-fill" /> add to compare</Link></li>
                             </ul>
                         </div>

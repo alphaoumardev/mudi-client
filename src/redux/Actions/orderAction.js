@@ -1,5 +1,7 @@
 import * as O from '../Types'
 import axios from "axios";
+import * as A from "../Types";
+import {ORDER_ITEM_ADD_SUCCESS} from "../Types";
 
 const config = {
     headers: {
@@ -9,22 +11,63 @@ const config = {
     }
 }
 
-export const createOrder = (order) => async (dispatch, getState) =>
+export const addAddress = (username, country, state, zip, city, street, details, order_note) => async (dispatch) =>
+{
+    let user = username.id
+    try
+    {
+        dispatch({type: O.ADDRESS_ADD_REQUEST})
+        const body = JSON.stringify({user, country, state, zip, city, street, details, order_note})
+        await axios.post(`/address/`, body, config).then(res =>
+        {
+            dispatch({type: O.ADDRESS_SUCCESS, payload: res.data})
+            console.log(res.data)
+        })
+    } catch (error)
+    {
+        dispatch({
+            type:O.ADDRESS_FAIL,
+            payload: "Something went wrong"
+        })
+    }
+}
+
+
+export const getAddressAction = () => async (dispatch) =>
 {
     try
     {
+        dispatch({type: O.ADDRESS_GET_REQUEST})
+        await axios.get(`/address/`, config).then(res =>
+        {
+            dispatch({type: O.ADDRESS_GET_SUCCESS, payload: res.data})
+            // console.log(res.data)
+        })
+    } catch (error)
+    {
+        dispatch({
+            type:O.ADDRESS_GET_FAIL,
+            payload: "Something went wrong"
+        })
+    }
+}
+export const createOrderAction = (username, address) => async (dispatch) =>
+{
+    let user = username.id
+    // let cart = cartItem
+    const body = JSON.stringify({user, address})
+    try
+    {
         dispatch({type: O.ORDER_CREATE_REQUEST})
-        const {user: {user},} = getState()
-        const {data} = await axios.post(`/orders/add`, order, config)
-        dispatch({
-            type:O.ORDER_CREATE_SUCCESS,
-            payload: data,
+        await axios.post(`/orders/`,body, config).then((res)=>
+        {
+            dispatch({
+                type:O.ORDER_CREATE_SUCCESS,
+                payload: res.data,
+            })
+            console.log(res.data)
+            // localStorage.removeItem('cartItems')
         })
-        dispatch({
-            type:O.CART_CLEAR_ITEMS,
-            payload: data
-        })
-        localStorage.removeItem('cartItems')
     } catch (error)
     {
         dispatch({
@@ -32,6 +75,65 @@ export const createOrder = (order) => async (dispatch, getState) =>
             payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
         })
     }
+}
+
+export const getMyOrderAction = () => async (dispatch) =>
+{
+    try
+    {
+        dispatch({type: O.ORDER_MY_REQUEST})
+        await axios.get('/orders/', config).then(res =>
+        {
+            dispatch({type: O.ORDER_MY_SUCCESS, payload: res.data})
+            console.log(res.data)
+        })
+    } catch (error)
+    {
+        dispatch({
+            type:O.ORDER_MY_FAIL,
+            payload: "Something went wrong"
+        })
+    }
+}
+
+
+export const addToOrderItem = (id, color, size, quantity, username) => async (dispatch) =>
+{
+    const product = id
+    const user = username.id
+
+    const body = JSON.stringify({product, color, size, quantity, user})
+    try
+    {
+        await axios.post('/orderitem/', body, config).then((res) => {
+            dispatch({
+                type: A.ORDER_ITEM_ADD_SUCCESS,
+                payload: res.data
+            })
+        })
+    }
+    catch(error)
+    {
+        dispatch({
+            type: O.ORDER_ITEM_ADD_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
+
+export const getOrderItems = () => async (dispatch) =>
+{
+    await axios.get('/orderitem/', config).then((res)=>
+    {
+        dispatch({
+            type: A.ORDER_ITEM_SUCCESS,
+            payload: res.data.result,
+            order_total: res.data.order_total,
+            cart_count: res.data.order_count,
+        })
+        console.log(res.data)
+        localStorage.setItem('cartItem', JSON.stringify(res.data))
+    })
 }
 
 export const getOrderDetail = (id) => async (dispatch, getState) =>
@@ -96,42 +198,42 @@ export const deliverOrder = (order) => async (dispatch,) =>
     }
 }
 
-export const myOrdersLists = () => async (dispatch) =>
-{
-    try
-    {
-        dispatch({type: O.ORDER_MINE_REQUEST})
-        const {data} = await axios.put(`/orders/myorder`, config)
-        dispatch(
-            {
-                type:O.ORDER_MINE_SUCCESS,
-                payload: data,
-            })
-    } catch (error)
-    {
-        dispatch({
-            type: O.ORDER_MINE_FAIL,
-            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
-        })
-    }
-}
-
-export const ordersList = () => async (dispatch) =>
-{
-    try
-    {
-        dispatch({type: O.ORDER_LIST_REQUEST})
-        const {data} = await axios.get(`/orders/`, config)
-        dispatch(
-            {
-                type:O.ORDER_LIST_SUCCESS,
-                payload: data,
-            })
-    } catch (error)
-    {
-        dispatch({
-            type: O.ORDER_LIST_FAIL,
-            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
-        })
-    }
-}
+// export const myOrdersLists = () => async (dispatch) =>
+// {
+//     try
+//     {
+//         dispatch({type: O.ORDER_MINE_REQUEST})
+//         const {data} = await axios.put(`/orders/myorder`, config)
+//         dispatch(
+//             {
+//                 type:O.ORDER_MINE_SUCCESS,
+//                 payload: data,
+//             })
+//     } catch (error)
+//     {
+//         dispatch({
+//             type: O.ORDER_MINE_FAIL,
+//             payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+//         })
+//     }
+// }
+//
+// export const ordersList = () => async (dispatch) =>
+// {
+//     try
+//     {
+//         dispatch({type: O.ORDER_LIST_REQUEST})
+//         const {data} = await axios.get(`/orders/`, config)
+//         dispatch(
+//             {
+//                 type:O.ORDER_LIST_SUCCESS,
+//                 payload: data,
+//             })
+//     } catch (error)
+//     {
+//         dispatch({
+//             type: O.ORDER_LIST_FAIL,
+//             payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+//         })
+//     }
+// }

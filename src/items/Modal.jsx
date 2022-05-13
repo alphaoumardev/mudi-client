@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import '../css/Navs.css'
-import {Link, useNavigate,} from "react-router-dom";
+import {Link,} from "react-router-dom";
 
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';

@@ -57,7 +57,7 @@
 /* Normal desktop :992px. */
 @media (max-width: 1200px) {
   .cart-widget {
-    margin-top: 30px;
+    margin-top: 20px;
   }
   article.account-registar {
     display: none !important;

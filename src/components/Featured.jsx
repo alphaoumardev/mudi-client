@@ -2,22 +2,15 @@ import React, {useEffect, useState} from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {Link, useParams} from "react-router-dom";
-import axios from "axios";
+import {Link,} from "react-router-dom";
 import Modal from "../items/Modal";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch,} from "react-redux";
 import {getImages, getOneProduct, getOnsales, getProductsByVariant} from "../redux/Actions/productsActions";
 
-const Featured = () =>
+const Featured = ({one, images, onsale, variant}) =>
 {
-  //For the product modal
   const [id, setId] = useState(2)
-  // let {id} = useParams()
   const dispatch = useDispatch()
-  const {one} = useSelector(state => state.getOneProductReducer)
-  const {images,} = useSelector(state => state.getImagesReducer)
-  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
-  const {variant} = useSelector(state => state.getproductByVariantReducer)
   useEffect(()=>
   {
     dispatch(getOneProduct(id))
@@ -28,14 +21,14 @@ const Featured = () =>
 
   function NextArrow(ne)
   {
-    const { className, onClick } = ne;
+    const {onClick } = ne;
     return (<div className="swiper-button-next" onClick={onClick}>
       <i className="bi bi-chevron-right"> </i>
     </div> );
   }
   function PrevArrow(ne)
   {
-    const {className, onClick } = ne;
+    const {onClick } = ne;
     return (<div className="swiper-button-prev" onClick={onClick}>
       <i className="bi bi-chevron-left"> </i>
     </div> );

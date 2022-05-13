@@ -3927,24 +3927,28 @@ td.product-thumbnail img {
         width: 100%; } }
 
 /* cart widget */
-
+.amount
+{
+    color: #e98282;
+    float: right;
+}
 .cart-widget {
-    background-color: #F5F5F5;
-    padding: 35px 30px;
+    /*width: 40%;*/
+    /*padding: 5px;*/
 }
 
 .cart-widget h4 {
     color: #333;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 18px;
+    line-height: 15px;
 }
 
 .cart-widget p {
     font-size: 15px;
-    color: #666;
+    color: #bab7b7;
     margin: 0 0 15px;
     font-weight: 300;
-    line-height: 27px;
+    line-height: 15px;
 }
 
 a.price-calculate {
@@ -4270,8 +4274,8 @@ p.checkout-coupon input[type="text"] {
 }
 
 .your-order {
-    padding: 30px 40px 45px;
-    border: 3px solid #eaedff;
+    padding: 0 40px 2px 40px;
+    background-color: #f8f6f6;
 }
 
 @media (max-width: 767px) {
@@ -4281,7 +4285,7 @@ p.checkout-coupon input[type="text"] {
 }
 
 .your-order h3 {
-    border-bottom: 1px solid #eaedff;
+    border-bottom: 2px solid #97a2e9;
     font-size: 30px;
     margin: 0 0 20px;
     padding-bottom: 10px;

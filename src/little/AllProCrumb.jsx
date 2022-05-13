@@ -1,4 +1,4 @@
-import Crumb from "../little/Crumb";
+import Crumb from "./Crumb";
 import AllProducts from "../components/AllProducts";
 
 const AllProCrumb = ()=>

@@ -1,14 +1,55 @@
 import Crumb from "../little/Crumb";
+import { Country, State, City }  from 'country-state-city';
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addAddress, getAddressAction} from "../redux/Actions/orderAction";
+import {Link, useNavigate} from "react-router-dom";
+import Paypal from "../components/Paypal";
+import {getShippingAddressReducer} from "../redux/reducers/orderReducer";
 
-const Checkout = ()=>
+const Checkout = ({order_total, address, cartItem})=>
 {
-    return(
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [selectedCountryCode, setSelectedCountryCode] = useState('')
+  const [selectedStateCode, setSelectedStateCode] = useState('')
+  const [selectedCityCode, setSelectedCityCode] = useState('')
+
+
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [zip, setZip] = useState('')
+  const [city, setCity] = useState('')
+  const [street, setStreet] = useState('')
+  const [details, setDetails] = useState('');
+  const [order_note, setOrder_note] = useState('');
+  const {user} = useSelector(state=>state.authReducer);
+  // console.log(country, state, zip, city, street, details, order_note, )
+
+  //This is the list of countries
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  useEffect(() => {
+    setCountries(Country.getAllCountries())
+    setStates(State.getStatesOfCountry(`${selectedCountryCode}`))
+    setCities(City.getCitiesOfState(`${selectedCountryCode}`,`${selectedStateCode}`))
+    dispatch(getAddressAction())
+
+  }, [dispatch, selectedCountryCode, selectedStateCode, selectedCityCode])
+
+  // console.log(selectedCountryCode, selectedStateCode, selectedCityCode)
+  const onSubmit = (e) =>
+  {
+    e.preventDefault();
+    dispatch(addAddress(user, country, state, zip, city, street, details, order_note))
+    return navigate('/cart')
+  }
+  return(
       <div>
-  {/* shop body section start */}
         <Crumb/>
   <main style={{margin:20}}>
     <h2 className="cart-title text-center text-uppercase">Checkout</h2>
-    {/* coupon-area start */}
     <section className="coupon-area pt-30 pb-30">
       <div className="container">
         <div className="row d-flex justify-content-center">
@@ -27,306 +68,177 @@ const Checkout = ()=>
     </section>
     <section className="checkout-area pb-70">
       <div className="container">
-        <form action="#">
           <div className="row d-flex justify-content-center">
             <div className="col-lg-5">
-              <div className="checkbox-form">
+              <form  onSubmit={onSubmit}>
                 <h3>Billing Details</h3>
                 <div className="row">
                   <div className="col-md-6">
-                    <div className="checkout-form-list">
-                      <label>First Name <span className="required">*</span></label>
-                      <input type="text" placeholder="" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="checkout-form-list">
-                      <label>Last Name <span className="required">*</span></label>
-                      <input type="text" placeholder="" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="checkout-form-list">
-                      <label>Email Address <span className="required">*</span></label>
-                      <input type="email" placeholder="me@gmail.com" required/>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="checkout-form-list">
-                      <label>Phone <span className="required">*</span></label>
-                      <input type="text" placeholder="" required/>
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
                     <div className="country-select">
                       <label>Country <span className="required">*</span></label>
-                      <select>
-                        <option value="volvo">bangladesh</option>
-                        <option value="saab">Algeria</option>
-                        <option value="mercedes">Afghanistan</option>
-                        <option value="audi">Ghana</option>
-                        <option value="audi2">Albania</option>
-                        <option value="audi3">Bahrain</option>
-                        <option value="audi4">Colombia</option>
-                        <option value="audi5">Dominican Republic</option>
+                      <select required={true}  onChange={(e)=>{setSelectedCountryCode(e.target.value.split(',')[1]); setCountry(e.target.value.split(',')[0]) }} >
+                        {countries?.map((pays, index)=>
+                            <option key={index}   value={[pays.name, pays.isoCode]}>{pays.name}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="country-select">
+                      <label>State / Province / Region <span className="required">*</span></label>
+                      <select required={true} onChange={(e)=>{setSelectedStateCode(e.target.value.split(',')[1]); setState(e.target.value.split(',')[0])}}>
+                        {states?.map((province, index)=>
+                            <option key={index}  value={[province.name, province.isoCode]} >{province.name}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="country-select">
+                      <label>Town / City <span className="required">*</span></label>
+                      <select required={true} onChange={(e)=>{setSelectedCityCode(e.target.value.split(',')[0]); setCity(e.target.value.split(',')[1])}} >
+                        <option value="">Select City</option>
+                        {cities?.map((ville, index)=>
+                            <option key={index}  value={[ville.isoCode, ville.name]}>{ville.name}</option>)}
                       </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="checkout-form-list">
-                      <label>State / County <span className="required">*</span></label>
-                      <input type="text" placeholder="" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="checkout-form-list">
-                      <label>Town / City <span className="required">*</span></label>
-                      <input type="text" placeholder="Town / City" />
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="checkout-form-list">
                       <label>Postcode / Zip <span className="required">*</span></label>
-                      <input type="text" maxLength={6} placeholder="Postcode / Zip" />
+                      <input required={true} type="text" maxLength={6} placeholder="Postcode / Zip" onChange={(e)=>setZip(e.target.value)}/>
                     </div>
                   </div>
+                  <div className="d-flex"><b className="mr-2">Notice: </b><p> If the city does not exist on option form, fill it in the address</p></div>
 
                   <div className="col-md-12">
                     <div className="checkout-form-list">
                       <label>Address <span className="required">*</span></label>
-                      <input type="text" placeholder="Street address" />
+                      <input required={true} type="text" placeholder="Street address" onChange={(e)=>setStreet(e.target.value)} />
                     </div>
                   </div>
-
                   <div className="col-md-12">
                     <div className="checkout-form-list">
-                      <input type="text" placeholder="Apartment, suite, unit etc. (optional)" />
-                    </div>
-                  </div>
-
-
-
-                </div>
-                <div className="different-address">
-                  <div className="ship-different-title">
-                    <h3>
-                      <label>Ship to a different address?</label>
-                      <input id="ship-box" type="checkbox" />
-                    </h3>
-                  </div>
-                  <div id="ship-box-info">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="country-select">
-                          <label>Country <span className="required">*</span></label>
-                          <select>
-                            <option value="volvo">bangladesh</option>
-                            <option value="saab">Algeria</option>
-                            <option value="mercedes">Afghanistan</option>
-                            <option value="audi">Ghana</option>
-                            <option value="audi2">Albania</option>
-                            <option value="audi3">Bahrain</option>
-                            <option value="audi4">Colombia</option>
-                            <option value="audi5">Dominican Republic</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="checkout-form-list">
-                          <label>First Name <span className="required">*</span></label>
-                          <input type="text" placeholder="" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="checkout-form-list">
-                          <label>Last Name <span className="required">*</span></label>
-                          <input type="text" placeholder="" />
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="checkout-form-list">
-                          <label>Company Name</label>
-                          <input type="text" placeholder="Company Name" />
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="checkout-form-list">
-                          <label>Address <span className="required">*</span></label>
-                          <input type="text" placeholder="Street address" />
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="checkout-form-list">
-                          <input type="text" placeholder="Apartment, suite, unit etc. (optional)" />
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        <div className="checkout-form-list">
-                          <label>Town / City <span className="required">*</span></label>
-                          <input type="text" placeholder="Town / City" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="checkout-form-list">
-                          <label>State / County <span className="required">*</span></label>
-                          <input type="text" placeholder="" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="checkout-form-list">
-                          <label>Postcode / Zip <span className="required">*</span></label>
-                          <input type="text" placeholder="Postcode / Zip" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="checkout-form-list">
-                          <label>Email Address <span className="required">*</span></label>
-                          <input type="email" placeholder="Email Address" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="checkout-form-list">
-                          <label>Phone <span className="required">*</span></label>
-                          <input type="text" placeholder="Postcode / Zip" />
-                        </div>
-                      </div>
+                      <input required={true} type="text" placeholder="Apartment, suite, unit etc." onChange={(e)=>setDetails(e.target.value)}/>
                     </div>
                   </div>
                   <div className="order-notes">
-                    <div className="checkout-form-list">
-                      <label>Order Notes</label>
-                      <textarea id="checkout-mess" cols={30} rows={10} placeholder="Notes about your order, e.g. special notes for delivery." defaultValue={""} />
+                      <div className="checkout-form-list">
+                        <label>Order Notes</label>
+                        <textarea id="checkout-mess" cols={30} rows={10} placeholder="Notes about your order, e.g. special notes for delivery." defaultValue={""} onChange={(e)=>setOrder_note(e.target.value)} />
+                      </div>
                     </div>
+
+                  <div className="">
+
+                    {/*<input type="submit" className="btn btn-primary float-end " value="Change Your Address" />*/}
+                    {/*onClick={(e)=>handleSubmit(e)}>Change Your Address</input>*/}
                   </div>
+                    <input type="submit" className="btn btn-primary w-50 float-right" value="Change Your Address"/>
                 </div>
-              </div>
+              </form>
             </div>
-            <div className="col-lg-5">
-              <div className="your-order mb-30 ">
-                <h3>Your order</h3>
-                <div className="your-order-table table-responsive">
-                  <table>
-                    <thead>
+
+            <div className="col-lg-5 cart-widget">
+                <div className="your-order">
+                  <h3 className="text-center">Your order</h3>
+                  <div className="your-order-table table-responsive">
+                    <div>
+                      <b>Shipping Address</b>
+                      <div>{address?.user?.first_name} {address?.user?.last_name}, {address?.user?.email}</div>
+                      <p>{address?.country} {address?.state} {address?.city} {address?.street}
+                        {address?.details} {address?.zip} {address?.order_note}
+                      </p>
+                      <Link to={"/checkout"} className="btn btn-outline-dark float-end">Change Address</Link>
+
+                    </div>
+                    <table>
+                      <thead>
                       <tr>
-                        <th className="product-name">Product</th>
-                        <th className="product-total">Total</th>
+                        <th className="product-name">Order Dividends</th>
+                        <th className="float-end ">Total</th>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="cart_item">
-                        <td className="product-name">
-                          Vestibulum suscipit <strong className="product-quantity"> × 1</strong>
-                        </td>
-                        <td className="product-total">
-                          <span className="amount">$165.00</span>
-                        </td>
-                      </tr>
-                      <tr className="cart_item">
-                        <td className="product-name">
-                          Vestibulum dictum magna <strong className="product-quantity"> × 1</strong>
-                        </td>
-                        <td className="product-total">
-                          <span className="amount">$50.00</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                      <tfoot>
                       <tr className="cart-subtotal">
                         <th>Cart Subtotal</th>
-                        <td><span className="amount">$215.00</span></td>
+                        <td><span className="amount">${order_total}</span></td>
                       </tr>
-                      <tr className="shipping">
-                        <th>Shipping</th>
-                        <td>
-                          <ul>
-                            <li>
-                              <input type="radio" />
-                              <label>
-                                Flat Rate: <span className="amount">$7.00</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" />
-                              <label>Free Shipping:</label>
-                            </li>
-                            <li />
-                          </ul>
-                        </td>
+                      <tr className="cart-subtotal">
+                        <th>Shipping Fee</th>
+                        <td><span className="amount">${12}</span></td>
                       </tr>
                       <tr className="order-total">
                         <th>Order Total</th>
-                        <td><strong><span className="amount">$215.00</span></strong>
+                        <td><strong><span className="amount">${order_total +12}</span></strong>
                         </td>
                       </tr>
-                    </tfoot>
-                  </table>
-                </div>
-                <div className="payment-method">
-                  <div className="accordion" id="accordionExample">
-                    <div className="card">
-                      <div className="card-header" id="headingOne">
-                        <h5 className="mb-0">
-                          <button className="btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Direct Bank Transfer
-                          </button>
-                        </h5>
-                      </div>
-                      <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div className="card-body">
-                          Make your payment directly into our bank account. Please use your Order ID
-                          as the payment
-                          reference. Your order won’t be
-                          shipped until the funds have cleared in our account.
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-header" id="headingTwo">
-                        <h5 className="mb-0">
-                          <button className="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Cheque Payment
-                          </button>
-                        </h5>
-                      </div>
-                      <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div className="card-body">
-                          Please send your cheque to Store Name, Store Street, Store Town, Store
-                          State / County, Store
-                          Postcode.
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-header" id="headingThree">
-                        <h5 className="mb-0">
-                          <button className="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            PayPal
-                          </button>
-                        </h5>
-                      </div>
-                      <div id="collapseThree" className="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                        <div className="card-body">
-                          Pay via PayPal; you can pay with your credit card if you don’t have a
-                          PayPal account.
-                        </div>
-                      </div>
-                    </div>
+                      </tfoot>
+                    </table>
                   </div>
-                  <div className="order-button-payment mt-20">
-                    <button type="submit" className="btn btn-dark text-uppercase text-hide">Place Your order</button>
+                  <div className="payment-method">
+                    <div className="accordion" id="accordionExample">
+                      <div className="card">
+                        <div className="card-header" id="headingThree">
+                          <h5 className="mb-0">
+                            <button className="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              PayPal
+                            </button>
+                          </h5>
+                        </div>
+                        <div id="collapseThree" className="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                          <div className="card-body">
+                            Pay via PayPal; you can pay with your credit card if you don’t have a
+                            PayPal account.
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card">
+                        <div className="card-header" id="headingTwo">
+                          <h5 className="mb-0">
+                            <button className="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              Cheque Payment
+                            </button>
+                          </h5>
+                        </div>
+                        <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                          <div className="card-body">
+                            Please send your cheque to Store Name, Store Street, Store Town, Store
+                            State / County, Store
+                            Postcode.
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card">
+                        <div className="card-header" id="headingOne">
+                          <h5 className="mb-0">
+                            <button className="btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              Direct Bank Transfer
+                            </button>
+                          </h5>
+                        </div>
+                        <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                          <div className="card-body">
+                            Make your payment directly into our bank account. Please use your Order ID
+                            as the payment
+                            reference. Your order won’t be
+                            shipped until the funds have cleared in our account.
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div className="order-button-payment mt-20">
+                      {/*<button type="submit" className="btn btn-dark text-uppercase text-hide mb-3">Place Your order</button>*/}
+                      {Array.from(cartItem).length>0 && <Paypal className="rounded-3"/>}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
           </div>
-        </form>
       </div>
     </section>
-    {/* checkout-area end */}
   </main>
-  {/* product popup start */}
 </div>
 
     )

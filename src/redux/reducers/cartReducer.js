@@ -39,7 +39,8 @@ export const cartReducer = (state =
         case T.CART_REMOVE_ITEM:
             return{
                 ...state,
-                cartItem: state.cartItem.filter(index => index.product !== action.payload)
+                cartItem: action.payload
+                    // state.cartItem.filter(index => index.product !== action.payload)
             }
         case T.CART_CLEAR_ITEMS:
             return{

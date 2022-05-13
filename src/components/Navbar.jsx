@@ -1,22 +1,16 @@
 import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {load_user, logout} from '../redux/Actions/authActions'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import {getProductsBySubcatesAction} from "../redux/Actions/productsActions";
 import {getCartItems, removeItemFromCart} from "../redux/Actions/cartAction";
 import {getWishlistItems} from "../redux/Actions/wishlistAction";
 
-const Navbar =()=>
+const Navbar =({user, isAuthenticated, cartItem, order_total, cart_count, subcates, wishlist_count})=>
 {
-    const {isAuthenticated, user } = useSelector((state) =>state.authReducer)
-    const {cartItem, order_total, cart_count} = useSelector((state) =>state.cartReducer)
-    const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
-    const {wishlist_count} = useSelector(state => state.wishlistReducer)
-
-
     const dispatch = useDispatch()
     const location = useLocation();
 
@@ -25,10 +19,6 @@ const Navbar =()=>
     // let type = location.pathname.split('/')[2]
     // let {genre} = useParams()
     let {type} = useParams()
-    // const {exp} = jwt_decode(token)
-    // const expirationTime = (exp * 1000) - 60000
-
-    // const user = JSON.parse(localStorage.getItem("user"));
 
     const logout_user =()=>
     {

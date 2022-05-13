@@ -1,7 +1,17 @@
 import Crumb from "../little/Crumb";
+import {useDispatch,} from "react-redux";
+import {useEffect} from "react";
+import {getMyOrderAction} from "../redux/Actions/orderAction";
 
-const MyAccount = ()=>
+const MyAccount = ({orderItem})=>
 {
+    const dispatch = useDispatch()
+    useEffect(() =>
+    {
+        dispatch(getMyOrderAction())
+    }, [dispatch]);
+
+    console.log(orderItem)
     return(
         <div className="">
             <Crumb/>
@@ -29,7 +39,7 @@ const MyAccount = ()=>
                                 <div className="col-xl-7 user-dashboard-tab__content tab-content">
                                     <div className="tab-pane fade show active" id="dashboard">
                                         <p>Hello <strong>John</strong> (not <strong>John</strong>? <a
-                                            href="login-register.html">Log out</a>)</p>
+                                            href="login-/registerl">Log out</a>)</p>
                                         <p>From your account dashboard. you can easily check &amp; view your <a href="">recent
                                             orders</a>, manage your <a href="">shipping and billing addresses</a> and <a
                                             href="">edit your password and account details</a>.</p>
@@ -37,7 +47,7 @@ const MyAccount = ()=>
                                     <div className="tab-pane fade" id="orders">
                                         <div className="message-box mb--30 d-none">
                                             <p><i className="fa fa-check-circle"> </i>No order has been made yet.</p>
-                                            <a href="shop.html">Go Shop</a>
+                                            <a href="/shop">Go Shop</a>
                                         </div>
                                         <div className="table-content table-responsive">
                                             <table className="table text-center">
@@ -56,14 +66,14 @@ const MyAccount = ()=>
                                                     <td className="wide-column">September 19, 2018</td>
                                                     <td>Processing</td>
                                                     <td className="wide-column">$49.00 for 1 item</td>
-                                                    <td><a href="product-details.html" className="btn btn-outline-primary">View</a></td>
+                                                    <td><a href="product-/detailsl" className="btn btn-outline-primary">View</a></td>
                                                 </tr>
                                                 <tr>
                                                     <td>2</td>
                                                     <td className="wide-column">September 19, 2018</td>
                                                     <td>Processing</td>
                                                     <td className="wide-column">$49.00 for 1 item</td>
-                                                    <td><a href="product-details.html" className="btn btn-outline-primary">View</a></td>
+                                                    <td><a href="product-/detailsl" className="btn btn-outline-primary">View</a></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -72,7 +82,7 @@ const MyAccount = ()=>
                                     <div className="tab-pane fade" id="wishlist">
                                         <div className="message-box mb--30 d-none">
                                             <p><i className="fa fa-check-circle"> </i>No order has been made yet.</p>
-                                            <a href="shop.html">Go Shop</a>
+                                            <a href="/shop">Go Shop</a>
                                         </div>
                                         <div className="table-content table-responsive">
                                             <table className="table text-center">
@@ -91,14 +101,14 @@ const MyAccount = ()=>
                                                     <td className="wide-column">September 19, 2018</td>
                                                     <td>Processing</td>
                                                     <td className="wide-column">$49.00 for 1 item</td>
-                                                    <td><a href="product-details.html" className="btn btn-outline-primary">Add To Cart</a></td>
+                                                    <td><a href="product-/detailsl" className="btn btn-outline-primary">Add To Cart</a></td>
                                                 </tr>
                                                 <tr>
                                                     <td>2</td>
                                                     <td className="wide-column">September 19, 2018</td>
                                                     <td>Processing</td>
                                                     <td className="wide-column">$49.00 for 1 item</td>
-                                                    <td><a href="product-details.html" className="btn btn-outline-primary">Add To Cart</a></td>
+                                                    <td><a href="product-/detailsl" className="btn btn-outline-primary">Add To Cart</a></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -109,7 +119,7 @@ const MyAccount = ()=>
                                         <div className="message-box mb--30 d-none">
                                             <p><i className="fa fa-exclamation-circle"></i>No downloads available yet.
                                             </p>
-                                            <a href="shop.html">Go Shop</a>
+                                            <a href="/shop">Go Shop</a>
                                         </div>
                                         <div className="table-content table-responsive">
                                             <table className="table text-center">

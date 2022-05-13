@@ -5,7 +5,7 @@ import StarRating from "react-star-rate";
 import Modal from "../items/Modal";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch,} from "react-redux";
 import {
   getAllProductAction,
   getColors,
@@ -17,11 +17,10 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {addToWishlist, removeItemFromWishlist} from "../redux/Actions/wishlistAction";
-const Shop = ()=>
+
+const Shop = ({user, products, tags, sizes, colors, one, images, onsale, variant,})=>
 {
-  //For the product modal
   const [id, setId] = useState(1)
-  //others
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [loadmore, setLoadmore] = useState(12)
@@ -33,23 +32,11 @@ const Shop = ()=>
   {
     setTimeout(close, 15000)
   }
-
-  //others
   let genre = location.pathname.split('/')[1]
   // let {genre} = useParams()
   let {type} = useParams()
 
   const dispatch = useDispatch()
-  const {user} = useSelector(state => state.authReducer)
-  const {products,} = useSelector(state => state.getAllProductsReducer)
-  const {tags} = useSelector(state => state.getTagsReducer)
-  const {sizes} = useSelector(state => state.getSizesReducer)
-  const {colors} = useSelector(state => state.getColorsReducer)
-  const {one} = useSelector(state => state.getOneProductReducer)
-  const {images,} = useSelector(state => state.getImagesReducer)
-  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
-  const {variant} = useSelector(state => state.getproductByVariantReducer)
-
   useEffect(()=>
   {
     dispatch(getOneProduct(id))
@@ -61,23 +48,14 @@ const Shop = ()=>
     dispatch(getSizes())
     dispatch(getTags())
     dispatch(getNewProducts())
-    // console.log(sizes)
   },[dispatch, genre, type, id])
 
   const [value, setValue] = useState([100, 500]);
-  const handleLoadMore = ()=>
-  {
-    setLoadmore(loadmore => loadmore+3)
-  }
-  const handleMore = ()=>
-  {
-    setMore(more => more+2)
-  }
   const handleChange = (event, newValue) =>
   {
     setValue(newValue);
   };
-  const [liked, setLiked] = useState(0);
+  const [liked, setLiked] = useState(JSON.parse(localStorage.getItem('wish')));
   return(
   <div>
   <Crumb/>
@@ -213,7 +191,7 @@ const Shop = ()=>
                         </div>
                       </li>
                   )}
-                  <Link to="" className="load-more text-center ml-5" onClick={handleMore}>MORE...</Link>
+                  <Link to="" className="load-more text-center ml-5" onClick={()=>setMore(more => more+2)}>MORE...</Link>
 
                 </ul>
               </div>
@@ -363,13 +341,8 @@ const Shop = ()=>
                                     </div>
                                     <span  className="wishlist float-right">
                                       {item.id === liked && <span>
-                                        <FavoriteIcon sx={{color:"red"}}
-                                                      onClick={()=>
-                                                      {
-                                                        setLiked(0);
-                                                        dispatch(removeItemFromWishlist(item?.id))
-                                                      }}/></span>}
-                                      {item.id !== liked &&<span>
+                                        <FavoriteIcon sx={{color:"red"}} onClick={()=>setLiked(0)}/>       </span>}
+                                      {item.id !== liked && <span>
                                         <FavoriteBorderIcon color="inherit"
                                                              onClick={()=>
                                                              {
@@ -399,7 +372,7 @@ const Shop = ()=>
                               <div className="product-box-wrapper">
                                 <div className="product-img">
                                   <img src={item?.image}  alt=""  style={{width:250, height:300, objectFit:"contain"}}/>
-                                  <Link to="/shop" className="d-block">
+                                  <Link to={`/single/${item.id}`} className="d-block">
                                     <div className="second-img">
                                       <img src={item?.image_hover} alt="" style={{width:250, height:300, objectFit:"contain"}} />
                                     </div>
@@ -413,12 +386,24 @@ const Shop = ()=>
                                     <div className="categories">
                                       <Link to="/shop" className="product-category text-capitalize "><span>{item?.category?.type?.type_name}</span></Link>
                                     </div>
-                                    <Link to="wishlist" className="wishlist float-right"><span><i className="bi bi-heart" /></span></Link>
+                                    <span  className="wishlist float-right">
+                                      {item.id === liked && <span>
+                                      <FavoriteIcon sx={{color:"red"}} onClick={()=>setLiked(0)}/> </span>}
+
+                                      {item.id !== liked &&<span>
+                                        <FavoriteBorderIcon color="inherit"
+                                                            onClick={()=>
+                                                            {
+                                                              setLiked(item.id);
+                                                              dispatch(addToWishlist(item?.id, user))}}/></span>}
+                                    </span>
+
+                                    {/*<Link to="wishlist" className="wishlist float-right"><span><i className="bi bi-heart" /></span></Link>*/}
                                   </div>
                                   <Link to="/shop" className="product-title">{item?.name}</Link>
                                   <div className="price-switcher">
                                     <span className="price switcher-item">${item?.price}</span>
-                                    <Link to="cart" className="add-cart text-capitalize switcher-item">+add to cart</Link>
+                                    <Link to={`/single/${item.id}`} className="add-cart text-capitalize switcher-item">+add to cart</Link>
                                   </div>
                                 </div>
                               </div>
@@ -458,7 +443,6 @@ const Shop = ()=>
 
                                       <StarRating count={5} symbol="★" color2={'#ffd700'} />
 
-
                                       <div className="price"><span>${item?.price}</span></div>
                                       <div className="desc">
                                         <p>{item?.description}</p>
@@ -467,9 +451,16 @@ const Shop = ()=>
                                           <li>– Hand pockets.</li>
                                           <li>– Relaxed fit.</li>
                                         </ul>
-                                        <Link to="cart" className="list-add-cart-btn text-capitalize mt-40">+add  to cart</Link>
-                                        <Link to="single" data-toggle="tooltip" data-placement="top" title="wishlist"><span><i className="bi bi-heart" /></span></Link>
-                                        <Link to=" " data-toggle="tooltip" data-placement="top" title="compare"><span><i className="bi bi-back" /></span></Link>
+                                        <Link to={`/single/${item.id}`} className="list-add-cart-btn text-capitalize mt-40">+add  to cart</Link>
+
+                                        <Link to="" >
+                                          {item.id === liked &&
+                                              <FavoriteIcon sx={{color:"red"}} onClick={()=>setLiked(0)}/>}
+                                          {item.id !== liked &&
+                                          <span><FavoriteBorderIcon color="inherit" onClick={()=>{setLiked(item.id);
+                                                          dispatch(addToWishlist(item?.id, user))}}/></span>}
+                                        </Link>
+                                        <Link to="" data-toggle="tooltip" data-placement="top" title="compare"><span><i className="bi bi-back" /></span></Link>
                                       </div>
                                     </div>
                                   </div>
@@ -483,7 +474,7 @@ const Shop = ()=>
                   </div>
                 </div>
                 <div className="text-center mt-20">
-                  <button type="button" className="btn btn-outline-dark " onClick={handleLoadMore}>SEE MORE...</button>
+                  <button type="button" className="btn btn-outline-dark " onClick={()=>setLoadmore(loadmore => loadmore+3)}>SEE MORE...</button>
                 </div>
               </div>
             </div>
@@ -506,7 +497,6 @@ const Shop = ()=>
         </div>
       </div>
     </div>
-    {/* product popup end */}
 </div>
 
     )

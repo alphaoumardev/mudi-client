@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate, useLocation, matchPath, useParams, Link} from 'react-router-dom';
+import {useNavigate,  useParams, } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { reset_password_confirm } from '../../redux/Actions/authActions';
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 
 const ResetPasswordConfirm = ({reset_password_confirm }) =>
 {

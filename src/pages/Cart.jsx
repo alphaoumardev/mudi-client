@@ -1,6 +1,6 @@
 import Crumb from "../little/Crumb";
 import {Link,} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch,} from "react-redux";
 import {useEffect, useState,} from "react";
 import {getCartItems, removeItemFromCart, updateCartItem} from "../redux/Actions/cartAction";
 
@@ -9,23 +9,27 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
-import {getWishlistItems, removeItemFromWishlist} from "../redux/Actions/wishlistAction";
+import {getWishlistItems, } from "../redux/Actions/wishlistAction";
+import Paypal from "../components/Paypal";
+import {createOrderAction, getAddressAction} from "../redux/Actions/orderAction";
 
-const Cart = ()=>
+const Cart = ({cartItem, order_total, address, })=>
 {
   const dispatch = useDispatch()
-  const {cartItem, order_total} = useSelector((state) =>state.cartReducer)
   useEffect(() =>
   {
     dispatch(getCartItems())
+    dispatch(getAddressAction())
   }, [dispatch,]);
   let ca = Array.from(cartItem)
 
   const [open, setOpen] = useState(false);
   const [itemId, setItemId] = useState(null);
+  const [openPaypal, setOpenPaypal] = useState(false);
   return(
+
   <div>
-          <div>
+      <div>
             <Dialog
                 open={open}
                 // TransitionComponent={Transition}
@@ -45,7 +49,7 @@ const Cart = ()=>
                         }} className="text-danger">Remove</Button>
               </DialogActions>
             </Dialog>
-          </div>
+      </div>
   {/* shop body section start */}
   <section className="cart-body mb-90 gray-border-top ">
     <div className="has-breadcrumb-content">
@@ -141,55 +145,103 @@ const Cart = ()=>
               </div>
                 }
             </div>
-            <div className="col-xl-4">
-              <div className="cart-widget">
-                <h4 className="title">Cart Totals</h4>
-                <table className="table table-2 no-border">
-                  <tbody>
+            <div className="col-lg-4 cart-widget">
+              <div className="your-order">
+                <h3 className="text-center">Your order</h3>
+                <div className="your-order-table table-responsive">
+                  <div>
+                    <b>Shipping Address</b>
+                    <div>{address?.user?.first_name} {address?.user?.last_name}, {address?.user?.email}</div>
+                    <p>{address?.country} {address?.state} {address?.city} {address?.street}
+                      {address?.details} {address?.zip} {address?.order_note}
+                    </p>
+                    <Link to={"/checkout"} className="btn btn-outline-dark float-end">Change Address</Link>
+
+                  </div>
+                  <table>
+                    <thead>
                     <tr>
-                      <th>Subtotal</th>
-                      <th className="text-danger text-end ">${order_total}</th>
+                      <th className="product-name">Order Dividends</th>
+                      <th className="float-end ">Total</th>
                     </tr>
-                    <tr>
-                      <th>Shipping</th>
-                      <td>
-                        <h6>Flat rate</h6>
-                        <p>Shipping options will be updated during checkout.</p>
-                        <Link to="javascript:void(0)" className="price-calculate">Calculate shipping</Link>
-                        <div className="calculate-shipping-box">
-                          <form action="#" method="POST">
-                            <div className="form-group">
-                              <div className="cart-select">
-                                <select name="country" id="country">
-                                  <option value="uk">United Kingdom</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <input type="text" placeholder="Country" />
-                            </div>
-                            <div className="form-group">
-                              <input type="text" placeholder="Town / City" />
-                            </div>
-                            <div className="form-group">
-                              <input type="number" placeholder="Post Code" />
-                            </div>
-                            <div className="form-group">
-                              <button className="generic-btn border-0 red-hover-btn text-uppercase ">Update</button>
-                            </div>
-                          </form>
-                        </div>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    <tr className="cart-subtotal">
+                      <th>Cart Subtotal</th>
+                      <td><span className="amount">${order_total}</span></td>
+                    </tr>
+                    <tr className="cart-subtotal">
+                      <th>Shipping Fee</th>
+                      <td><span className="amount">${12}</span></td>
+                    </tr>
+                    <tr className="order-total">
+                      <th>Order Total</th>
+                      <td><strong><span className="amount">${order_total +12}</span></strong>
                       </td>
                     </tr>
-                    <tr>
-                      <th>Total</th>
-                      <th className="text-end"><strong >${order_total}</strong></th>
-                    </tr>
-                  </tbody>
-                </table>
-                <Link to="/checkout" className="mt-40 generic-btn red-hover-btn w-100 d-block" style={{height: 50}}>Procced to checkout</Link>
+                    </tfoot>
+                  </table>
+                </div>
+                <div className="payment-method">
+                  <div className="accordion" id="accordionExample">
+                    <div className="card">
+                      <div className="card-header" id="headingThree">
+                        <h5 className="mb-0">
+                          <button className="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            PayPal
+                          </button>
+                        </h5>
+                      </div>
+                      <div id="collapseThree" className="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div className="card-body">
+                          Pay via PayPal; you can pay with your credit card if you don’t have a
+                          PayPal account.
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-header" id="headingTwo">
+                        <h5 className="mb-0">
+                          <button className="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Cheque Payment
+                          </button>
+                        </h5>
+                      </div>
+                      <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div className="card-body">
+                          Please send your cheque to Store Name, Store Street, Store Town, Store
+                          State / County, Store
+                          Postcode.
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card">
+                      <div className="card-header" id="headingOne">
+                        <h5 className="mb-0">
+                          <button className="btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Direct Bank Transfer
+                          </button>
+                        </h5>
+                      </div>
+                      <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div className="card-body">
+                          Make your payment directly into our bank account. Please use your Order ID
+                          as the payment
+                          reference. Your order won’t be
+                          shipped until the funds have cleared in our account.
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div className="order-button-payment mt-20">
+                    {ca.length>0 && <button aria-errormessage="your" onClick={()=>{setOpenPaypal(true)}} className="btn btn-dark text-uppercase text-hide mb-3">Place Your order</button>}
+                    {openPaypal && <Paypal className="rounded-3"/>}
+                  </div>
+                </div>
               </div>
-              {/* /. cart widget */}
             </div>
           </div>
         </div>

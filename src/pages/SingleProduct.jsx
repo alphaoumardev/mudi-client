@@ -6,16 +6,13 @@ import {useEffect,} from "react";
 import Singles from "../items/Singles";
 import RelatedProduct from "../little/RelatedProduct";
 import BannerTab2 from "../little/BannerTab2";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {getImages, getOneProduct, getProductsByVariant} from "../redux/Actions/productsActions";
 
-const SingleProduct = () =>
+const SingleProduct = ({one, images, variant }) =>
 {
   let {id} = useParams()
   const dispatch = useDispatch()
-  const {one} = useSelector(state => state.getOneProductReducer)
-  const {images,} = useSelector(state => state.getImagesReducer)
-  const {variant} = useSelector(state => state.getproductByVariantReducer)
   useEffect(()=>
   {
     dispatch(getOneProduct(id))

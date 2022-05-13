@@ -2,12 +2,9 @@ import '../css/page404.css'
 import {Link} from "react-router-dom";
 const Page404 = ()=>
 {
-    let scene = document.getElementById('scene');
-    // var parallax = new Parallax(scene);
+    document.getElementById('scene');
     return(
         <div>
-            {/* about */}
-            {/* end about */}
             <section className="wrapper">
                 <div className="container">
                     <div id="scene" className="scene" data-hover-only="false">

@@ -4,22 +4,16 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {Link} from "react-router-dom";
 import Modal from "../items/Modal";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch,} from "react-redux";
 import {
-    getImages, getNewProducts,
+    getImages,
     getOneProduct, getOnsales,
     getProductsByVariant,
 } from "../redux/Actions/productsActions";
-const NewArrivals = ()=>
+const NewArrivals = ({one, variant, images, onsale})=>
 {
-    //For the product modal
-    const [id, setId] = useState(7)
-
+    const [id, setId] = useState(1)
     const dispatch = useDispatch()
-    const {one} = useSelector(state => state.getOneProductReducer)
-    const {images,} = useSelector(state => state.getImagesReducer)
-    const {variant} = useSelector(state => state.getproductByVariantReducer)
-    const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
 
     useEffect(()=>
     {

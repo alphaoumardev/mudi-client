@@ -1,28 +1,66 @@
 import * as O from '../Types'
+import * as T from "../Types";
+
+
+export const create_addressReducer = (state={address:[]}, action)=>
+{
+    switch (action.type)
+    {
+        case O.ADDRESS_ADD_REQUEST:
+            return{loading:true}
+
+        case O.ADDRESS_SUCCESS:
+            return{
+                loading: false,
+                address: action.payload
+            }
+        case O.ADDRESS_FAIL:
+            return{
+                loading: false,
+                error:action.payload
+            }
+        default:
+            return state
+    }
+}
+export const getShippingAddressReducer = (state={address:[]}, action)=>
+{
+    switch (action.type)
+    {
+        case O.ADDRESS_GET_REQUEST:
+            return{loading:true}
+
+        case O.ADDRESS_GET_SUCCESS:
+            return{
+                loading: false,
+                address: action.payload
+            }
+        case O.ADDRESS_GET_FAIL:
+            return{
+                loading: false,
+                error:action.payload,
+                address: []
+            }
+        default:
+            return state
+    }
+}
 
 export const orderCreateReducer = (state={}, action)=>
 {
     switch (action.type)
     {
         case O.ORDER_CREATE_REQUEST:
-            return{loading:true}
+            return{
+                ...state,
+                loading:true
+            }
 
         case O.ORDER_CREATE_SUCCESS:
             return{
                 loading: false,
-                success: true,
                 order: action.payload
             }
-        // case T.CART_SAVE_SHIPPING_ADDRESS:
-        //     return{
-        //         ...state,
-        //         shippingAddress: action.payload
-        //     }
-        // case T.CART_PAYMENT:
-        //     return{
-        //         ...state,
-        //         payment:action.payload
-        //     }
         case O.ORDER_CREATE_FAIL:
             return{
                 loading: false,
@@ -38,25 +76,25 @@ export const orderCreateReducer = (state={}, action)=>
     }
 }
 
-export const orderDetailsReducer =(state={loading: true, orderItems: [], shippingAddress: {}}, action)=>
+export const getMyorderReducer = (state={orderItem: []}, action)=>
 {
     switch (action.type)
     {
-        case O.ORDER_DETAILS_REQUEST:
+        case O.ORDER_MY_REQUEST:
             return{
                 ...state,
                 loading:true
             }
 
-        case O.ORDER_DETAILS_SUCCESS:
+        case O.ORDER_MY_SUCCESS:
             return{
                 loading: false,
-                success: true,
-                order: action.payload
+                orderItem: action.payload
             }
-        case O.ORDER_DETAILS_FAIL:
+        case O.ORDER_MY_FAIL:
             return{
                 loading: false,
+                orderItem:[],
                 error:action.payload
             }
 
@@ -64,104 +102,29 @@ export const orderDetailsReducer =(state={loading: true, orderItems: [], shippin
             return state
     }
 }
-
-export const orderPayReducer = (state={}, action)=>
+export const orderItemReducer = (state = {orderItem:[], order_total:0, order_count: 0}, action)=>
 {
     switch (action.type)
     {
-        case O.ORDER_PAY_REQUEST:
-            return{loading:true}
-
-        case O.ORDER_PAY_SUCCESS:
+        case T.ORDER_ITEM_ADD_SUCCESS:
             return{
-                loading: false,
-                success: true,
-            }
-        case O.ORDER_PAY_FAIL:
-            return{
-                loading: false,
-                error:action.payload
-            }
-        case O.ORDER_PAY_RESET:
-            return{}
-
-        default:
-            return state
-    }
-}
-
-export const orderDeliverReducer = (state={}, action)=>
-{
-    switch (action.type)
-    {
-        case O.ORDER_DELIVER_REQUEST:
-            return{loading:true}
-
-        case O.ORDER_DELIVER_SUCCESS:
-            return{
-                loading: false,
-                success: true,
-            }
-        case O.ORDER_DELIVER_FAIL:
-            return{
-                loading: false,
-                error:action.payload
-            }
-        case O.ORDER_DELIVER_RESET:
-            return{}
-
-        default:
-            return state
-    }
-}
-
-export const orderMineReducer = (state={orders: []}, action)=>
-{
-    switch (action.type)
-    {
-        case O.ORDER_MINE_REQUEST:
-            return{loading:true}
-
-        case O.ORDER_MINE_SUCCESS:
-            return{
-                loading: false,
-                success: true,
-                orders: action.payload
-            }
-        case O.ORDER_MINE_FAIL:
-            return{
-                loading: false,
-                error:action.payload
-            }
-        case O.ORDER_MINE_RESET:
-            return{
-                orders: []
+                ...state,
+                orderItem: action.payload
             }
 
-        default:
-            return state
-    }
-}
-
-export const orderListReducer = (state={orders: []}, action)=>
-{
-    switch (action.type)
-    {
-        case O.ORDER_LIST_REQUEST:
-            return{loading:true}
-
-        case O.ORDER_LIST_SUCCESS:
+        case T.ORDER_ITEM_SUCCESS:
             return{
-                loading: false,
-                success: true,
-                orders: action.payload
-            }
-        case O.ORDER_LIST_FAIL:
-            return{
-                loading: false,
-                error:action.payload
+                ...state,
+                orderItem: action.payload,
+                order_total: action.order_total,
+                order_count: action.order_count,
             }
 
+        case T.CART_CLEAR_ITEMS:
+            return{
+                ...state,
+                orderItem: []
+            }
         default:
             return state
     }

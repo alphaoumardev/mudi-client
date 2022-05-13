@@ -1,7 +1,13 @@
 import * as P from '../Types'
 import axios from "axios";
 
-
+const config = {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `JWT ${localStorage.getItem('access')}`,
+        'Accept': 'application/json'
+    }
+}
 export const getAllProductAction = (genre, type) => async (dispatch) =>
 {
     try
@@ -9,7 +15,7 @@ export const getAllProductAction = (genre, type) => async (dispatch) =>
         dispatch({type:P.GET_ALL_PRODUCTS_REQUEST})
         if(type)
         {
-           await axios.get(`/catename/${genre}/${type}`).then((res)=>
+           await axios.get(`/catename/${genre}/${type}`, config).then((res)=>
            {
                dispatch(
                    {
@@ -21,13 +27,14 @@ export const getAllProductAction = (genre, type) => async (dispatch) =>
         else
         {
 
-            await axios.get('/all/').then((res)=>
+            await axios.get('/all/', config).then((res)=>
             {
                 dispatch(
                     {
                         type:P.GET_ALL_PRODUCTS_SUCCESS,
-                        payload: res.data
+                        payload: res.data,
                 })
+                // console.log(res.data)
             })
         }
     }catch (error)
@@ -49,7 +56,7 @@ export const getProductsBySubcatesAction = (genre, type) => async (dispatch) =>
         dispatch({type:P.GET_SUBCATES_REQUEST})
         if(type)
         {
-            await axios.get(`/catename/${genre}/${type}`).then((res)=>
+            await axios.get(`/catename/${genre}/${type}`, config).then((res)=>
             {
                 dispatch(
                     {
@@ -62,7 +69,7 @@ export const getProductsBySubcatesAction = (genre, type) => async (dispatch) =>
         else
         {
             dispatch({type:P.GET_SUBCATES_REQUEST})
-            await axios.get(`/catename/${genre}`).then((res)=>
+            await axios.get(`/catename/${genre}`, config).then((res)=>
             {
                 dispatch(
                     {
@@ -92,7 +99,7 @@ export const getProductByPageAction = (genre, type, page) => async (dispatch) =>
         dispatch({type:P.GET_BY_PAGES_REQUEST})
         if(type)
         {
-            await axios.get(`/catename/${genre}/${type}`).then((res)=>
+            await axios.get(`/catename/${genre}/${type}`, config).then((res)=>
             {
                 dispatch(
                     {
@@ -104,7 +111,7 @@ export const getProductByPageAction = (genre, type, page) => async (dispatch) =>
         }
         else
         {
-            await axios.get(`/products/?page=${page}`).then((res)=>
+            await axios.get(`/products/?page=${page}`, config).then((res)=>
             {
                 dispatch({
                     type: P.GET_BY_PAGES_SUCCESS,
@@ -131,7 +138,7 @@ export const getOneProduct = (id) => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_ONE_PRODUCT_REQUEST})
-        await axios.get('/one/' +id).then((res)=>
+        await axios.get('/one/' +id, config).then((res)=>
         {
             dispatch(
                 {
@@ -156,7 +163,7 @@ export const getProductsByVariant = (id) => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_BY_VARIANT_REQUEST})
-        await axios.get('/byvariant/' +id).then((res)=>
+        await axios.get('/byvariant/' +id, config).then((res)=>
         {
             dispatch(
                 {
@@ -181,7 +188,7 @@ export const getImages = (id) => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_IMAGES_REQUEST})
-        await axios.get('/images/' +id).then((res)=>
+        await axios.get('/images/' +id, config).then((res)=>
         {
             dispatch(
                 {
@@ -207,7 +214,7 @@ export const getColors = () => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_COLORS_REQUEST})
-        await axios.get('/colors/').then((res)=>
+        await axios.get('/colors/', config).then((res)=>
         {
             dispatch(
                 {
@@ -232,7 +239,7 @@ export const getSizes = () => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_SIZES_REQUEST})
-        await axios.get('/sizes/').then((res)=>
+        await axios.get('/sizes/', config).then((res)=>
         {
             dispatch(
                 {
@@ -257,7 +264,7 @@ export const getTags = () => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_TAGS_REQUEST})
-        await axios.get('/tags/').then((res)=>
+        await axios.get('/tags/', config).then((res)=>
         {
             dispatch(
                 {
@@ -282,7 +289,7 @@ export const getNewProducts = () => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_NEWPRODUCTS_REQUEST})
-        await axios.get('/newproducts/').then((res)=>
+        await axios.get('/newproducts/', config).then((res)=>
         {
             dispatch(
                 {
@@ -307,7 +314,7 @@ export const getOnsales = () => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_ONSALE_REQUEST})
-        await axios.get('/onsale/').then((res)=>
+        await axios.get('/onsale/', config).then((res)=>
         {
             dispatch(
                 {
@@ -332,7 +339,7 @@ export const getSlides = () => async (dispatch) =>
     try
     {
         dispatch({type:P.GET_SLIDERS_REQUEST})
-        await axios.get('/sliders/').then((res)=>
+        await axios.get('/sliders/', config).then((res)=>
         {
             dispatch(
                 {

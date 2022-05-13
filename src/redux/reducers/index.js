@@ -2,14 +2,7 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import {cartReducer} from "./cartReducer";
 import {wishlistReducer} from './wishlistReducer'
-import {
-    orderCreateReducer,
-    orderDeliverReducer,
-    orderDetailsReducer,
-    orderListReducer,
-    orderMineReducer,
-    orderPayReducer
-} from "./orderReducer";
+import {create_addressReducer, getShippingAddressReducer, orderCreateReducer, getMyorderReducer} from "./orderReducer";
 import {
     getAllProductsReducer,
     getColorsReducer,
@@ -47,10 +40,10 @@ export default combineReducers(
         getOnsaleProductsReducer,
         getSlidersReducer,
 
-        // orderCreateReducer,
-        // orderDetailsReducer,
-        // orderDeliverReducer,
-        // orderPayReducer,
-        // orderMineReducer,
-        // orderListReducer,
+        create_addressReducer,
+        getShippingAddressReducer,
+
+        orderCreateReducer,
+        getMyorderReducer,
+
     });

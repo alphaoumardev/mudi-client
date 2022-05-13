@@ -22,12 +22,14 @@ import {
   getSizesReducer,
   getTagsReducer
 } from "../redux/reducers/productsReducer";
-const AllProducts = ()=>
+const AllProducts = ({article, num_pages, tags, sizes, colors, one, images, onsale, variant})=>
 {
-  // const {id} = useParams()
   const [id, setId] = useState(5)
   const [page, setPage] = useState(1)
   const [isOpen, setIsOpen] = useState(false);
+  let {genre} = useParams()
+  let {type} = useParams()
+  const dispatch = useDispatch()
 
   const togglePopup = () =>{setIsOpen(!isOpen)}
   const close = ()=>{setIsOpen(false)}
@@ -35,19 +37,6 @@ const AllProducts = ()=>
   {
     setTimeout(close, 15000)
   }
-  // let genre = location.pathname.split('/')[1]
-  let {genre} = useParams()
-  let {type} = useParams()
-
-  const dispatch = useDispatch()
-  const {article, num_pages} = useSelector(state => state.getProductsByPagegReducer)
-  const {tags} = useSelector(state => state.getTagsReducer)
-  const {sizes} = useSelector(state => state.getSizesReducer)
-  const {colors} = useSelector(state => state.getColorsReducer)
-  const {one} = useSelector(state => state.getOneProductReducer)
-  const {images,} = useSelector(state => state.getImagesReducer)
-  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
-  const {variant} = useSelector(state => state.getproductByVariantReducer)
 
   useEffect(()=>
   {

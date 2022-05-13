@@ -10,10 +10,6 @@ const config = {
 }
 export const addToCart = (id, color, size, quantity, username) => async (dispatch) =>
 {
-    // dispatch({type: A.GET_ONE_PRODUCT_REQUEST})
-    // const newItem = await axios.get(`/one/`+id)
-    // const product = newItem.data
-    // dispatch({type: A.GET_ONE_PRODUCT_SUCCESS})
     const product = id
     const user = username.id
     dispatch({type: A.CART_ADD_REQUEST})
@@ -25,8 +21,6 @@ export const addToCart = (id, color, size, quantity, username) => async (dispatc
             type: A.CART_ADD_ITEM,
             payload: res.data
         })
-        // console.log(res.data)
-        localStorage.setItem('cartItem', JSON.stringify(res.data))
     })
 }
 
@@ -41,9 +35,10 @@ export const getCartItems = () => async (dispatch) =>
             cart_count: res.data.cart_count,
         })
         // console.log(res.data)
-        localStorage.getItem('cartItem', JSON.stringify(res.data))
+        localStorage.setItem('cartItem', JSON.stringify(res.data))
     })
 }
+
 export const removeItemFromCart = (id) => async (dispatch) =>
 {
     await axios.delete('/cart/' + id, config).then((res)=>
@@ -52,7 +47,6 @@ export const removeItemFromCart = (id) => async (dispatch) =>
             type: A.CART_REMOVE_ITEM,
             payload: id,
         })
-
         // localStorage.removeItem('cartItem',)
     })
 }
@@ -66,18 +60,18 @@ export const updateCartItem = (id, quantity, product) => async (dispatch) =>
             type: A.CART_UPDATE_ITEM,
             payload: res.data,
         })
-        localStorage.getItem('cartItem', JSON.stringify(res.data))
+        // localStorage.getItem('cartItem', JSON.stringify(res.data))
         dispatch(getCartItems())
     })
 }
-export const saveShippingAddress = (data) => (dispatch) =>
-{
-    dispatch({
-        type:A.CART_SAVE_SHIPPING_ADDRESS,
-        payload: data,
-    })
-    localStorage.setItem('shippingAddress', JSON.stringify(data))
-}
+// export const saveShippingAddress = (data) => (dispatch) =>
+// {
+//     dispatch({
+//         type:A.CART_SAVE_SHIPPING_ADDRESS,
+//         payload: data,
+//     })
+//     // localStorage.setItem('shippingAddress', JSON.stringify(data))
+// }
 
 export const savePaymentMethod = (data)=> (dispatch)=>
 {
@@ -85,5 +79,5 @@ export const savePaymentMethod = (data)=> (dispatch)=>
         type:A.CART_PAYMENT,
         payload: data,
     })
-    localStorage.setItem('payment', JSON.stringify(data))
+    // localStorage.setItem('payment', JSON.stringify(data))
 }

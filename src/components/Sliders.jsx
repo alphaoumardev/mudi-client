@@ -3,14 +3,13 @@ import "slick-carousel/slick/slick-theme.css";
 import {Carousel} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch,} from "react-redux";
 import {getSlides} from "../redux/Actions/productsActions";
 
-const  Sliders = ()=>
+const  Sliders = ({sliders})=>
 {
     const [index, setIndex] = useState(0);
     const dispatch = useDispatch()
-    const {sliders} = useSelector(state => state.getSlidersReducer)
 
     const handleSelect = (selectedIndex,) =>
     {
@@ -31,7 +30,6 @@ const  Sliders = ()=>
                   keyboard={true}
                   touch={false}
         >
-            {/*<span aria-hidden="false" className="carousel-control-prev-icon" />*/}
             {sliders?.map((item, index)=>
                 <Carousel.Item key={index}>
                     <img
