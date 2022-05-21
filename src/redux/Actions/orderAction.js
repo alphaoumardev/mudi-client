@@ -1,7 +1,6 @@
 import * as O from '../Types'
 import axios from "axios";
 import * as A from "../Types";
-import {ORDER_ITEM_ADD_SUCCESS} from "../Types";
 
 const config = {
     headers: {
@@ -51,11 +50,10 @@ export const getAddressAction = () => async (dispatch) =>
         })
     }
 }
-export const createOrderAction = (username, address) => async (dispatch) =>
+export const createOrderAction = (username, address, amount) => async (dispatch) =>
 {
     let user = username.id
-    // let cart = cartItem
-    const body = JSON.stringify({user, address})
+    const body = JSON.stringify({user, address, amount})
     try
     {
         dispatch({type: O.ORDER_CREATE_REQUEST})
@@ -65,7 +63,7 @@ export const createOrderAction = (username, address) => async (dispatch) =>
                 type:O.ORDER_CREATE_SUCCESS,
                 payload: res.data,
             })
-            console.log(res.data)
+            // console.log(res.data)
             // localStorage.removeItem('cartItems')
         })
     } catch (error)
@@ -85,7 +83,7 @@ export const getMyOrderAction = () => async (dispatch) =>
         await axios.get('/orders/', config).then(res =>
         {
             dispatch({type: O.ORDER_MY_SUCCESS, payload: res.data})
-            console.log(res.data)
+            // console.log(res.data)
         })
     } catch (error)
     {

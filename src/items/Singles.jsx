@@ -172,8 +172,7 @@ const Singles = ({images, one, variant})=>
 
                             <div className="btn-groups">
                                 <button type="submit" className="add-cart-btn"
-                                        disabled={id === null || size ==='' || color === '' || quantity>one.stock || user === null}
-                                        >add to cart</button>
+                                        disabled={id === null || size ==='' || color === '' || quantity>one.stock || user === null}>add to cart</button>
                                 <button type="submit" className="buy-now-btn " disabled={true}>buy now</button>
                             </div>
                         </form>

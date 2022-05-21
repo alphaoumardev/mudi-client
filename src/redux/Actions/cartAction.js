@@ -21,6 +21,12 @@ export const addToCart = (id, color, size, quantity, username) => async (dispatc
             type: A.CART_ADD_ITEM,
             payload: res.data
         })
+    }).catch((err)=>
+    {
+        dispatch({
+            type: A.CART_ADD_FAIL,
+            payload: err.response.data
+        })
     })
 }
 

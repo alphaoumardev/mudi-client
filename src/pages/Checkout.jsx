@@ -230,7 +230,7 @@ const Checkout = ({order_total, address, cartItem})=>
                     </div>
                     <div className="order-button-payment mt-20">
                       {/*<button type="submit" className="btn btn-dark text-uppercase text-hide mb-3">Place Your order</button>*/}
-                      {Array.from(cartItem).length>0 && <Paypal className="rounded-3"/>}
+                      {Array.from(cartItem).length>0 && address && <Paypal className="rounded-3"/>}
                     </div>
                   </div>
                 </div>

@@ -23,6 +23,11 @@ export const cartReducer = (state =
             //         cartItem: [...state.cartItem, newItem]
             //     }
             // }
+        case T.CART_ADD_FAIL:
+            return{
+                ...state,
+                cartItem: []
+            }
         case T.CART_GET_ITEMS:
             return{
                 ...state,

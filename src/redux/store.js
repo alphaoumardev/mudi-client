@@ -36,7 +36,7 @@ if (accessToken)
 
 const initialState = {
     authReducer: authenticationState,
-    cartReducer: {cartItem: cartItemStorage,}
+    //cartReducer: {cartItem: cartItemStorage,}
 };
 const middleware = [thunk];
 

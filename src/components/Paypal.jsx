@@ -3,14 +3,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {createOrderAction} from "../redux/Actions/orderAction";
 import {useNavigate} from "react-router-dom";
 
-
-
 const Paypal = ()=>
 {
     const {order_total} = useSelector((state) =>state.cartReducer)
     const {address} = useSelector(state => state.getShippingAddressReducer)
     const {user, } = useSelector((state) =>state.authReducer)
-    const amount = order_total;
+    const amount = order_total +12;//for the shippment
     const currency = "USD";
     const style = {layout: "vertical", color:"silver", shape:"pill"};
     const navigate = useNavigate()
@@ -58,10 +56,8 @@ const Paypal = ()=>
                         await actions.order.capture().then(()=>
                         {
                             //create the order
-                            dispatch(createOrderAction(user, address?.id))
-                            //create order detail
-                            //delete the cart
-                            navigate('/myaccount')
+                            dispatch(createOrderAction(user, address?.id, amount))
+                            navigate('/success')
                         });
                     }}
                     onCancel={(data, actions)=>

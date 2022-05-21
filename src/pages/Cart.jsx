@@ -13,7 +13,7 @@ import {getWishlistItems, } from "../redux/Actions/wishlistAction";
 import Paypal from "../components/Paypal";
 import {createOrderAction, getAddressAction} from "../redux/Actions/orderAction";
 
-const Cart = ({cartItem, order_total, address, })=>
+const Cart = ({cartItem, order_total, address,})=>
 {
   const dispatch = useDispatch()
   useEffect(() =>
@@ -237,7 +237,7 @@ const Cart = ({cartItem, order_total, address, })=>
 
                   </div>
                   <div className="order-button-payment mt-20">
-                    {ca.length>0 && <button aria-errormessage="your" onClick={()=>{setOpenPaypal(true)}} className="btn btn-dark text-uppercase text-hide mb-3">Place Your order</button>}
+                    {ca.length>0 && address && <button aria-errormessage="your" onClick={()=>{setOpenPaypal(true)}} className="btn btn-dark text-uppercase text-hide mb-3">Place Your order</button>}
                     {openPaypal && <Paypal className="rounded-3"/>}
                   </div>
                 </div>

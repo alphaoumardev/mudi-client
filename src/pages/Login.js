@@ -33,8 +33,8 @@ const Login = ({user, error, isLoading}) =>
             return navigate('/')
         }
     }, [user]);
-        if (isLoading) { return <Fragment><Spinner/></Fragment> }
 
+    if (isLoading) { return <Fragment><Spinner/></Fragment> }
     const continueWithGoogle = async () => {
         try {
             const res = await axios.get(`/auth/o/google-oauth2/?redirect_uri=/google`)
@@ -108,8 +108,8 @@ const Login = ({user, error, isLoading}) =>
                             </div>
                         </form>
                             <div className="group">
-                                <button className='btn btn-danger mt-3 w-50' onClick={continueWithGoogle}>Google</button>
-                                <button className='btn btn-primary mt-3 w-50' onClick={continueWithFacebook}>Facebook</button>
+                                <button className='btn btn-danger mt-3 w-50' onClick={continueWithGoogle} disabled>Google</button>
+                                <button className='btn btn-primary mt-3 w-50' onClick={continueWithFacebook} disabled>Facebook</button>
                             </div>
                             <div className="hr"> </div>
                             <div className="foot-lnk">
@@ -117,7 +117,6 @@ const Login = ({user, error, isLoading}) =>
                                 <Link to="/register" >Member yet? <b className="already" style={{marginLeft:8}} > Register Here </b></Link>
                             </div>
                         </div>
-                        {/*Sign up*/}
                     </div>
                 </div>
             </div>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<booklist>
+    <bookinfo>
+        <name>The subtle to not give a f*k</name>
+        <price>133</price>
+        <ISBN>432567-27415217</ISBN>
+        <author>Diallo</author>
+        <serie>TP-483</serie>
+        <publication_date>2010-02-22</publication_date>
+        <pulisher>chime</pulisher>
+        <edition>3</edition>
+        <page_number>240</page_number>
+        <status>available</status>
+        <type>Software Engineering</type>
+        <description>The bestseller of the 21st centry in psychology</description>
+    </bookinfo>
+    <stocking>
+        <date>2020-03-13</date>
+        <quantity>10</quantity>
+        <keeper>Alpha</keeper>
+    </stocking>
+    <borrow>
+        <name>Osmane</ name>
+        <date>2022-03-23</date>
+        <return_date>2022-04-24</return_date>
+        <status>unavailable</status>
+    </borrow>
+    <bookinfo>
+        <name>Atomic habits</name>
+        <price>136</price>
+        <ISBN>4BID67-27415217</ISBN>
+        <author>Ibrahim</author>
+        <serie>TP-484</serie>
+        <publication_date>2010-02-22</publication_date>
+        <pulisher>chime</pulisher>
+        <edition>2</edition>
+        <page_number>260</page_number>
+        <status>available</status>
+        <type>Software Engineering</type>
+        <description>Our dialy life habits</description>
+    </bookinfo>
+    <stocking>
+        <date>2020-03-13</date>
+        <quantity>50</quantity>
+        <keeper>Alpha</keeper>
+    </stocking>
+    <borrow>
+        <name>Yanglu</ name>
+        <date>2022-03-23</date>
+        <return_date>2022-04-24</return_date>
+        <status>unavailable</status>
+    </borrow>
+    <bookinfo>
+        <name>你80%的时间都用错了</name>
+        <price>223</price>
+        <ISBN>432567-28538ID217</ISBN>
+        <author>李佻</author>
+        <serie>TP-488</serie>
+        <publication_date>2019-02-22</publication_date>
+        <pulisher>chime</pulisher>
+        <edition>2</edition>
+        <page_number>260</page_number>
+        <status>available</status>
+        <type>Software Engineering</type>
+        <description>psychology</description>
+    </bookinfo>
+    <stocking>
+        <date>2020-03-13</date>
+        <quantity>10</quantity>
+        <keeper>Alpha</keeper>
+    </stocking>
+    <borrow>
+        <name>barry</ name>
+        <date>2022-03-23</date>
+        <return_date>2022-04-24</return_date>
+        <status>unavailable</status>
+    </borrow>
+    <bookinfo>
+        <name>眼界</name>
+        <price>333</price>
+        <ISBN>43536IGI-4152-17</ISBN>
+        <author>李刚</author>
+        <serie>TP-483</serie>
+        <publication_date>2010-02-22</publication_date>
+        <pulisher>吉林出版社</pulisher>
+        <edition>3</edition>
+        <page_number>240</page_number>
+        <status>available</status>
+        <type>Software Engineering</type>
+        <description>The bestseller of the 21st centry in psychology</description>
+    </bookinfo>
+    <stocking>
+        <date>2020-03-13</date>
+        <quantity>10</quantity>
+        <keeper>Alpha</keeper>
+    </stocking>
+    <borrow>
+        <name>Osmane</ name>
+        <date>2022-03-23</date>
+        <return_date>2022-04-24</return_date>
+        <status>unavailable</status>
+    </borrow>
+</booklist>

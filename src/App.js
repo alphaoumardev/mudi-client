@@ -55,7 +55,6 @@ function App()
   return (
         <Top>
           {isLoading &&  <Fragment><Spinner/></Fragment> }
-
           <Navbar user={user} subcates={subcates} cart_count={cart_count} cartItem={cartItem} order_total={order_total} wishlist_count={wishlist_count} isAuthenticated={isAuthenticated}/>
           <Routes>
             <Route path="/" element={<Products article={article} num_pages={num_pages} tags={tags} sizes={sizes} colors={colors} one={one} images={images} onsale={onsale} variant={variant} sliders={sliders}/>}/>
@@ -94,7 +93,7 @@ function App()
 
                   <Route path="/checkout" element={<Checkout order_total={order_total} address={address} cartItem={cartItem} user={user}/>}/>
                   <Route path="/wishlist" element={<Wishlist user={user} images={images} variant={variant} wishlistItem={wishlistItem}/>}/>
-                  <Route path="/myaccount" element={<MyAccount orderItem={orderItem}/>}/>
+                  <Route path="/myaccount" element={<MyAccount orderItem={orderItem} address={address} wishlistItem={wishlistItem} />}/>
                   <Route path="/success" element={<Success/>}/>
                 </>:
                 <>

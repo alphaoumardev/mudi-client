@@ -29,7 +29,9 @@ import {
     LOGOUT_FAIL, REFRESH_FAIL, CART_CLEAR_ITEMS, WISHLIST_CLEAR_ITEMS
 } from '../Types'
 
-export default function authReducer(state = {}, action)
+export default function authReducer(state = {
+
+}, action)
 {
     const {type, payload} = action
 
@@ -98,7 +100,7 @@ export default function authReducer(state = {}, action)
         case LOGOUT_REQUEST:
             return {
                 ...state,
-                isLoading: true,
+                isLoading: trzhdfhfdue,
             };
         case LOGOUT_SUCCESS:
         case FACEBOOK_AUTH_FAIL:
