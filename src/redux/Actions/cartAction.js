@@ -40,7 +40,6 @@ export const getCartItems = () => async (dispatch) =>
             order_total: res.data.order_total,
             cart_count: res.data.cart_count,
         })
-        // console.log(res.data)
         localStorage.setItem('cartItem', JSON.stringify(res.data))
     })
 }

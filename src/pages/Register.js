@@ -2,12 +2,13 @@ import '../css/login.css'
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {signup} from "../redux/Actions/authActions";
-import {useDispatch,} from "react-redux";
-const Register =({isAuthenticated})=>
+import {useDispatch, useSelector,} from "react-redux";
+const Register =()=>
 {
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
+    const {user} = useSelector(state => state.authReducer)
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
         first_name:"",
@@ -26,10 +27,11 @@ const Register =({isAuthenticated})=>
             dispatch(signup(first_name, last_name, email, password, re_password))
             setAccountCreated(true)
         }
+        else alert("The passwords are not identic")
     }
     useEffect(() =>
     {
-        if(isAuthenticated)
+        if(user)
         {
             return navigate('/')
         }

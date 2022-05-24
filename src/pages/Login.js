@@ -4,11 +4,13 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {Fragment, useEffect, useState} from "react";
 import {login} from '../redux/Actions/authActions'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Spinner from "../little/Spinner";
 
-const Login = ({user, error, isLoading}) =>
+const Login = () =>
 {
+    const {user, error, isLoading} = useSelector((state) =>state.authReducer)
+
     const access = localStorage.getItem('access')
     const [credentialError, setCredentialError] = useState('');
     const dispatch = useDispatch()
@@ -32,7 +34,7 @@ const Login = ({user, error, isLoading}) =>
         {
             return navigate('/')
         }
-    }, [user]);
+    }, [dispatch, user]);
 
     if (isLoading) { return <Fragment><Spinner/></Fragment> }
     const continueWithGoogle = async () => {

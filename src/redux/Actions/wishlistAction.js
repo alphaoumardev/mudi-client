@@ -21,7 +21,6 @@ export const addToWishlist = (id, username) => async (dispatch) =>
             type: A.WISHLIST_ADD_ITEM,
             payload: res.data
         })
-        console.log(res.data.product)
         localStorage.setItem('wish', JSON.stringify(res.data.product))
     })
 

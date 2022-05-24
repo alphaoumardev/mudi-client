@@ -28,47 +28,50 @@ import {
     LOGOUT_SUCCESS,
     LOGOUT_FAIL, REFRESH_FAIL, CART_CLEAR_ITEMS, WISHLIST_CLEAR_ITEMS
 } from '../Types'
+import jwt_decode from "jwt-decode";
+
+const accessToken = localStorage.getItem('access') ? localStorage.getItem('access') : null;
+const refreshToken = localStorage.getItem('refresh') ? localStorage.getItem('refresh') : null;
+const userStorage = localStorage.getItem('user')? JSON.parse(localStorage.getItem('user')):null
 
 export default function authReducer(state = {
-
+    error:null,
+    isLoading:false,
+    isAuthenticated: false,
+    user: userStorage,
+    access: accessToken,
+    refresh: refreshToken,
 }, action)
 {
-    const {type, payload} = action
-
-    switch (type)
+    switch (action.type)
     {
         case LOGIN_REQUEST:
         case REGISTER_REQUEST:
             return{
                 isLoading: true,
             }
+
         case AUTHENTICATED_SUCCESS:
-            return{
-                ...state,
-                isAuthenticated: true,
-            }
         case LOGIN_SUCCESS:
         case GOOGLE_AUTH_SUCCESS:
         case FACEBOOK_AUTH_SUCCESS:
-            localStorage.setItem('access', payload.access)
-            localStorage.setItem('refresh', payload.refresh)
-            sessionStorage.setItem('access', payload.access)
-            sessionStorage.setItem('refresh', payload.refresh)
+            localStorage.setItem('access', action.payload.access)
+            localStorage.setItem('refresh', action.payload.refresh)
 
             return{
                 ...state,
-                access: payload.access,
-                refresh: payload.refresh,
+                access: action.payload.access,
+                refresh: action.payload.refresh,
                 isAuthenticated: true,
+                user: action.payload,
                 isLoading: false,
-                user: payload,
             }
 
         case LOAD_PROFILE_SUCCESS:
             return{
                 ...state,
                 user:{
-                    ...payload,
+                    ...action.payload,
                     ...state.user
                 }
             }
@@ -76,7 +79,7 @@ export default function authReducer(state = {
             localStorage.setItem('access', payload.access)
             return{
                 ...state,
-                access: payload.access,
+                access: action.payload.access,
             }
         case AUTHENTICATED_FAIL:
         case REGISTER_SUCCESS:
@@ -95,12 +98,15 @@ export default function authReducer(state = {
         case REGISTER_FAIL:
             return {
                 isLoading: false,
-                error: payload
+                error: action.payload,
+                user:null,
+                access: null,
+                refresh: null,
             };
         case LOGOUT_REQUEST:
             return {
                 ...state,
-                isLoading: trzhdfhfdue,
+                isLoading: true,
             };
         case LOGOUT_SUCCESS:
         case FACEBOOK_AUTH_FAIL:

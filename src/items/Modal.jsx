@@ -49,7 +49,10 @@ const Modal = ({images, one, variant})=>
     }
     useEffect(() =>
     {
-        dispatch(getCartItems())
+        if(user)
+        {
+            dispatch(getCartItems())
+        }
     }, [dispatch,]);
     return(
         <div>
@@ -173,7 +176,7 @@ const Modal = ({images, one, variant})=>
                                 </div>
 
                                 <div className="btn-groups">
-                                    <button onClick={()=>window.location.replace('/cart')} type="submit" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>
+                                    <button onClick={()=>window.location.replace('/cart')} type="submit" className="add-cart-btn" disabled={one?.stock === 0 || user===null}>add to cart</button>
                                     <button type="submit" className="buy-now-btn " disabled={one?.stock === 0}>buy now</button>
                                 </div>
                             </form>

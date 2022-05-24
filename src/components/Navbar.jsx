@@ -1,18 +1,22 @@
 import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
 import {Link, useLocation, useParams} from "react-router-dom";
-import {load_user, logout} from '../redux/Actions/authActions'
-import {useDispatch} from 'react-redux'
+import {checkIfAuthenticated, load_user, logout} from '../redux/Actions/authActions'
+import {useDispatch, useSelector} from 'react-redux'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import {getProductsBySubcatesAction} from "../redux/Actions/productsActions";
 import {getCartItems, removeItemFromCart} from "../redux/Actions/cartAction";
 import {getWishlistItems} from "../redux/Actions/wishlistAction";
 
-const Navbar =({user, isAuthenticated, cartItem, order_total, cart_count, subcates, wishlist_count})=>
+const Navbar =()=>
 {
     const dispatch = useDispatch()
     const location = useLocation();
+    const {user} = useSelector((state) =>state.authReducer)
+    const {cartItem, order_total, cart_count} = useSelector((state) =>state.cartReducer)
+    const {wishlist_count} = useSelector(state => state.wishlistReducer)
+    const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
 
     const cart = Array.from(cartItem)
     let genre = location.pathname.split('/')[1]
@@ -20,18 +24,17 @@ const Navbar =({user, isAuthenticated, cartItem, order_total, cart_count, subcat
     // let {genre} = useParams()
     let {type} = useParams()
 
-    const logout_user =()=>
+      useEffect(() =>
     {
-        dispatch(logout());
-    }
-    useEffect(() =>
-    {
-        // dispatch(checkAuthenticated())
-        dispatch(getWishlistItems())
-        dispatch(getCartItems())
         dispatch(getProductsBySubcatesAction(genre, type))
-        dispatch(load_user())
+        if(user)
+        {
+            dispatch(load_user())
+            dispatch(getWishlistItems())
+            dispatch(getCartItems())
+        }
     }, [dispatch, genre, type]);
+    // console.log(user)
 
     const [isOpen, setIsOpen] = useState(false);
     const [isOp, setIsOp] = useState(false);
@@ -147,7 +150,7 @@ const Navbar =({user, isAuthenticated, cartItem, order_total, cart_count, subcat
                             </div>
                             <div className="col-xl-4 col-lg-4 col-6 col-md-6 col-sm-6 col-9 d-flex justify-content-end">
                                 <div className="header-right">
-                                    {isAuthenticated ?
+                                    {user ?
                                         <ul className="text-right ">
                                             <li className="menu-rights">
                                                 <span>
@@ -223,7 +226,7 @@ const Navbar =({user, isAuthenticated, cartItem, order_total, cart_count, subcat
                                                 <li><Link to="/shop">Shop</Link></li>
                                                 <li><Link to="/wishlist">Wishlist</Link></li>
                                                 <li><Link to="/questions">FAQs</Link></li>
-                                                <li><Link to='/login' onClick={logout_user}><b>Logout</b></Link></li>
+                                                <li><Link to='/login' onClick={()=>dispatch(logout())}><b>Logout</b></Link></li>
                                             </ul>
                                         </li>
                                         </ul>:

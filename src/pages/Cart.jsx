@@ -1,6 +1,6 @@
 import Crumb from "../little/Crumb";
 import {Link,} from "react-router-dom";
-import {useDispatch,} from "react-redux";
+import {useDispatch, useSelector,} from "react-redux";
 import {useEffect, useState,} from "react";
 import {getCartItems, removeItemFromCart, updateCartItem} from "../redux/Actions/cartAction";
 
@@ -13,16 +13,19 @@ import {getWishlistItems, } from "../redux/Actions/wishlistAction";
 import Paypal from "../components/Paypal";
 import {createOrderAction, getAddressAction} from "../redux/Actions/orderAction";
 
-const Cart = ({cartItem, order_total, address,})=>
+const Cart = ()=>
 {
   const dispatch = useDispatch()
+
+  const {cartItem, order_total} = useSelector((state) =>state.cartReducer)
+  const {address} = useSelector(state => state.getShippingAddressReducer)
+
   useEffect(() =>
   {
     dispatch(getCartItems())
     dispatch(getAddressAction())
   }, [dispatch,]);
   let ca = Array.from(cartItem)
-
   const [open, setOpen] = useState(false);
   const [itemId, setItemId] = useState(null);
   const [openPaypal, setOpenPaypal] = useState(false);
@@ -150,11 +153,11 @@ const Cart = ({cartItem, order_total, address,})=>
                 <h3 className="text-center">Your order</h3>
                 <div className="your-order-table table-responsive">
                   <div>
-                    <b>Shipping Address</b>
-                    <div>{address?.user?.first_name} {address?.user?.last_name}, {address?.user?.email}</div>
-                    <p>{address?.country} {address?.state} {address?.city} {address?.street}
+                    <h4>Shipping Address:</h4>
+                    <div><b>{address?.user?.first_name} {address?.user?.last_name}</b> {address?.user?.email}</div>
+                    <i>{address?.country} {address?.state} {address?.city} {address?.street}
                       {address?.details} {address?.zip} {address?.order_note}
-                    </p>
+                    </i>
                     <Link to={"/checkout"} className="btn btn-outline-dark float-end">Change Address</Link>
 
                   </div>
@@ -237,7 +240,7 @@ const Cart = ({cartItem, order_total, address,})=>
 
                   </div>
                   <div className="order-button-payment mt-20">
-                    {ca.length>0 && address && <button aria-errormessage="your" onClick={()=>{setOpenPaypal(true)}} className="btn btn-dark text-uppercase text-hide mb-3">Place Your order</button>}
+                    {ca.length>0 && address?.country && <button aria-errormessage="your" onClick={()=>{setOpenPaypal(true)}} className="btn btn-dark text-uppercase text-hide mb-3">Place Your order</button>}
                     {openPaypal && <Paypal className="rounded-3"/>}
                   </div>
                 </div>

@@ -40,7 +40,6 @@ export const getAddressAction = () => async (dispatch) =>
         await axios.get(`/address/`, config).then(res =>
         {
             dispatch({type: O.ADDRESS_GET_SUCCESS, payload: res.data})
-            // console.log(res.data)
         })
     } catch (error)
     {

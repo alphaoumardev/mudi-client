@@ -1,11 +1,11 @@
 import Crumb from "../little/Crumb";
 import {useEffect, useState} from "react";
-import {Link, useLocation, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import StarRating from "react-star-rate";
 import Modal from "../items/Modal";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import {useDispatch,} from "react-redux";
+import {useDispatch, useSelector,} from "react-redux";
 import {
   getAllProductAction,
   getColors,
@@ -16,15 +16,26 @@ import {
 } from "../redux/Actions/productsActions";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import {addToWishlist, removeItemFromWishlist} from "../redux/Actions/wishlistAction";
+import {addToWishlist} from "../redux/Actions/wishlistAction";
 
-const Shop = ({user, products, tags, sizes, colors, one, images, onsale, variant,})=>
+const Shop = ()=>
 {
   const [id, setId] = useState(1)
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [loadmore, setLoadmore] = useState(12)
   const [more, setMore] = useState(5);
+  const navigate = useNavigate()
+
+  const {user,} = useSelector((state) =>state.authReducer)
+  const {variant} = useSelector(state => state.getproductByVariantReducer)
+  const {images,} = useSelector(state => state.getImagesReducer)
+  const {tags} = useSelector(state => state.getTagsReducer)
+  const {sizes} = useSelector(state => state.getSizesReducer)
+  const {colors} = useSelector(state => state.getColorsReducer)
+  const {one} = useSelector(state => state.getOneProductReducer)
+  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
+  const {products,} = useSelector(state => state.getAllProductsReducer)
 
   const togglePopup = () =>{setIsOpen(!isOpen)}
   const close = ()=>{setIsOpen(false)}
@@ -340,14 +351,20 @@ const Shop = ({user, products, tags, sizes, colors, one, images, onsale, variant
                                       <Link to="/shop" className="product-category text-capitalize"><span>{item?.category?.type?.type_name}</span></Link>
                                     </div>
                                     <span  className="wishlist float-right">
-                                      {item.id === liked && <span>
-                                        <FavoriteIcon sx={{color:"red"}} onClick={()=>setLiked(0)}/>       </span>}
-                                      {item.id !== liked && <span>
-                                        <FavoriteBorderIcon color="inherit"
-                                                             onClick={()=>
-                                                             {
-                                                               setLiked(item.id);
-                                                               dispatch(addToWishlist(item?.id, user))}}/></span>}
+                                      {user?
+                                        <>
+                                        {item.id === liked && <span>
+                                          <FavoriteIcon sx={{color:"red"}} onClick={()=>setLiked(0)}/></span>}
+                                        {item.id !== liked && <span>
+                                          <FavoriteBorderIcon color="inherit"
+                                                            onClick={()=>
+                                                            {
+                                                              setLiked(item.id);
+                                                              dispatch(addToWishlist(item?.id, user))}}/></span>}
+                                      </>:
+                                      <>
+                                        <FavoriteBorderIcon color="inherit" onClick={()=>navigate('/login')}/>
+                                      </>}
                                     </span>
                                   </div>
                                   <Link to={`/single/${item?.id}`} className="product-title">{item?.name}</Link>

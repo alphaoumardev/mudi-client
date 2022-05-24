@@ -56,8 +56,7 @@ const Singles = ({images, one, variant})=>
             <div className="pro">
                     <div className="pro-left">
                         <div className="cover-img">
-                            {currentImage?<img
-                                src={currentImage} alt=""/>:<img src={one?.image} alt="watch"/>}
+                            {currentImage?<img src={currentImage} alt=""/>:<img src={one?.image} alt="watch"/>}
                         </div>
                         <div className="hover-container">
                             <div>
@@ -77,10 +76,6 @@ const Singles = ({images, one, variant})=>
                     <div className="pro-right">
 
                         <h2>{one?.name}
-                            <div className="btn-groups">
-                                {/*<button type="submit" className="add-cart-btn"><i className="fas fa-shopping-cart" />add to cart</button>*/}
-                                {/*<button type="submit" className="buy-now-btn"><i className="fas fa-wallet" />buy now</button>*/}
-                            </div>
                         </h2>
                         <div className="single-product-price">${one?.price}</div>
                         <div className="d-flex align-items-center text-capitalize ">
@@ -171,9 +166,15 @@ const Singles = ({images, one, variant})=>
                             </div>
 
                             <div className="btn-groups">
-                                <button type="submit" className="add-cart-btn"
-                                        disabled={id === null || size ==='' || color === '' || quantity>one.stock || user === null}>add to cart</button>
-                                <button type="submit" className="buy-now-btn " disabled={true}>buy now</button>
+                                {user?<>
+                                    <button type="submit" className="add-cart-btn"
+                                            disabled={id === null || size ==='' || color === '' || quantity>one.stock }>add to cart</button>
+                                    <button type="submit" className="buy-now-btn " disabled={true}>buy now</button>
+                                    </>:<>
+                                    <button type="submit" className="add-cart-btn" onClick={()=>navigate("/login")}>add to cart</button>
+                                    <button type="submit" className="buy-now-btn " onClick={()=>navigate("/login")}>buy now</button>
+                                    </>
+                                }
                             </div>
                         </form>
                     </div>

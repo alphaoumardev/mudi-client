@@ -8,10 +8,21 @@ import BannerTab2 from "../little/BannerTab2";
 import LargeBanner from "../components/LargeBanner";
 import Banners from "../components/Banners";
 import BannerDecore from "../little/BannerDecore";
+import {useSelector} from "react-redux";
 
-const Products = ({article, num_pages, tags, sizes, colors, one, images, onsale, variant, sliders}) =>
+const Products = () =>
 {
-    return(
+  const {variant} = useSelector(state => state.getproductByVariantReducer)
+  const {images,} = useSelector(state => state.getImagesReducer)
+  const {tags} = useSelector(state => state.getTagsReducer)
+  const {sizes} = useSelector(state => state.getSizesReducer)
+  const {colors} = useSelector(state => state.getColorsReducer)
+  const {one} = useSelector(state => state.getOneProductReducer)
+  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
+  const {article, num_pages} = useSelector(state => state.getProductsByPagegReducer)
+  const {sliders} = useSelector(state => state.getSlidersReducer)
+
+  return(
   <div>
       <Sliders sliders={sliders}/>
       <Category/>

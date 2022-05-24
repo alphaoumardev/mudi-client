@@ -5,12 +5,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {addAddress, getAddressAction} from "../redux/Actions/orderAction";
 import {Link, useNavigate} from "react-router-dom";
 import Paypal from "../components/Paypal";
-import {getShippingAddressReducer} from "../redux/reducers/orderReducer";
 
-const Checkout = ({order_total, address, cartItem})=>
+const Checkout = ()=>
 {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const {cartItem, order_total} = useSelector((state) =>state.cartReducer)
+  const {address} = useSelector(state => state.getShippingAddressReducer)
+
   const [selectedCountryCode, setSelectedCountryCode] = useState('')
   const [selectedStateCode, setSelectedStateCode] = useState('')
   const [selectedCityCode, setSelectedCityCode] = useState('')
@@ -126,12 +129,6 @@ const Checkout = ({order_total, address, cartItem})=>
                         <textarea id="checkout-mess" cols={30} rows={10} placeholder="Notes about your order, e.g. special notes for delivery." defaultValue={""} onChange={(e)=>setOrder_note(e.target.value)} />
                       </div>
                     </div>
-
-                  <div className="">
-
-                    {/*<input type="submit" className="btn btn-primary float-end " value="Change Your Address" />*/}
-                    {/*onClick={(e)=>handleSubmit(e)}>Change Your Address</input>*/}
-                  </div>
                     <input type="submit" className="btn btn-primary w-50 float-right" value="Change Your Address"/>
                 </div>
               </form>
@@ -143,7 +140,7 @@ const Checkout = ({order_total, address, cartItem})=>
                   <div className="your-order-table table-responsive">
                     <div>
                       <b>Shipping Address</b>
-                      <div>{address?.user?.first_name} {address?.user?.last_name}, {address?.user?.email}</div>
+                      <div>{address?.user?.first_name} {address?.user?.last_name} {address?.user?.email}</div>
                       <p>{address?.country} {address?.state} {address?.city} {address?.street}
                         {address?.details} {address?.zip} {address?.order_note}
                       </p>

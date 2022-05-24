@@ -1,12 +1,18 @@
 import Crumb from "../little/Crumb";
-import {useDispatch,} from "react-redux";
+import {useDispatch, useSelector,} from "react-redux";
 import {useEffect,} from "react";
 import {getAddressAction, getMyOrderAction} from "../redux/Actions/orderAction";
 import {getWishlistItems, } from "../redux/Actions/wishlistAction";
 import {Link} from "react-router-dom";
-const MyAccount = ({orderItem, address, wishlistItem})=>
+import {logout} from "../redux/Actions/authActions";
+const MyAccount = ()=>
 {
     const dispatch = useDispatch()
+
+    const {wishlistItem} = useSelector(state => state.wishlistReducer)
+    const {address} = useSelector(state => state.getShippingAddressReducer)
+    const {orderItem} = useSelector(state => state.getMyorderReducer)
+
     useEffect(() =>
     {
         dispatch(getMyOrderAction())
@@ -36,7 +42,7 @@ const MyAccount = ({orderItem, address, wishlistItem})=>
                                        aria-controls="addresses" aria-selected="true">Addresses</a>
                                     <a className="nav-link" data-toggle="pill" role="tab" href="#accountdetails"
                                        aria-controls="accountdetails" aria-selected="true">Account Details</a>
-                                    <a className="nav-link" href="/">Logout</a>
+                                    <a className="nav-link" href="/login" onClick={()=>dispatch(logout())}>Logout</a>
                                 </div>
                                 <div className="col-xl-7 user-dashboard-tab__content tab-content">
                                     <div className="tab-pane fade show active" id="dashboard">

@@ -1,5 +1,5 @@
 import Crumb from "../little/Crumb";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getWishlistItems, removeItemFromWishlist} from "../redux/Actions/wishlistAction";
 import {getImages, getProductsByVariant} from "../redux/Actions/productsActions";
@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import {addToCart,} from "../redux/Actions/cartAction";
 import {Link} from "react-router-dom";
 
-const Wishlist = ({user, wishlistItem, variant, images})=>
+const Wishlist = ()=>
 {
     const [id, setId] = useState(1);
     const [size, setSize] = useState('')
@@ -21,6 +21,12 @@ const Wishlist = ({user, wishlistItem, variant, images})=>
     const [deleteItemId, setDeleteItemId] = useState(null);
 
     const dispatch = useDispatch()
+
+    const {user} = useSelector((state) =>state.authReducer)
+    const {variant} = useSelector(state => state.getproductByVariantReducer)
+    const {images,} = useSelector(state => state.getImagesReducer)
+    const {wishlistItem} = useSelector(state => state.wishlistReducer)
+
     const wish = Array.from(wishlistItem)
     useEffect(() =>
     {

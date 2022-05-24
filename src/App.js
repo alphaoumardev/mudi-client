@@ -6,7 +6,7 @@ import Shop from "./pages/Shop";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, Redirect} from 'react-router-dom';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ScrollUp from "./little/ScrollUp";
@@ -34,40 +34,22 @@ import Success from "./components/Success";
 
 function App()
 {
-  const {user, error,isAuthenticated, isLoading} = useSelector((state) =>state.authReducer)
-  const {wishlistItem} = useSelector(state => state.wishlistReducer)
-  const {variant} = useSelector(state => state.getproductByVariantReducer)
-  const {images,} = useSelector(state => state.getImagesReducer)
-  const {products, wishlisted} = useSelector(state => state.getAllProductsReducer)
-  const {tags} = useSelector(state => state.getTagsReducer)
-  const {sizes} = useSelector(state => state.getSizesReducer)
-  const {colors} = useSelector(state => state.getColorsReducer)
-  const {one} = useSelector(state => state.getOneProductReducer)
-  const {onsale} = useSelector(state => state.getOnsaleProductsReducer)
-  const {cartItem, order_total, cart_count} = useSelector((state) =>state.cartReducer)
-  const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
-  const {wishlist_count} = useSelector(state => state.wishlistReducer)
-  const {article, num_pages} = useSelector(state => state.getProductsByPagegReducer)
-  const {sliders} = useSelector(state => state.getSlidersReducer)
-  const {address} = useSelector(state => state.getShippingAddressReducer)
-  const {orderItem} = useSelector(state => state.getMyorderReducer)
-
+  const {user, isLoading} = useSelector((state) =>state.authReducer)
   return (
         <Top>
           {isLoading &&  <Fragment><Spinner/></Fragment> }
-          <Navbar user={user} subcates={subcates} cart_count={cart_count} cartItem={cartItem} order_total={order_total} wishlist_count={wishlist_count} isAuthenticated={isAuthenticated}/>
+          <Navbar />
           <Routes>
-            <Route path="/" element={<Products article={article} num_pages={num_pages} tags={tags} sizes={sizes} colors={colors} one={one} images={images} onsale={onsale} variant={variant} sliders={sliders}/>}/>
-            <Route exact path="/:genre"  element={<Products article={article} num_pages={num_pages} tags={tags} sizes={sizes} colors={colors} one={one} images={images} onsale={onsale} variant={variant} sliders={sliders}/>}/>
-
+            <Route exact path="/" element={<Products />}/>
+            <Route path="/products" element={<Products/>}/>
+            <Route exact path="/:genre" element={<Products/>}/>
 
             <Route path="*" element={<Page404/>} />
-            <Route path="/products" element={<Products article={article} num_pages={num_pages} tags={tags} sizes={sizes} colors={colors} one={one} images={images} onsale={onsale} variant={variant}/>}/>
-            <Route path="/shop" element={<Shop one={one} images={images} variant={variant} user={user} onsale={onsale} colors={colors} tags={tags} sizes={sizes} products={products} wishlisted={wishlisted}/>}/>
-            <Route path="/:genre/:type" element={<Shop one={one} images={images} variant={variant} user={user} onsale={onsale} colors={colors} tags={tags} sizes={sizes} products={products} wishlisted={wishlisted}/>}/>
-            <Route path="/single/:id" element={<SingleProduct one={one} images={images} variant={variant}/>}/>
-            <Route path="/:genre/single/:id" element={<SingleProduct one={one} images={images} variant={variant}/>}/>
-            <Route path="/:genre/:type/single/:id" element={<SingleProduct one={one} images={images} variant={variant}/>}/>
+            <Route path="/shop" element={<Shop />}/>
+            <Route path="/:genre/:type" element={<Shop/>}/>
+            <Route path="/single/:id" element={<SingleProduct/>}/>
+            <Route path="/:genre/single/:id" element={<SingleProduct/>}/>
+            <Route path="/:genre/:type/single/:id" element={<SingleProduct/>}/>
             <Route path="/allproducts" element={<AllProCrumb/>}/>
 
             {/*    The blog post */}
@@ -80,29 +62,20 @@ function App()
             <Route path="/allblogposts" element={<AllBlogPosts/>}/>
             <Route path="/post" element={<PostDetail/>}/>
             <Route path="/contact" element={<Contact/>}/>
-            {/*<Route exact  path="/login" element={<Login error={error} isLoading={isLoading} user={user}/>} />*/}
-            <Route exact  path="/register" element={<Register isLoading={isLoading} error={error} isAuthenticated={isAuthenticated}/>} />
+            <Route exact  path="/login" element={<Login/>} />
+            <Route exact  path="/register" element={<Register/>} />
 
-            {isAuthenticated?
-                <>
-                  <Route path="/activate/:uid/:token" element={<Activate/>}/>
-                  <Route path="/resetpassword"   element={<ResetPassword/>}/>
-                  <Route path="/resetpassword/confirm/:uid/:token"   element={<ResetPasswordConfirm/>}/>
-                  <Route path="/cart" element={<Cart cartItem={cartItem} order_total={order_total} address={address} user={user}/>}/>
-                  <Route path="/cart/:id" element={<Cart cartItem={cartItem} order_total={order_total} address={address} user={user}/>}/>
+            <Route path="/activate/:uid/:token" element={user?<Activate/>:<Login/>}/>
+            <Route path="/resetpassword"   element={user?<ResetPassword/>:<Login/>}/>
+            <Route path="/resetpassword/confirm/:uid/:token" element={user?<ResetPasswordConfirm/>:<Login/>}/>
+            <Route path="/cart" element={user?<Cart />:<Login/>}/>
+            <Route path="/cart/:id" element={user?<Cart />:<Login/>}/>
+            <Route path="/checkout" element={user?<Checkout />:<Login/>}/>
+            <Route path="/wishlist" element={user?<Wishlist />:<Login/>}/>
+            <Route path="/myaccount" element={user?<MyAccount />:<Login/>}/>
+            <Route path="/success" element={user?<Success/>:<Login/>}/>
 
-                  <Route path="/checkout" element={<Checkout order_total={order_total} address={address} cartItem={cartItem} user={user}/>}/>
-                  <Route path="/wishlist" element={<Wishlist user={user} images={images} variant={variant} wishlistItem={wishlistItem}/>}/>
-                  <Route path="/myaccount" element={<MyAccount orderItem={orderItem} address={address} wishlistItem={wishlistItem} />}/>
-                  <Route path="/success" element={<Success/>}/>
-                </>:
-                <>
-                  <Route path="/login" element={<Login error={error} isLoading={isLoading} user={user} />}/>
-                </>
-            }
-
-              </Routes>
-
+          </Routes>
           <ScrollUp/>
           <Footer/>
         </Top>
