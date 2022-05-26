@@ -27,7 +27,10 @@ const Register =()=>
             dispatch(signup(first_name, last_name, email, password, re_password))
             setAccountCreated(true)
         }
-        else alert("The passwords are not identic")
+        else
+        {
+            alert("The passwords are not identic")
+        }
     }
     useEffect(() =>
     {
@@ -39,7 +42,7 @@ const Register =()=>
         {
             return navigate('/login')
         }
-    }, );
+    }, [user]);
 
     const continueWithGoogle = async () =>
     {

@@ -28,7 +28,10 @@ import {
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
-    ORDER_MINE_RESET, CART_CLEAR_ITEMS, ORDER_MY_FAIL
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAIL,
+    ORDER_MINE_RESET,
+    CART_CLEAR_ITEMS, ORDER_MY_FAIL
 } from '../Types'
 import axios from "axios";
 
@@ -146,6 +149,29 @@ export const signup = (first_name, last_name, email, password, re_password)=> as
     }
 }
 
+export const updateUserProfile = (first_name, last_name, email, password)=> async dispatch =>
+{
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    }
+    const body = JSON.stringify({first_name, last_name, email, password})
+    try
+    {
+        await axios.put('/auth/users/me/', body, config).then((res)=>
+        {
+            dispatch({type:UPDATE_PROFILE_SUCCESS, payload: res.data,})
+            console.log(res.data)
+        })
+    }
+    catch (error)
+    {
+        dispatch(postActionPayloadError(UPDATE_PROFILE_FAIL, error))
+    }
+}
 export const logout = () => dispatch =>
 {
     try

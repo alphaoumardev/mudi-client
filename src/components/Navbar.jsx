@@ -33,6 +33,10 @@ const Navbar =()=>
             dispatch(getWishlistItems())
             dispatch(getCartItems())
         }
+        else
+        {
+            localStorage.clear()
+        }
     }, [dispatch, genre, type]);
     // console.log(user)
 

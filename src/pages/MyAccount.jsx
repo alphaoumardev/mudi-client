@@ -1,10 +1,13 @@
 import Crumb from "../little/Crumb";
 import {useDispatch, useSelector,} from "react-redux";
-import {useEffect,} from "react";
+import {useEffect, useState,} from "react";
 import {getAddressAction, getMyOrderAction} from "../redux/Actions/orderAction";
 import {getWishlistItems, } from "../redux/Actions/wishlistAction";
 import {Link} from "react-router-dom";
-import {logout} from "../redux/Actions/authActions";
+import {logout, updateUserProfile} from "../redux/Actions/authActions";
+import {Avatar} from "@mui/material";
+import CloudDoneIcon from '@mui/icons-material/CloudDone';
+
 const MyAccount = ()=>
 {
     const dispatch = useDispatch()
@@ -12,7 +15,17 @@ const MyAccount = ()=>
     const {wishlistItem} = useSelector(state => state.wishlistReducer)
     const {address} = useSelector(state => state.getShippingAddressReducer)
     const {orderItem} = useSelector(state => state.getMyorderReducer)
+    const {user} = useSelector(state => state.authReducer)
 
+    const [first_name, setFirst_name] = useState(user?.first_name);
+    const [last_name, setLast_name] = useState(user?.last_name);
+    const [email, setEmail] = useState(user?.email);
+    const [password, setPassword] = useState(user?.password);
+    const [re_password, setRe_password] = useState('');
+    const [newpass, setPass] = useState('');
+    const [currentPassword, setCurrentPassword] = useState('');
+
+    console.log()
     useEffect(() =>
     {
         dispatch(getMyOrderAction())
@@ -33,22 +46,22 @@ const MyAccount = ()=>
                                     <a className="nav-link active" data-toggle="pill" role="tab" href="#dashboard"
                                        aria-controls="dashboard" aria-selected="true">Dashboard</a>
                                     <a className="nav-link" data-toggle="pill" role="tab" href="#orders"
-                                       aria-controls="orders" aria-selected="true">Orders</a>
+                                       aria-controls="orders" aria-selected="true">Purchases</a>
                                     <a className="nav-link" data-toggle="pill" role="tab" href="#wishlist"
-                                    aria-controls="orders" aria-selected="true">Wishlist</a>
+                                    aria-controls="orders" aria-selected="true">Wish Lists</a>
                                     <a className="nav-link" data-toggle="pill" role="tab" href="#downloads"
                                        aria-controls="downloads" aria-selected="true">Downloads</a>
                                     <a className="nav-link" data-toggle="pill" role="tab" href="#addresses"
-                                       aria-controls="addresses" aria-selected="true">Addresses</a>
+                                       aria-controls="addresses" aria-selected="true">Shipping Addresses</a>
                                     <a className="nav-link" data-toggle="pill" role="tab" href="#accountdetails"
-                                       aria-controls="accountdetails" aria-selected="true">Account Details</a>
-                                    <a className="nav-link" href="/login" onClick={()=>dispatch(logout())}>Logout</a>
+                                       aria-controls="accountdetails" aria-selected="true">Account Settings</a>
+                                    <a className="nav-link" href="/login" onClick={()=>dispatch(logout())}><u>Sign Out</u></a>
                                 </div>
                                 <div className="col-xl-7 user-dashboard-tab__content tab-content">
                                     <div className="tab-pane fade show active" id="dashboard">
                                         <p>Hello <strong>{address?.user?.first_name}</strong></p>
                                         <p>From your account dashboard. you can easily check &amp; view your
-                                            <a href="#orders"> recent orders</a>, manage your
+                                            <a href="#orders"> recent purchases</a>, manage your
                                             <a href="#addresses">shipping and billing addresses</a> and
                                             <a href="">edit your password and account details</a>.
                                         </p>
@@ -92,7 +105,7 @@ const MyAccount = ()=>
                                                                     </tbody>
                                                                 </table>
                                                             </td>
-                                                            <td>{item?.status}</td>
+                                                            <td>{item?.status==='COMPLETED' && <CloudDoneIcon color='success'/>}</td>
                                                             <td className="">${item?.amount}</td>
                                                         </tr>
                                                     )}
@@ -209,15 +222,33 @@ const MyAccount = ()=>
                                         </div>
                                     </div>
                                     <div className="tab-pane fade" id="accountdetails">
-                                        <form action="#" className="col-xl-12 d-flex">
-                                            <div className="col-xl-6">
-                                                <legend className="form__legend">Basic infos</legend>
+                                        <div className="col-xl-12 d-flex">
+                                        <form className="col-xl-6" onSubmit={()=>dispatch(updateUserProfile(first_name, last_name, user?.email, password))}>
+                                            <div>
+                                                <legend className="form__legend">Personal Info</legend>
+                                                <div className="d-flex align-items-center">
+                                                    <Avatar alt={user?.first_name?.slice(0, 1)} sx={{ width: 56, height: 56 }}
+                                                            src='https://res.cloudinary.com/diallo/image/upload/v1647154155/profile_d0j0wg.png'/>
+                                                    <input type="file" name="avatar"  className="d-none" id="avatar-id"/><br/>
+                                                    <label htmlFor='avatar-id' className="a-name" title="change your avatar"><i className="bi bi-camera-fill" style={{fontSize:25}}></i></label>
+                                                    <b className="a-name">
+                                                        <strong>{user?.first_name} {user?.last_name}</strong> <br/>{user?.email}
+                                                    </b>
+                                                </div>
                                                 <div className="col-md-10 mb-sm-3">
                                                     <div className="checkout-form-list">
-                                                        <label className="form__label" htmlFor="f_name">First name <span
-                                                            className="required">*</span></label>
-                                                        <input type="text" name="f_name" id="f_name"
-                                                               className="form__input"/>
+                                                        <label className="form__label" htmlFor="pass">Current Password
+                                                            <span className="required">*</span>
+                                                        </label>
+                                                        <input required={true} type="text" name="pass" id="pass" className="form__input" onChange={(e)=>setPassword(e.target.value)}/>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-10 mb-sm-3">
+                                                    <div className="checkout-form-list">
+                                                        <label className="form__label" htmlFor="f_name">First name
+                                                            <span className="required">*</span>
+                                                        </label>
+                                                        <input type="text" name="f_name" id="f_name" className="form__input" onChange={(e)=>setFirst_name(e.target.value)}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-10 mb-sm-3">
@@ -225,62 +256,47 @@ const MyAccount = ()=>
                                                             <label className="form__label" htmlFor="l_name">Last name <span
                                                                 className="required">*</span></label>
                                                             <input type="text" name="l_name" id="l_name"
-                                                                   className="form__input"/>
+                                                                   className="form__input" onChange={(e)=>setLast_name(e.target.value)}/>
                                                         </div>
-                                                    </div>
-                                                <div className="col-xl-10">
-                                                    <div className="checkout-form-list">
-                                                        <label className="form__label" htmlFor="d_name">Display
-                                                            name <span className="required">*</span></label>
-                                                        <input type="text" name="d_name" id="d_name"
-                                                               className="form__input"/>
-                                                        <span className="form__notes"><em>This will be how your name will be displayed in the account section and in reviews</em></span>
-                                                    </div>
                                                 </div>
-                                                <div className="col-xl-10">
-                                                <div className="checkout-form-list">
-                                                    <label className="form__label" htmlFor="email">Email
-                                                        Address <span className="required">*</span></label>
-                                                    <input type="email" name="email" id="email"
-                                                           className="form__input"/>
+                                                <div className="form__group mb-5">
+                                                    <input type="submit" value="Save Changes" className="btn btn-outline-primary"/>
                                                 </div>
                                             </div>
-                                            </div>
-
-                                            <div className="col-xl-6">
+                                        </form>
+                                        <form className="col-xl-6">
+                                            <div >
                                                 <legend className="form__legend">Password change</legend>
                                                 <div className="col-xl-10">
                                                     <div className="checkout-form-list">
                                                         <label className="form__label" htmlFor="cur_pass">Current
                                                             password (leave blank to leave unchanged)</label>
                                                         <input type="password" name="cur_pass" id="cur_pass"
-                                                               className="form__input"/>
+                                                               className="form__input" onChange={(e)=>setCurrentPassword(e.target.value)}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-xl-10">
                                                     <div className="checkout-form-list">
-                                                        <label className="form__label" htmlFor="new_pass">New
-                                                            password (leave blank to leave unchanged)</label>
+                                                        <label className="form__label" htmlFor="new_pass">New password</label>
                                                         <input type="password" name="new_pass" id="new_pass"
-                                                               className="form__input"/>
+                                                               className="form__input" onChange={(e)=>setPass(e.target.value)}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-xl-10">
                                                     <div className="checkout-form-list">
-                                                        <label className="form__label" htmlFor="conf_new_pass">Confirm
-                                                            new password</label>
+                                                        <label className="form__label" htmlFor="conf_new_pass">Confirm new password</label>
                                                         <input type="password" name="conf_new_pass"
-                                                               id="conf_new_pass" className="form__input"/>
+                                                               id="conf_new_pass" className="form__input" onChange={(e)=>setRe_password(e.target.value)}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-xl-10 float-right mb-5">
-                                                <div className="form__group">
-                                                    <input type="submit" value="Save Changes" className="btn btn-outline-primary"/>
+                                                    <div className="form__group">
+                                                        <input type="submit" value="Change your Password" className="btn btn-outline-secondary"/>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            </div>
-
                                         </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

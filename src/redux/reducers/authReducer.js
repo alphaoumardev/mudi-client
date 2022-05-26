@@ -26,9 +26,8 @@ import {
 
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
-    LOGOUT_FAIL, REFRESH_FAIL, CART_CLEAR_ITEMS, WISHLIST_CLEAR_ITEMS
+    LOGOUT_FAIL, REFRESH_FAIL, CART_CLEAR_ITEMS, WISHLIST_CLEAR_ITEMS, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL
 } from '../Types'
-import jwt_decode from "jwt-decode";
 
 const accessToken = localStorage.getItem('access') ? localStorage.getItem('access') : null;
 const refreshToken = localStorage.getItem('refresh') ? localStorage.getItem('refresh') : null;
@@ -66,7 +65,7 @@ export default function authReducer(state = {
                 user: action.payload,
                 isLoading: false,
             }
-
+        case UPDATE_PROFILE_SUCCESS:
         case LOAD_PROFILE_SUCCESS:
             return{
                 ...state,
@@ -88,6 +87,7 @@ export default function authReducer(state = {
                 isAuthenticated: false,
             }
         case LOAD_PROFILE_FAIL:
+        case UPDATE_PROFILE_FAIL:
             return{
                 ...state,
                 user: null,

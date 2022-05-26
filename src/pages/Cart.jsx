@@ -143,9 +143,11 @@ const Cart = ()=>
                   </div>
                 </form>
               </div>:
+                <Link to="/shop">
               <div className="d-flex text-center justify-content-center align-items-center mt-3">
                 <img src="https://res.cloudinary.com/diallo/image/upload/v1651554703/konguo_itlqhu.png" alt="" className="empty "/>
               </div>
+                </Link>
                 }
             </div>
             <div className="col-lg-4 cart-widget">

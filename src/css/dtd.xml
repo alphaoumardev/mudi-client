@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE booklist [
+        <!ELEMENT booklist (bookinfo)>
+        <!ELEMENT bookinfo (serie, chinese_name*, serie_number?, date?, edition?,order?, payment, order_status*)>
+        <!ATTLIST bookinfo ISBN CDATA #REQUIRED>
+        <!ATTLIST bookinfo price CDATA #IMPLIED>
+        <!ELEMENT serie (#PCDATA)>
+        <!ELEMENT chinese_name (#PCDATA)>
+        <!ELEMENT edition (#PCDATA)>
+        <!ELEMENT payment (#PCDATA)>
+        <!ELEMENT order (#PCDATA)>
+        <!ELEMENT serie_number (#PCDATA)>
+        <!ELEMENT date (#PCDATA)>
+        <!ELEMENT i (#PCDATA)>
+        <!ELEMENT content (#PCDATA|i)*>
+        <!ELEMENT order_status (serie, content?, order_status*)>
+
+        <!ELEMENT stocking (date?, quantity?, keeper?)>
+        <!ELEMENT date (#PCDATA)>
+        <!ELEMENT quantity (#PCDATA)>
+        <!ELEMENT keeper (#PCDATA)>
+
+        <!ELEMENT borrow (shipping?, receipt_type?, status?)>
+        <!ELEMENT shipping (#PCDATA)>
+        <!ELEMENT receipt_type (#PCDATA)>
+        <!ELEMENT status (#PCDATA)>
+        ]
+<booklist>
+    <bookinfo>
+        <serie>The subtle to not give a f*k</serie>
+        <price>133</price>
+        <ISBN>432567-27415217</ISBN>
+        <chinese_name>Diallo</chinese_name>
+        <serie>TP-483</serie>
+        <publication_date>2010-02-22</publication_date>
+        <pulisher>chime</pulisher>
+        <edition>3</edition>
+        <page_number>240</page_number>
+        <status>available</status>
+        <order>Software Engineering</order>
+        <payment>The bestseller of the 21st centry in psychology</payment>
+    </bookinfo>
+    <stocking>
+        <date>2020-03-13</date>
+        <quantity>10</quantity>
+        <keeper>Alpha</keeper>
+    </stocking>
+    <borrow>
+        <shipping>Osmane</ shipping>
+        <date>2022-03-23</date>
+        <receipt_type>2022-04-24</receipt_type>
+        <status>unavailable</status>
+    </borrow>
+</booklist>
