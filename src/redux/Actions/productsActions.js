@@ -1,7 +1,7 @@
 import * as P from '../Types'
 import axios from "axios";
 
-export const getAllProductAction = (genre, type) => async (dispatch) =>
+export const getAllProductAction = (genre, type, less_price, greater_price, query=null, color=null, size=null, ) => async (dispatch) =>
 {
     try
     {
@@ -16,11 +16,46 @@ export const getAllProductAction = (genre, type) => async (dispatch) =>
                        payload: res.data
                    })
            })
+
+        }
+        else if(color)
+        {
+            await axios.get(`/bycolor/?color=${color}`).then((res)=>
+            {
+                dispatch(
+                    {
+                        type:P.GET_ALL_PRODUCTS_SUCCESS,
+                        payload: res.data
+                    })
+            })
+        }
+        else if(size)
+        {
+            await axios.get(`/bysize/?size=${size}`).then((res)=>
+            {
+                dispatch(
+                    {
+                        type:P.GET_ALL_PRODUCTS_SUCCESS,
+                        payload: res.data
+                    })
+            })
+        }
+        else if(less_price >=13 && greater_price<=998)
+        {
+            await axios.get(`/byprice/?less_price=${less_price}&greater_price=${greater_price}`).then((res)=>
+            {
+                dispatch(
+                    {
+                        type:P.GET_ALL_PRODUCTS_SUCCESS,
+                        payload: res.data
+                    })
+            })
+
         }
         else
         {
 
-            await axios.get('/all/',).then((res)=>
+            await axios.get(`/all/?query=${query}`).then((res)=>
             {
                 dispatch(
                     {
@@ -138,7 +173,7 @@ export const getOneProduct = (id) => async (dispatch) =>
                     type:P.GET_ONE_PRODUCT_SUCCESS,
                     payload: res.data
                 })
-        })
+         })
     }catch (error)
     {
         dispatch(

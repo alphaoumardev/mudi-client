@@ -1,29 +1,65 @@
 import Featured from "../components/Featured";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import StarRating from "react-star-rate";
-
-import {useEffect,} from "react";
+import Rating from '@mui/material/Rating';
+import {useEffect, useState,} from "react";
 import Singles from "../items/Singles";
 import RelatedProduct from "../little/RelatedProduct";
 import BannerTab2 from "../little/BannerTab2";
 import {useDispatch, useSelector} from "react-redux";
 import {getImages, getOneProduct, getProductsByVariant} from "../redux/Actions/productsActions";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {styled} from "@mui/material/styles";
+import {addReview} from "../redux/Actions/orderAction";
+
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {color: '#f44d57',},
+  '& .MuiRating-iconHover': {color: '#bf020c',}});
+
+const labels = {
+  1: 'Useless',
+  2: 'Poor',
+  3: 'Not Bad',
+  4: 'Good',
+  5: 'Excellent',
+};
+const txt ={
+  1: 'text-danger',
+  2: 'text-warning',
+  3: 'text-primary',
+  4: 'text-info',
+  5: 'text-success',
+};
 
 const SingleProduct = () =>
 {
   let {id} = useParams()
   const dispatch = useDispatch()
+  const [rating, setRating] = useState(2);
+  const [hoverRating, setHoverRating] = useState(-1);
+  const [comment, setComment] = useState('');
 
+  const navigate = useNavigate()
   const {variant} = useSelector(state => state.getproductByVariantReducer)
   const {images,} = useSelector(state => state.getImagesReducer)
-  const {one} = useSelector(state => state.getOneProductReducer)
+  const {one, reviews, count} = useSelector(state => state.getOneProductReducer)
+  const {user} = useSelector(state => state.authReducer)
 
+  const submitReview = (e)=>
+  {
+    e.preventDefault()
+    dispatch(addReview(user, rating, id, comment))
+    setRating(2)
+    setComment(null)
+  }
   useEffect(()=>
   {
     dispatch(getOneProduct(id))
     dispatch(getImages(id))
     dispatch(getProductsByVariant(id))
-  },[dispatch,  id])
+  },[dispatch, id])
+
     return(
    <div>
     <section className="single-product mb-90">
@@ -32,7 +68,7 @@ const SingleProduct = () =>
         <div className="shop-wrapper">
           <div className="single-product-top">
             <div className="row">
-              <Singles images={images} variant={variant} one={one}/>
+              <Singles images={images} variant={variant} one={one} count={count}/>
             </div>
           </div>
           <div className="single-product-bottom mt-80 gray-border-top">
@@ -44,7 +80,7 @@ const SingleProduct = () =>
                 <a data-toggle="pill" href="#desc-tab-3">Additional information</a>
               </li>
               <li className="nav-item">
-                <a  data-toggle="pill" href="#desc-tab-2">Reviews (0)</a>
+                <a  data-toggle="pill" href="#desc-tab-2">Reviews ({count})</a>
               </li>
             </ul>
             <div className="container container-1200">
@@ -96,76 +132,63 @@ const SingleProduct = () =>
                     <div className="row">
                       <div className="col-lg-7">
                         <div className="review-wrapper">
-                          <div className="single-review">
-                            <div className="review-img rounded-3">
-                              <img src={one?.image_hover} alt=" " />
-                            </div>
-                            <div className="review-content">
-                              <div className="review-top-wrap">
-                                <div className="review-left">
-                                  <div className="review-name">
-                                    <h4>Diallo</h4>
-                                  </div>
-                                  <StarRating count={5} symbol="★" color2={'#ffd700'} />
-                                </div>
-                                <div className="review-left">
-                                  <Link to="#">Reply</Link>
-                                </div>
-                              </div>
-                              <div className="review-bottom">
-                                <p>{one?.description}  </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="single-review child-review">
+                          {reviews?.map((item, index) =>
+                          <div className="single-review" key={index}>
                             <div className="review-img">
-                              <img src={one?.image} alt=" " />
+                              <img src={one?.image_hover} className="rounded-3" alt=" " />
                             </div>
                             <div className="review-content">
                               <div className="review-top-wrap">
                                 <div className="review-left">
                                   <div className="review-name">
-                                    <h4>Oumou</h4>
-                                  </div>  <StarRating count={5} symbol="★" color2={'#ffd700'} />
-
+                                    <h5>{user?.first_name}</h5>
+                                    <Rating className="review-name" size="small" value={item?.rate} readOnly />
+                                    <span>{item?.create_at.slice(0,10)}</span>
+                                  </div>
                                 </div>
-                                <div className="review-left">
-                                  <Link to="#">Reply</Link>
-                                </div>
+                                {/*<div className="review-left">*/}
+                                {/*  <Link to="#">Reply</Link>*/}
+                                {/*</div>*/}
                               </div>
                               <div className="review-bottom">
-                                <p>
-                                  {one?.description}
-                                </p>
+                                <p>{item?.comment}  </p>
                               </div>
                             </div>
                           </div>
+                            )}
                         </div>
                       </div>
                       <div className="col-lg-5">
                         <div className="ratting-form-wrapper">
                           <h3>Add a Review</h3>
                           <div className="ratting-form">
-                            <form action="#">
+                            <form onSubmit={submitReview}>
                               <div className="star-box">
                                 <span>Your rating:</span>
-                                <StarRating count={5} symbol="★" color2={'#ffd700'} />
+                                <StyledRating
+                                    name="customized-color"
+                                    value={rating}
+                                    size={'large'}
+                                    sx={{fontSize:16, paddingRight:2, }}
+                                    onChange={(event, newRating) => {setRating(newRating);}}
+                                    onChangeActive={(event, newRating) => {setHoverRating(newRating);}}
+                                    precision={1}
+                                    icon={<FavoriteIcon fontSize="small" />}
+                                    emptyIcon={<FavoriteBorderIcon fontSize="small" />}
+                                />
+                                {rating && (
+                                    <span className={txt[hoverRating!== -1 ? hoverRating : rating]}>{labels[hoverRating !== -1 ? hoverRating : rating]}</span>
+                                )}
                               </div>
                               <div className="row">
-                                <div className="col-md-6">
-                                  <div className="rating-form-style mb-10">
-                                    <input placeholder="Name" type="text" />
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="rating-form-style mb-10">
-                                    <input placeholder="Email" type="email" />
-                                  </div>
-                                </div>
-                                <div className="col-md-12">
+                                <div className="col-md-12 rounded-3">
                                   <div className="rating-form-style form-submit">
-                                    <textarea name="Your Review" placeholder="Message" defaultValue={""} />
-                                    <button type="submit" className="generic-btn red-hover-btn" style={{fontSize: '14px !important'}}>Submit</button>
+                                    <textarea name="Your Review" placeholder="Message" defaultValue={""} onChange={(e)=>setComment(e.target.value)} />
+                                    {user?<button className="generic-btn red-hover-btn" type="submit"
+                                            style={{fontSize: '14px !important'}}>Submit</button>:
+                                        <button className="generic-btn red-hover-btn"  type="submit"
+                                                onClick={()=>navigate("/login")}
+                                                style={{fontSize: '14px !important'}}>Submit</button>}
                                   </div>
                                 </div>
                               </div>

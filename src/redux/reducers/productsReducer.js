@@ -79,20 +79,25 @@ export const getProductBySubcategoriesReducer = (state = {subcates: [], isLoadin
     }
 }
 
-export const getOneProductReducer = (state = {one: [], isLoading:false,}, action)=>
+export const getOneProductReducer = (state = {one: [], reviews:[], count:0, isLoading:false,}, action)=>
 {
     switch (action.type)
     {
         case P.GET_ONE_PRODUCT_REQUEST:
+        case P.GET_REVIEW_REQUEST:
             return{
                 isLoading: true,
             }
 
         case P.GET_ONE_PRODUCT_SUCCESS:
+        case P.GET_REVIEW_SUCCESS:
             return{
-                one: action.payload,
+                one: action.payload.pro,
+                reviews: action.payload.rev,
+                count: action.payload.count,
             }
         case P.GET_ONE_PRODUCT_FAIL:
+        case P.GET_REVIEW_FAIL:
             return{
                 ...state,
                 isLoading: false,

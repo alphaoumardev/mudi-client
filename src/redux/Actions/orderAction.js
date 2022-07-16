@@ -93,6 +93,29 @@ export const getMyOrderAction = () => async (dispatch) =>
     }
 }
 
+export const addReview = (user, rate, product, comment) => async (dispatch) =>
+{
+    const username= user.id
+    try {
+        const body = JSON.stringify({username, rate, product, comment})
+
+        dispatch({type: O.REVIEW_REQUEST})
+        await axios.post(`/review/`, body, config).then(res=>
+        {
+            dispatch(
+                {
+                    type: O.REVIEW_SUCCESS,
+                    payload: res.data,
+                })
+            console.log(res.data)
+        })
+    } catch (error) {
+        dispatch({
+            type: O.REVIEW_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
+        })
+    }
+}
 
 export const addToOrderItem = (id, color, size, quantity, username) => async (dispatch) =>
 {
@@ -194,43 +217,3 @@ export const deliverOrder = (order) => async (dispatch,) =>
         })
     }
 }
-
-// export const myOrdersLists = () => async (dispatch) =>
-// {
-//     try
-//     {
-//         dispatch({type: O.ORDER_MINE_REQUEST})
-//         const {data} = await axios.put(`/orders/myorder`, config)
-//         dispatch(
-//             {
-//                 type:O.ORDER_MINE_SUCCESS,
-//                 payload: data,
-//             })
-//     } catch (error)
-//     {
-//         dispatch({
-//             type: O.ORDER_MINE_FAIL,
-//             payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
-//         })
-//     }
-// }
-//
-// export const ordersList = () => async (dispatch) =>
-// {
-//     try
-//     {
-//         dispatch({type: O.ORDER_LIST_REQUEST})
-//         const {data} = await axios.get(`/orders/`, config)
-//         dispatch(
-//             {
-//                 type:O.ORDER_LIST_SUCCESS,
-//                 payload: data,
-//             })
-//     } catch (error)
-//     {
-//         dispatch({
-//             type: O.ORDER_LIST_FAIL,
-//             payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
-//         })
-//     }
-// }

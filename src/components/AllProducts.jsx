@@ -1,27 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import StarRating from "react-star-rate";
-import axios from "axios";
 import Modal from "../items/Modal";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {
   getColors,
   getImages, getNewProducts,
   getOneProduct,
   getOnsales, getProductByPageAction,
-  getProductsBySubcatesAction,
   getProductsByVariant, getSizes, getTags
 } from "../redux/Actions/productsActions";
-import {
-  getColorsReducer,
-  getNewProductsReducer, getProductsByPagegReducer,
-  getSizesReducer,
-  getTagsReducer
-} from "../redux/reducers/productsReducer";
+
 const AllProducts = ({article, num_pages, tags, sizes, colors, one, images, onsale, variant})=>
 {
   const [id, setId] = useState(5)

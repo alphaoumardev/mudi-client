@@ -1,15 +1,16 @@
 import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
 import {Link, useLocation, useParams} from "react-router-dom";
-import {checkIfAuthenticated, load_user, logout} from '../redux/Actions/authActions'
+import {load_user, logout} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from 'react-redux'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import {getProductsBySubcatesAction} from "../redux/Actions/productsActions";
 import {getCartItems, removeItemFromCart} from "../redux/Actions/cartAction";
 import {getWishlistItems} from "../redux/Actions/wishlistAction";
+import Menu from "./Menu";
 
-const Navbar =()=>
+const Navbar =({setQuery})=>
 {
     const dispatch = useDispatch()
     const location = useLocation();
@@ -38,7 +39,6 @@ const Navbar =()=>
             localStorage.clear()
         }
     }, [dispatch, genre, type]);
-    // console.log(user)
 
     const [isOpen, setIsOpen] = useState(false);
     const [isOp, setIsOp] = useState(false);
@@ -69,97 +69,19 @@ const Navbar =()=>
                                 <div className="header-nav">
                                     <nav className="d-flex justify-content-around">
                                         <ul>
-                                            <li>
-                                                <Link to={`/shop`}><span >All</span></Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`/men`}><span >Men<i className="bi bi-chevron-down" /></span></Link>
-                                                <div className="submenu">
-                                                    <div >
-                                                        {/*{urls?.map((no, index)=>*/}
-                                                        {subcates?.map((item, index)=>
-                                                            <ul key={index}>
-                                                                <li><Link to={`${genre}/${item?.type?.type_name}`} >{item?.type?.type_name}</Link></li>
-                                                            </ul>
-                                                        )}
-                                                        {/*)}*/}
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><Link to={`/women`}><span>Women<i className="bi bi-chevron-down" /></span></Link>
-                                                <div className="submenu">
-                                                    <div>
-                                                        {subcates?.map((item, index)=>
-                                                            <ul key={index}>
-                                                                <li><Link to={`${genre}/${item?.type?.type_name}`} >{item?.type?.type_name}</Link></li>
-                                                            </ul>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><Link to={`/home kits`}><span>Home Kits<i className="bi bi-chevron-down" /></span></Link>
-                                                <div className="submenu">
-                                                    <div>
-                                                        {subcates?.map((item, index)=>
-                                                            <ul key={index}>
-                                                            <li><Link to={`${genre}/${item?.type?.type_name}`}>{item?.type?.type_name}</Link></li>
-                                                            </ul>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><Link to={`/gifts`}><span>Gifts<i className="bi bi-chevron-down" /></span></Link>
-                                                <div className="submenu">
-                                                    <div>
-                                                        {subcates?.map((item, index)=>
-                                                            <ul key={index}>
-                                                                <li><Link to={`${genre}/${item?.type?.type_name}`}>{item?.type?.type_name}</Link></li>
-                                                            </ul>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li ><Link to={`/kids`}><span>Kids<i className="bi bi-chevron-down" /></span></Link>
-                                                <div className="submenu">
-                                                    <div>
-                                                        {subcates?.map((item, index)=>
-                                                            <ul key={index}>
-                                                                <li><Link to={`${genre}/${item?.type?.type_name}`}>{item?.type?.type_name}</Link></li>
-                                                            </ul>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li><Link to={``}><span>Blog<i className="bi bi-chevron-down" /></span> </Link>
-                                                <div className="submenu">
-                                                    <div>
-                                                        <ul>
-                                                            <li><Link to="blog">Blogs</Link></li>
-                                                            <li><Link to="about">About</Link></li>
-                                                            <li><Link to="author">Author</Link></li>
-                                                            <li><Link to="blogrid">Sidebar</Link></li>
-                                                            <li><Link to="bloglist">Blog list</Link></li>
-                                                            <li><Link to="allblogposts">All Blogs</Link></li>
-                                                            <li><Link to="post">Post Details</Link></li>
-                                                            <li><Link to="blogcategory">Posts Category</Link></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><Link to="contact"><span>Contact</span></Link></li>
+                                            <Menu/>
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
-                            <div className="col-xl-4 col-lg-4 col-6 col-md-6 col-sm-6 col-9 d-flex justify-content-end">
+                            <div className="col-xl-4 col-lg-2 col-6 col-md-6 col-sm-6 col-9 d-flex justify-content-end">
                                 <div className="header-right">
                                     {user ?
                                         <ul className="text-right ">
                                             <li className="menu-rights">
                                                 <span>
-                                                    <i onClick={toggleSearchButton} className="bi bi-search" title="Looking for something?" />
-                                                    {searchButton && <TextField id="standard-size-small" defaultValue="" placeholder="Search" size="small" variant="standard" style={{paddingLeft:10}}/>}
+                                                    <Link to={'/shop'}><i onClick={toggleSearchButton} className="bi bi-search" title="Looking for something?" /></Link>
+                                                    {searchButton && <TextField onChange={(e)=>setQuery(e.target.value)} id="standard-size-small" defaultValue="" placeholder="Search" size="small" variant="standard" style={{paddingLeft:10}}/>}
                                                 </span>
                                             </li>
                                             <li>
@@ -235,13 +157,19 @@ const Navbar =()=>
                                         </li>
                                         </ul>:
                                         <ul>
-                                            <Link to="/login" ><i className="bi bi-person-fill"/><b>Login/Register</b></Link>
                                             <li className="menu-rights">
-                                                <IconButton sx={{p: 0}}><Avatar alt="M"   src=''/></IconButton>
+                                                <span className="">
+                                                    <Link to={'/shop'}><i onClick={toggleSearchButton} className="bi bi-search" title="Looking for something?" /></Link>
+                                                    {searchButton && <TextField onChange={(e)=>setQuery(e.target.value)} id="standard-size-small" defaultValue="" placeholder="Search" size="small" variant="standard" style={{paddingLeft:10}}/>}
+                                                </span>
+                                            </li>
+                                            <Link to="/login" ><b>Login </b><i className="bi bi-person-hearts"/></Link>
+                                            <li className="menu-rights">
+                                                <Link to="/login"><IconButton sx={{p: 0}}><Avatar alt="M"   src=''/></IconButton></Link>
                                             </li>
                                         </ul>
 
-                                        }
+                                    }
                                 </div>
                             </div>
                         </div>

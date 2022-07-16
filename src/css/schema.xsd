@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="stringtype">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="inttype">
+        <xs:restriction base="xs:positiveInteger"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="dectype">
+        <xs:restriction base="xs:decimal"/>
+    </xs:simpleType>
+
+    <xs:complexType name="librairy">
+        <xs:sequence>
+            <xs:complexType name="book">
+                <xs:element name="bookname" type="xs:string"/>
+                    <xs:complexType name="author">
+                        <xs:sequence>
+                            <xs:element name="authorname" type="xs:string"/>
+                            <xs:element name="gender" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                    <xs:comlexType name="publisher" type="stringtype">
+                        <xs:sequence>
+                            <xs:element name="publishername" type="stringtype"/>
+                            <xs:complexType name="address">
+                                <xs:sequence>
+                                    <xs:element name="province" type="stringtype"/>
+                                    <xs:element name="city" type="xs:string"/>
+                                    <xs:element name="detail" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:sequence>
+                    </xs:comlexType>
+                    <xs:element name="price" type="xs:integer"/>
+                    <xs:element name="booknumber" type="xs:integer"/>
+                    <xs:element name="publishdate" type="xs:date"/>
+                    <xs:element name="cataloguedatetime" type="xs:date"/>
+                    <xs:element name="instore" type="xs:date"/>
+            </xs:complexType>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

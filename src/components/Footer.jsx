@@ -70,7 +70,7 @@ const Footer = ()=>
                                     <div className="footer-item has-desc">
                                         <div className="footer-desc mb-3">
                                             <img src="https://res.cloudinary.com/diallo/image/upload/v1650528960/art_bpjevo.png" alt=""  style={{width:200, height:200, objectFit:"contain"}}/>
-                                            <p className="">Mazia store is a premium theme with advanced admin module. It’s
+                                            <p className="">Mudi store is a premium theme with advanced admin module. It’s
                                                 extremely customizable, easy to use and fully responsive and retina ready.
                                             </p>
                                         </div>
@@ -106,7 +106,7 @@ const Footer = ()=>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 hidden-sm">
                                             <div className="footer-menu">
                                                 <ul>
-                                                    <li><Link to="#" className="title">Company Info</Link></li>
+                                                    <li><Link to="#" className="title">Mudi Info</Link></li>
                                                     <li><Link to="about">About us</Link></li>
                                                     <li><Link to="blog">Careers</Link></li>
                                                     <li><Link to="portfolio">Business With Us</Link></li>
@@ -120,6 +120,7 @@ const Footer = ()=>
                                 </div>
                             </div>
                         </div>
+                        <div className="text-center "> © 2022 All rights reserved by Mudi.com</div>
                     </div>
                 </div>
             </section>

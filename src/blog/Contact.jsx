@@ -36,7 +36,7 @@ const Contact = ()=>
                                         <div className="icon">
                                             <i className="bi bi-geo-alt"/>
                                         </div>
-                                        <p>New York City, USA</p>
+                                        <p>Nanjing Jiangsu, China</p>
                                     </div>
                                     <div className="item">
                                         <div className="icon">
@@ -51,7 +51,7 @@ const Contact = ()=>
                                             <i className="bi bi-phone" />
                                         </div>
                                         <p>
-                                            <Link to="to:13222702117">+86 (123)-456-78-91</Link>
+                                            <Link to="to:13222702117">+86 (123)-222-702-126</Link>
                                         </p>
                                     </div>
                                     <div className="item">
@@ -69,12 +69,12 @@ const Contact = ()=>
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="#">
+                                                    <Link to="https://twitter.com/@yangludev">
                                                         <i className="bi bi-twitter in " />
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="#">
+                                                    <Link to="https://www.youtube.com">
                                                         <i className="bi bi-youtube in" />
                                                     </Link>
                                                 </li>

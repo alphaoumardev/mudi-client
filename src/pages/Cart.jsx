@@ -11,7 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import {getWishlistItems, } from "../redux/Actions/wishlistAction";
 import Paypal from "../components/Paypal";
-import {createOrderAction, getAddressAction} from "../redux/Actions/orderAction";
+import {getAddressAction} from "../redux/Actions/orderAction";
 
 const Cart = ()=>
 {

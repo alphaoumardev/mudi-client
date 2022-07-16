@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import '../css/Navs.css'
-import {Link,} from "react-router-dom";
+import {Link, useNavigate,} from "react-router-dom";
 
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -40,6 +40,7 @@ const Modal = ({images, one, variant})=>
     const [rating, setRating] = useState(3);
     const [hoverRating, setHoverRating] = useState(-1);
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const {user} = useSelector((state) =>state.authReducer)
     const addItemToCart = (e)=>
@@ -176,7 +177,8 @@ const Modal = ({images, one, variant})=>
                                 </div>
 
                                 <div className="btn-groups">
-                                    <button onClick={()=>window.location.replace('/cart')} type="submit" className="add-cart-btn" disabled={one?.stock === 0 || user===null}>add to cart</button>
+                                    {user? <button onClick={()=>navigate("/cart")} type="submit" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>:
+                                    <button onClick={()=>navigate("/login")} type="button" className="add-cart-btn" disabled={one?.stock === 0}>add to cart</button>}
                                     <button type="submit" className="buy-now-btn " disabled={one?.stock === 0}>buy now</button>
                                 </div>
                             </form>

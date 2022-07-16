@@ -6,7 +6,7 @@ import Shop from "./pages/Shop";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import {Route, Routes, Redirect} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ScrollUp from "./little/ScrollUp";
@@ -31,21 +31,28 @@ import Spinner from "./little/Spinner";
 import {useSelector} from "react-redux";
 import {Fragment} from "react";
 import Success from "./components/Success";
+import PrivateRoutes from "./utils/PrivateRoutes";
+import {useState} from "react";
 
 function App()
 {
-  const {user, isLoading} = useSelector((state) =>state.authReducer)
+  const {isLoading} = useSelector((state) =>state.authReducer)
+  const [query, setQuery] = useState('');
+
   return (
         <Top>
           {isLoading &&  <Fragment><Spinner/></Fragment> }
-          <Navbar />
+          <Navbar  setQuery={setQuery}/>
           <Routes>
             <Route exact path="/" element={<Products />}/>
             <Route path="/products" element={<Products/>}/>
             <Route exact path="/:genre" element={<Products/>}/>
+            {/*<Route path="/na" element={<Na/>}/>*/}
+
 
             <Route path="*" element={<Page404/>} />
-            <Route path="/shop" element={<Shop />}/>
+            <Route path="/shop" element={<Shop query={query}/>}/>
+            {/*<Route path="/shop/:query" element={<Shop />}/>*/}
             <Route path="/:genre/:type" element={<Shop/>}/>
             <Route path="/single/:id" element={<SingleProduct/>}/>
             <Route path="/:genre/single/:id" element={<SingleProduct/>}/>
@@ -64,17 +71,18 @@ function App()
             <Route path="/contact" element={<Contact/>}/>
             <Route exact  path="/login" element={<Login/>} />
             <Route exact  path="/register" element={<Register/>} />
-
-            <Route path="/activate/:uid/:token" element={user?<Activate/>:<Login/>}/>
-            <Route path="/resetpassword"   element={user?<ResetPassword/>:<Login/>}/>
-            <Route path="/resetpassword/confirm/:uid/:token" element={user?<ResetPasswordConfirm/>:<Login/>}/>
-            <Route path="/cart" element={user?<Cart />:<Login/>}/>
-            <Route path="/cart/:id" element={user?<Cart />:<Login/>}/>
-            <Route path="/checkout" element={user?<Checkout />:<Login/>}/>
-            <Route path="/wishlist" element={user?<Wishlist />:<Login/>}/>
-            <Route path="/myaccount" element={user?<MyAccount />:<Login/>}/>
-            <Route path="/success" element={user?<Success/>:<Login/>}/>
-
+            {/*This is the private routes*/}
+            <Route element={<PrivateRoutes/>}>
+              <Route path="/activate/:uid/:token" element={<Activate/>}/>
+              <Route path="/resetpassword"   element={<ResetPassword/>}/>
+              <Route path="/resetpassword/confirm/:uid/:token" element={<ResetPasswordConfirm/>}/>
+              <Route path="/cart" element={<Cart />}/>
+              <Route path="/cart/:id" element={<Cart />}/>
+              <Route path="/checkout" element={<Checkout />}/>
+              <Route path="/wishlist" element={<Wishlist />}/>
+              <Route path="/myaccount" element={<MyAccount />}/>
+              <Route path="/success" element={<Success/>}/>
+            </Route>
           </Routes>
           <ScrollUp/>
           <Footer/>

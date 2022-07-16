@@ -17,8 +17,9 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {addToWishlist} from "../redux/Actions/wishlistAction";
+import Rating from "@mui/material/Rating";
 
-const Shop = ()=>
+const Shop = ({query})=>
 {
   const [id, setId] = useState(1)
   const location = useLocation();
@@ -26,6 +27,11 @@ const Shop = ()=>
   const [loadmore, setLoadmore] = useState(12)
   const [more, setMore] = useState(5);
   const navigate = useNavigate()
+  const [color, setColor] = useState(null);
+  const [size, setSize] = useState(null);
+  const [tag, setTag] = useState(null);
+  const [less_price, setLess_price] = useState(12);
+  const [greater_price, setGreater_price] = useState(1000);
 
   const {user,} = useSelector((state) =>state.authReducer)
   const {variant} = useSelector(state => state.getproductByVariantReducer)
@@ -48,24 +54,26 @@ const Shop = ()=>
   let {type} = useParams()
 
   const dispatch = useDispatch()
-  useEffect(()=>
-  {
-    dispatch(getOneProduct(id))
-    dispatch(getImages(id))
-    dispatch(getProductsByVariant(id))
-    dispatch(getOnsales())
-    dispatch(getAllProductAction(genre, type,))
-    dispatch(getColors())
-    dispatch(getSizes())
-    dispatch(getTags())
-    dispatch(getNewProducts())
-  },[dispatch, genre, type, id])
-
-  const [value, setValue] = useState([100, 500]);
+  const [value, setValue] = useState([less_price, greater_price]);
   const handleChange = (event, newValue) =>
   {
     setValue(newValue);
+    setLess_price(value[0])
+    setGreater_price(value[1])
   };
+  useEffect(()=>
+  {
+    dispatch(getTags())
+    dispatch(getSizes())
+    dispatch(getColors())
+    dispatch(getOnsales())
+    dispatch(getImages(id))
+    dispatch(getNewProducts())
+    dispatch(getOneProduct(id))
+    dispatch(getProductsByVariant(id))
+    dispatch(getAllProductAction(genre, type, less_price, greater_price, query, color, size, tag ))
+  },[dispatch, genre, less_price, greater_price, type, id, query, color, size, tag, ])
+
   const [liked, setLiked] = useState(JSON.parse(localStorage.getItem('wish')));
   return(
   <div>
@@ -146,8 +154,8 @@ const Shop = ()=>
               </div>
             </div>
             <div className="widget mt-50">
-              <h4 className="mb-30">Filter By Price</h4>
-              <form action="#">
+              <h4 className="mb-30">Filter Bhy Price</h4>
+              {/*<form action={filterByPrice}>*/}
                 <div className="price-filter">
                   <Box sx={{ width: 250 }}>
                     <Slider
@@ -156,11 +164,11 @@ const Shop = ()=>
                         onChange={handleChange}
                         valueLabelDisplay="on"
                         color="secondary"
-                        max={1000}
+                        max={999}
                         min={12}
                         defaultValue={100}
                         name="price"
-                        tabIndex={2}
+                        tabIndex={1}
                         // getAriaValueText={valuetext}
                     />
                   </Box>
@@ -168,13 +176,13 @@ const Shop = ()=>
                     <button type="submit">Filter</button>
                   </div>
                 </div>
-              </form>
+              {/*</form>*/}
             </div>
             <div className="widget mt-50">
               <h4 className="mb-30">Filter By Color</h4>
               <ul className="color-list">
                 {colors?.map((item, index)=>
-                  <li key={index} style={{backgroundColor: item?.color_name}} />
+                  <li onClick={()=>setColor(item?.color_name)} key={index} style={{backgroundColor: item?.color_name}} />
                 )}
               </ul>
             </div>
@@ -182,7 +190,7 @@ const Shop = ()=>
               <h4 className="mb-30">Filter By Size</h4>
               <div className="size-link">
                 {sizes?.map((item, index)=>
-                  <Link key={index} to="shop">{item?.size_name}</Link>
+                  <Link onClick={()=>setSize(item?.size_name)} key={index} to="/shop">{item?.size_name}</Link>
                 )}
               </div>
             </div>
@@ -212,7 +220,7 @@ const Shop = ()=>
               <div className="category-list">
                 <ul>
                   {tags?.map((item, index)=>
-                    <li key={index}><Link to="/shop">{item?.tag_name}</Link></li>
+                    <li onClick={()=>setTag(item?.tag_name)} key={index}><Link to="/shop">{item?.tag_name}</Link></li>
                   )}
                 </ul>
               </div>
@@ -264,7 +272,7 @@ const Shop = ()=>
                               <h4 className="mb-30">Filter By Color</h4>
                               <ul className="color-list">
                                 {colors?.map((item, index)=>
-                                    <li key={index} style={{backgroundColor: item?.color_name}} />
+                                    <li key={index} onClick={()=>setColor(item?.color_name)} style={{backgroundColor: item?.color_name}} />
                                 )}
                               </ul>
                             </div>
@@ -275,7 +283,7 @@ const Shop = ()=>
                             <h4 className="mb-30">Filter By Size</h4>
                             <div className="size-link">
                               {sizes?.map((item, index)=>
-                                  <Link key={index} to="shop">{item?.size_name}</Link>
+                                  <Link onClick={()=>setSize(item?.size_name)} key={index} to="/shop">{item?.size_name}</Link>
                               )}
                             </div>
                           </div>
@@ -283,7 +291,7 @@ const Shop = ()=>
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                           <div className="widget">
                             <h4 className="mb-30">Filter By Price</h4>
-                            <form action="#">
+                            {/*<form action={filterByPrice}>*/}
                               <div className="price-filter">
                                 <Box sx={{ width: 250 }}>
                                   <Slider
@@ -303,7 +311,7 @@ const Shop = ()=>
                                   <button type="submit">Filter</button>
                                 </div>
                               </div>
-                            </form>
+                            {/*</form>*/}
                           </div>
                         </div>
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 position-static">
@@ -312,7 +320,7 @@ const Shop = ()=>
                             <div className="category-list">
                               <ul>
                                 {tags?.map((item, index)=>
-                                    <li key={index}><Link to="/shop">{item?.tag_name}</Link></li>
+                                    <li onClick={()=>setTag(item?.tag_name)} key={index}><Link to="/shop">{item?.tag_name}</Link></li>
                                 )}
                               </ul>
                             </div>
@@ -458,9 +466,9 @@ const Shop = ()=>
                                     <div className="list-product-desc">
                                       <h3><Link to="single" className="title mb-15">{item?.name}</Link></h3>
 
-                                      <StarRating count={5} symbol="★" color2={'#ffd700'} />
+                                      {/*<Rating className="review-name" size="small" value={item?.rate} readOnly />*/}
 
-                                      <div className="price"><span>${item?.price}</span></div>
+                                      <div className="price"><span className="text-danger">${item?.price}</span></div>
                                       <div className="desc">
                                         <p>{item?.description}</p>
                                         <ul>

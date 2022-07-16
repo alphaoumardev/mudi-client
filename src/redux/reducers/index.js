@@ -2,7 +2,13 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import {cartReducer} from "./cartReducer";
 import {wishlistReducer} from './wishlistReducer'
-import {create_addressReducer, getShippingAddressReducer, orderCreateReducer, getMyorderReducer} from "./orderReducer";
+import {
+    create_addressReducer,
+    getShippingAddressReducer,
+    orderCreateReducer,
+    getMyorderReducer,
+    getReviewReducer
+} from "./orderReducer";
 import {
     getAllProductsReducer,
     getColorsReducer,
@@ -45,5 +51,6 @@ export default combineReducers(
 
         orderCreateReducer,
         getMyorderReducer,
+        getReviewReducer
 
     });

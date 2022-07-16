@@ -28,7 +28,7 @@ const txt ={
     4: 'text-info',
     5: 'text-success',
 };
-const Singles = ({images, one, variant})=>
+const Singles = ({images, one, variant, count})=>
 {
     let {id} = useParams()
     const [currentImage, setCurrentImage] = useState(one?.image)
@@ -79,36 +79,38 @@ const Singles = ({images, one, variant})=>
                         </h2>
                         <div className="single-product-price">${one?.price}</div>
                         <div className="d-flex align-items-center text-capitalize ">
-                            <span>(26) </span>
-                            <StyledRating
-                                name="customized-color"
-                                value={rating}
-                                size={'large'}
-                                sx={{fontSize:16, paddingRight:2, }}
-                                onChange={(event, newRating) => {setRating(newRating);}}
-                                onChangeActive={(event, newRating) => {setHoverRating(newRating);}}
-                                precision={1}
-                                icon={<FavoriteIcon fontSize="small" />}
-                                emptyIcon={<FavoriteBorderIcon fontSize="small" />}
-                            />
+                            {count > 0 &&<>
+                            <span>({count}) </span>
+                                <StyledRating
+                                    name="customized-color"
+                                    value={4}
+                                    size={'large'}
+                                    sx={{fontSize: 16, paddingRight: 2,}}
+                                    // onChange={(event, newRating) => {setRating(newRating);}}
+                                    // onChangeActive={(event, newRating) => {setHoverRating(newRating);}}
+                                    precision={1}
+                                    icon={<FavoriteIcon fontSize="small"/>}
+                                    emptyIcon={<FavoriteBorderIcon fontSize="small"/>}
+                                />
                             {rating && (
                                 <span className={txt[hoverRating!== -1 ? hoverRating : rating]}>{labels[hoverRating !== -1 ? hoverRating : rating]}</span>
-                            )}
+                                )}</>}
+
                         </div>
                         <p className="product-description">{one?.description}</p>
                         <div className="single-product-action mt-35">
                             <ul>
                                 <li><Link to="/wishlist" onClick={()=>dispatch(addToWishlist(one?.id, user))}><i className="bi bi-heart" /> add to wishlist</Link></li>
-                                <li><Link to="/single"><i className="bi bi-cpu-fill" /> add to compare</Link></li>
+                                {/*<li><Link to="/single"><i className="bi bi-cpu-fill" /> add to compare</Link></li>*/}
                             </ul>
                         </div>
-                        <span>Sku: <strong>{one?.sku?.slice(0,12)}</strong></span>
+                        {/*<span>Sku: <strong>{one?.sku?.slice(0,12)}</strong></span>*/}
                         <div className="single-product-category">
                             <ul>
                                 <li className="mb-0"><Link to="/" className="title">Categories: </Link></li>
-                                <li className="mb-0"><Link to="single">Chair &amp; Table</Link></li>
-                                <li className="mb-0"><Link to="single">Chairs</Link></li>
-                                <li className="mb-0"><Link to="single">Handbeg</Link></li>
+                                <li className="mb-0"><Link to="/single">Chair &amp; Table</Link></li>
+                                <li className="mb-0"><Link to="/single">Chairs</Link></li>
+                                <li className="mb-0"><Link to="/single">Handbeg</Link></li>
                             </ul>
                         </div>
                         <div className="share-product mt-20">

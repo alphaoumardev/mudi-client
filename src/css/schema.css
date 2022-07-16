@@ -1,0 +1,32 @@
+BOOKNAME
+{
+    display: block;
+    font-size: 22pt;
+    color:blue;
+    background-color:yellow;
+    margin-left: 110pt;
+    top: 10pt;
+}
+AUTHOR
+{
+    font-weight: 20;
+    font-style: italic;
+    font-size: 18pt;
+    color: yellow;
+}
+PUBLISHER
+{
+    display: block;
+    font-style: italic;
+    font-size: 20pt;
+    color:blue;
+    background-color:yellow;
+    margin: 120pt;
+    width: 100pt;
+}
+PRICE, QUANTITY, DATE, CATALOGUE_DATE_TIME
+{
+    font-style: inherit;
+    font-weight: bold;
+    color: yellow;
+}
