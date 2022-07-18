@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
 import {Link, useLocation, useParams} from "react-router-dom";
-import {load_user, logout} from '../redux/Actions/authActions'
+import {getUserProfile, load_user, logout} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from 'react-redux'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
@@ -14,7 +14,7 @@ const Navbar =({setQuery})=>
 {
     const dispatch = useDispatch()
     const location = useLocation();
-    const {user} = useSelector((state) =>state.authReducer)
+    const {user, profile} = useSelector((state) =>state.authReducer)
     const {cartItem, order_total, cart_count} = useSelector((state) =>state.cartReducer)
     const {wishlist_count} = useSelector(state => state.wishlistReducer)
     const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
@@ -33,6 +33,7 @@ const Navbar =({setQuery})=>
             dispatch(load_user())
             dispatch(getWishlistItems())
             dispatch(getCartItems())
+            dispatch(getUserProfile())
         }
         else
         {
@@ -53,7 +54,7 @@ const Navbar =({setQuery})=>
     const closing = ()=>{setSearchButton(false)}
     if(!isOpen || !isOp || !searchButton){setTimeout(close, 5000)}
     if(!searchButton){setInterval(closing, 20000)}
-
+    // console.log([].profile?.avatar)
     return(
         <div>
             <header className="header pt-10 pb-10  is-sticky header-static  " >
@@ -143,8 +144,10 @@ const Navbar =({setQuery})=>
                                             </li>
                                             <li className="menu-rights">
                                             <IconButton sx={{p: 0}}>
-                                                <Avatar alt={user?.first_name?.slice(0, 1)}
-                                                        src='https://res.cloudinary.com/diallo/image/upload/v1647154155/profile_d0j0wg.png'/>
+                                                {profile?.map((item, index)=>
+                                                <Avatar key={index} alt={user?.first_name?.slice(0, 1)}
+                                                        src={item?.avatar}/>
+                                                    )}
                                             </IconButton>
                                             <ul className="submenu bold-content text-right">
                                                 <li><Link to="/myaccount">MyAccount</Link></li>

@@ -968,7 +968,41 @@ header.header .submenu li:last-child a {
 {
     color: #bc1010;
 }
+/* submenu */
 
+header.header .submenu li {
+    display: inline !important;
+}
+
+header.header ul li:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: scaleY(1);
+    height: auto;
+}
+
+header.header .submenu li a {
+    display: block;
+    color: #080000;
+    font-size: 16px;
+    text-transform: capitalize;
+    font-weight: 500;
+    line-height: 10px;
+}
+
+header.header .submenu.bold-submenu li a {
+    font-weight: 500;
+}
+
+header.header .submenu li a {
+    padding-top: 17px;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+header.header .submenu li:last-child a {
+    padding-bottom: 17px;
+}
 /* mega menu */
 
 .mega-menu {

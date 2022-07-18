@@ -26,7 +26,8 @@ import {
 
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
-    LOGOUT_FAIL, REFRESH_FAIL, CART_CLEAR_ITEMS, WISHLIST_CLEAR_ITEMS, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL
+    LOGOUT_FAIL, REFRESH_FAIL, CART_CLEAR_ITEMS, WISHLIST_CLEAR_ITEMS, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL,
+    USER_PROFILE,
 } from '../Types'
 
 const accessToken = localStorage.getItem('access') ? localStorage.getItem('access') : null;
@@ -40,6 +41,7 @@ export default function authReducer(state = {
     user: userStorage,
     access: accessToken,
     refresh: refreshToken,
+    profile: [],
 }, action)
 {
     switch (action.type)
@@ -48,6 +50,11 @@ export default function authReducer(state = {
         case REGISTER_REQUEST:
             return{
                 isLoading: true,
+            }
+        case USER_PROFILE:
+            return {
+                ...state,
+                profile: action.payload
             }
 
         case AUTHENTICATED_SUCCESS:

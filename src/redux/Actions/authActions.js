@@ -30,8 +30,7 @@ import {
     LOGOUT_FAIL,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAIL,
-    ORDER_MINE_RESET,
-    CART_CLEAR_ITEMS, ORDER_MY_FAIL
+    CART_CLEAR_ITEMS, ORDER_MY_FAIL, USER_PROFILE
 } from '../Types'
 import axios from "axios";
 
@@ -172,6 +171,7 @@ export const updateUserProfile = (first_name, last_name, email, password)=> asyn
         dispatch(postActionPayloadError(UPDATE_PROFILE_FAIL, error))
     }
 }
+
 export const logout = () => dispatch =>
 {
     try
@@ -294,3 +294,56 @@ export const facebookAuthenticate = (state, code) => async dispatch =>
     }
 }
 
+// The user profile info
+export const getUserProfile = ()=> async dispatch =>
+{
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    }
+    try
+    {
+        await axios.get('/profile/', config).then((res)=>
+        {
+            dispatch(
+                {
+                    type: USER_PROFILE,
+                    payload: res.data,
+                })
+        })
+    }
+    catch (error)
+    {
+    }
+}
+
+export const updateProfile = (user, contact, gender, avatar)=> async dispatch =>
+{
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    }
+    const body = JSON.stringify({user, contact, gender, avatar})
+    try
+    {
+        await axios.put('/profile/', body, config).then((res)=>
+        {
+            dispatch(
+                {
+                    type: USER_PROFILE,
+                    payload: res.data,
+                })
+            console.log(res.data)
+        })
+    }
+    catch (error)
+    {
+        dispatch(postActionPayloadError(ACTIVATION_FAIL, error))
+    }
+}
