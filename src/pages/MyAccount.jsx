@@ -19,13 +19,12 @@ const MyAccount = ()=>
 
     const [first_name, setFirst_name] = useState(user?.first_name);
     const [last_name, setLast_name] = useState(user?.last_name);
-    const [email, setEmail] = useState(user?.email);
     const [password, setPassword] = useState(user?.password);
+    const [email, setEmail] = useState(user?.email);
     const [re_password, setRe_password] = useState('');
     const [newpass, setPass] = useState('');
     const [currentPassword, setCurrentPassword] = useState('');
 
-    console.log()
     useEffect(() =>
     {
         dispatch(getMyOrderAction())

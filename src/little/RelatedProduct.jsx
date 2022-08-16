@@ -25,16 +25,16 @@ const RelatedProduct = ({one, variant, images, onsale})=>
 
     function NextArrow(props)
     {
-        const { className, onClick } = props;
+        const {onClick } = props;
         return (<div className="swiper-button-next" onClick={onClick}>
             <i className="bi bi-caret-right-fill"> </i>
         </div> );
     }
     function PrevArrow(props)
     {
-        const {className, onClick } = props;
+        const {onClick } = props;
         return (<div className="swiper-button-prev" onClick={onClick}>
-            <i className="bi bi-caret-left-fill"> </i>
+            <i className="bi bi-caret-left-fill">hello </i>
         </div> );
     }
     const settings =

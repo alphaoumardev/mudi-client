@@ -1,6 +1,5 @@
 import Featured from "../components/Featured";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import StarRating from "react-star-rate";
+import {useNavigate, useParams} from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import {useEffect, useState,} from "react";
 import Singles from "../items/Singles";
@@ -212,7 +211,6 @@ const SingleProduct = () =>
       <BannerTab2/>
       <RelatedProduct/>
   </div>
-
     )
 }
 export default SingleProduct

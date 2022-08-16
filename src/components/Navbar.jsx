@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {Avatar, Badge, IconButton, TextField, } from "@mui/material";
-import {Link, useLocation, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {getUserProfile, load_user, logout} from '../redux/Actions/authActions'
 import {useDispatch, useSelector} from 'react-redux'
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -14,10 +14,10 @@ const Navbar =({setQuery})=>
 {
     const dispatch = useDispatch()
     const location = useLocation();
+    const navigate = useNavigate()
     const {user, profile} = useSelector((state) =>state.authReducer)
     const {cartItem, order_total, cart_count} = useSelector((state) =>state.cartReducer)
     const {wishlist_count} = useSelector(state => state.wishlistReducer)
-    const {subcates} = useSelector(state => state.getProductBySubcategoriesReducer)
 
     const cart = Array.from(cartItem)
     let genre = location.pathname.split('/')[1]
@@ -144,10 +144,15 @@ const Navbar =({setQuery})=>
                                             </li>
                                             <li className="menu-rights">
                                             <IconButton sx={{p: 0}}>
-                                                {profile?.map((item, index)=>
+                                            {profile?
+                                                <>{profile?.map((item, index)=>
                                                 <Avatar key={index} alt={user?.first_name?.slice(0, 1)}
-                                                        src={item?.avatar}/>
-                                                    )}
+                                                        src={item?.avatar} onClick={()=>navigate('/myaccount')}/>
+                                                    )}</>:
+                                                <>
+                                                    <Avatar alt={user?.first_name?.slice(0, 1)} onClick={()=>navigate('/myaccount')}/>
+                                                </>
+                                            }
                                             </IconButton>
                                             <ul className="submenu bold-content text-right">
                                                 <li><Link to="/myaccount">MyAccount</Link></li>
