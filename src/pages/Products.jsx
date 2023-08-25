@@ -12,6 +12,7 @@ import {useSelector} from "react-redux";
 
 const Products = () =>
 {
+  //this is to create the product
   const {variant} = useSelector(state => state.getproductByVariantReducer)
   const {images,} = useSelector(state => state.getImagesReducer)
   const {tags} = useSelector(state => state.getTagsReducer)
